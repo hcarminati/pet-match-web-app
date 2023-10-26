@@ -1,0 +1,46 @@
+.header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+    flex: 0 0 auto; /* Set header to not grow or shrink */
+}
+
+.header-left {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.header-logo {
+    color: #000;
+    text-decoration: none;
+}
+
+.header-logo-highlight {
+    color: #C0767A;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-profile {
+    display: flex;
+    align-items: center;
+    color: #000;
+    text-decoration: none;
+}
+
+.header-profile i {
+    font-size: 24px;
+    margin-right: 8px;
+}

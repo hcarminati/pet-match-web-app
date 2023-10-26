@@ -1,0 +1,13 @@
+/* Default styles for the hr element */
+.modules-hr {
+    margin-right: 50px;
+    width: 100%;
+}
+
+.title-content .publish-all-select {
+    width: 125px;
+}
+
+.modules {
+    min-width: 100%;
+}

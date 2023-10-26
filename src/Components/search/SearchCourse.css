@@ -1,0 +1,44 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F9FAFB;
+    padding: 4%;
+}
+
+.search-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-course-search-bar {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    padding: 10px;
+    width: 200%;
+    margin-top: 10px;
+}
+
+<!--
+TODO make this flow smoother
+
+-->
+@media screen and (max-width: 568px) {
+    .search-course-search-bar {
+        width: 150%;
+    }
+}
+
+.search-course-search-bar:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.home-faSearch {
+    color: #C0767A;
+}

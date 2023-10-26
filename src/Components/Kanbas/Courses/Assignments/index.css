@@ -1,0 +1,9 @@
+.percent-total {
+    border: 1px solid darkgrey;
+    padding: 0px 5px;
+}
+
+.search-bar {
+    width: 125px;
+    background-color: orange;
+}

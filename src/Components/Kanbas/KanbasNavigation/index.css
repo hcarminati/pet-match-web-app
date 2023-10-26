@@ -1,0 +1,51 @@
+.account-sidebar {
+    background-color: black;
+    width: 80px;
+    min-height: 100vh;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+}
+
+.account-sidebar .nav-link {
+    width: 80px;
+    color: white;
+    font-size: 14px;
+    margin: 5px 0;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account-sidebar .nav-link .account-icon {
+    color: #bbb;
+    margin-bottom: 5px;
+}
+
+.account-sidebar .nav-link.active {
+    background-color: white;
+    color: red;
+}
+
+.account-sidebar .nav-link:not(.active) {
+    background-color: black;
+    color: white;
+}
+
+.account-sidebar .icon {
+    color: red;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.square-image {
+    max-width: 80px;
+    max-height: 80px;
+}

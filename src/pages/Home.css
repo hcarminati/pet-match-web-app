@@ -1,0 +1,27 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.home-search-content {
+    padding: 60px 0px 0px 0px;
+}
+
+.home-sign-up-call {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 15% 5% 15%;
+    background-color: orange;
+}
+
+.home-sign-up-call-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: yellow;
+}
+

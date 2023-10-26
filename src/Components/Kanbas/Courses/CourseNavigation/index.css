@@ -1,0 +1,34 @@
+.courses-nav-container {
+    width: 190px;
+    margin-right: 40px;
+}
+
+.courses-nav-container .courses-nav-link {
+    color: red;
+    font-size: 14px;
+    text-decoration: none;
+    border-left: 5px solid transparent;
+    padding: 0 0 0 8px;
+}
+
+.courses-nav-item {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.courses-nav-link.active {
+    color: black;
+    border-left: 2px solid black;
+    padding-left: 11px;
+}
+
+.nav-container-top-text {
+    color: darkgrey;
+    font-size: 12px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    margin-left: 15px;
+}

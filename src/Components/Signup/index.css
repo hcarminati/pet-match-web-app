@@ -1,0 +1,26 @@
+.content {
+    margin: 80px 40px 40px 40px;
+}
+
+.content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pet-match-quiz {
+    max-width: 500px;
+}
+
+.header-logo-quiz {
+    color: #000;
+    text-decoration: none;
+
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.header-logo-quiz-highlight {
+    color: #C0767A;
+}

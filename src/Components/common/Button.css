@@ -1,0 +1,51 @@
+.basic-button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.pink-hover:hover {
+    background-color: #AA676B;
+}
+
+.grey-hover:hover {
+    background-color: #9198A4;
+}
+
+.header-login-button {
+    color: #C0767A;
+}
+
+.header-login-button:hover {
+    color: white;
+    background-color: #AA676B;
+}
+
+.header-registration-button {
+    color: #fff;
+    background-color: #C0767A;
+}
+
+.search-button {
+    margin-top: 20px;
+    color: #fff;
+    background-color: #9CA3AF;
+}
+
+.search-for-course-load {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #C0767A;
+    text-decoration: none;
+}
+
+.home-sign-up {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: #C0767A;
+}

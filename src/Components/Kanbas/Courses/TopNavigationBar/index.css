@@ -1,0 +1,17 @@
+.black-top-navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.black-top-navbar .row {
+    width: 100%;
+    margin: auto;
+}

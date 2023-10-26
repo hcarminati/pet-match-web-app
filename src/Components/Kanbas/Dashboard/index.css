@@ -1,0 +1,43 @@
+.title-content {
+    padding: 0px 20px;
+}
+
+.courses-content {
+    padding: 0px 40px;
+}
+
+.card {
+    width: 270px;
+    position: relative;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    transition: margin-right 0.3s;
+}
+
+.card-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.card-body {
+    height: 125px;
+}
+
+.card-body * {
+    margin: 0px;
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+    background-color: steelblue;
+    position: relative;
+}
+
+.vertical-dots {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
