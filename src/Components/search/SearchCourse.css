@@ -24,10 +24,6 @@
     margin-top: 10px;
 }
 
-<!--
-TODO make this flow smoother
-
--->
 @media screen and (max-width: 568px) {
     .search-course-search-bar {
         width: 150%;
