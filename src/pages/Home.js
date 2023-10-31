@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
-import SearchCourse from "../components/search/SearchCourse";
+import SearchCourse from "../Components/searchCourses/SearchCourse";
 import './Home.css';
 import Button from "../components/common/Button";
 
@@ -16,12 +16,12 @@ async function main() {
     }
 }
 
-function Home({isLoggedIn, onLogout}) {
+function Home() {
     main().then(r => console.log(r));
 
     return (
         <div className="home-container">
-            <Header isLoggedIn={isLoggedIn} onLogout={onLogout}/>
+            <Header/>
             <div className="home-search-content">
                 <SearchCourse/>
             </div>

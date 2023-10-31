@@ -6,8 +6,8 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
 const SearchCourse = () => {
     return (
-        <div className="search-container">
-            <div className="search-content">
+        <div className="course-search-container">
+            <div className="course-search-content">
                 <h3>Take a quiz to find a pet</h3>
                 <Button linkTo="/Quiz" nameClass="basic-button grey-hover search-button"
                         text="Start Quiz"/>

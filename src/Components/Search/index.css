@@ -1,0 +1,9 @@
+.content {
+    margin: 80px 40px 40px 40px;
+}
+
+.content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

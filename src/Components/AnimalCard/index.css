@@ -1,9 +1,9 @@
 .title-content {
-    padding: 0px 20px;
+    padding: 0 20px;
 }
 
 .courses-content {
-    padding: 0px 40px;
+    padding: 0 40px;
 }
 
 .card {
@@ -20,15 +20,15 @@
 }
 
 .card-body {
-    height: 130px;
+    height: 75px;
 }
 
 .card-body * {
-    margin: 0px;
+    margin: 0;
 }
 
 .card-img-top {
-    height: 150px;
+    height: 200px;
     object-fit: cover;
     background-color: steelblue;
     position: relative;
@@ -39,5 +39,6 @@
     top: 10px;
     right: 10px;
 }
+
 
 

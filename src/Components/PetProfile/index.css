@@ -1,0 +1,18 @@
+.pet-profile-container {
+    margin: 80px 40px 40px 40px;
+}
+
+.pet-profile-content {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.pet-profile-image {
+    background-color: steelblue;
+    height: 300px;
+    width: 100%;
+}
+
+.pet-profile-top-info {
+    padding-top: 50px;
+}

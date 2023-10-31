@@ -1,0 +1,16 @@
+.profile-home-container {
+    margin: 0 20px 20px 5px;
+}
+
+.profile-home-name {
+    color: #000;
+    text-decoration: none;
+
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.user-icon {
+    height: 75px;
+}

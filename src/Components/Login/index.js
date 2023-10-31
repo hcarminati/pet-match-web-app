@@ -1,8 +1,16 @@
 import React from "react";
 import "./index.css";
 import {Link} from "react-router-dom";
+import {login} from "../Profile/userReducer";
+import {useDispatch} from "react-redux";
 
 function Login() {
+    const dispatch = useDispatch();
+
+    function handleLogin() {
+        dispatch(login());
+    }
+
     return (
         <div className="content content-center">
             <div className="col-11 col-sm-12">
@@ -36,6 +44,7 @@ function Login() {
                     <div className="form-group">
                         <div className="float-end mb-2">
                             <Link to={`/Home`}
+                                  onClick={handleLogin}
                                   className="btn btn-secondary mt-2">
                                 Login
                             </Link>

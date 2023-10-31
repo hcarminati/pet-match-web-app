@@ -1,9 +1,9 @@
 import React from "react";
-import SearchCourse from "../search/SearchCourse";
+import SearchCourse from "../searchCourses/SearchCourse";
 import AnimalCard from "../AnimalCard";
 import "./index.css";
 
-function HomePage({isLoggedIn, onLogout}) {
+function HomePage() {
 
     return (
         <div className="home-container">
@@ -11,7 +11,7 @@ function HomePage({isLoggedIn, onLogout}) {
                 <SearchCourse/>
             </div>
             <div className="home-content">
-                <h4>Recently Adopted</h4>
+                <h4 className="mt-4">Recently Added</h4>
                 <div className="list-group d-flex flex-row flex-wrap">
                     <AnimalCard/>
                     <AnimalCard/>
@@ -20,7 +20,7 @@ function HomePage({isLoggedIn, onLogout}) {
                     <AnimalCard/>
                 </div>
 
-                <h4 className="mt-4">Recently Added</h4>
+                <h4>Recently Adopted</h4>
                 <div className="list-group d-flex flex-row flex-wrap">
                     <AnimalCard/>
                     <AnimalCard/>
