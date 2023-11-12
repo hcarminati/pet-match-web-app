@@ -8,11 +8,17 @@
 }
 
 .pet-profile-image {
-    background-color: steelblue;
-    height: 300px;
+    /*height: 300px;*/
     width: 100%;
 }
 
 .pet-profile-top-info {
     padding-top: 50px;
+    /*background-color: orange;*/
+}
+
+.fill-profile-image {
+    width: 300px;
+    height: 300px;
+    /*object-fit: cover;*/
 }

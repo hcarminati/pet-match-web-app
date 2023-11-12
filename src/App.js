@@ -25,7 +25,7 @@ function App() {
                     <Route path="/Register" element={<Signup/>}/>
                     <Route path="/Search" element={<Search/>}/>
                     <Route path="/Profile/*" element={<Profile/>}/>
-                    <Route path="/Pet" element={<PetProfile/>}/>
+                    <Route path="/Pet/:id" element={<PetProfile/>}/>
                 </Routes>
             </div>
         </HashRouter>

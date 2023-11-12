@@ -29,9 +29,15 @@
 
 .card-img-top {
     height: 200px;
-    object-fit: cover;
+    width: 100%;
     background-color: steelblue;
     position: relative;
+}
+
+.fill-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .vertical-dots {

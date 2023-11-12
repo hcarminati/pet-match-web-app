@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     user: null,
     isLoggedIn: false,
+    userType: "guest",
 };
 
 const userSlice = createSlice({
@@ -13,10 +14,12 @@ const userSlice = createSlice({
                                           state.user = action.payload;
                                       },
                                       login: (state) => {
-                                          state.isLoggedIn = true; // Set isLoggedIn to true when the user logs in
+                                          state.isLoggedIn = true;
                                       },
                                       logout: (state) => {
-                                          state.isLoggedIn = false; // Set isLoggedIn to false when the user logs out
+                                          state.isLoggedIn = false;
+                                          state.user = null; // Clear user data on logout
+                                          state.userType = "guest"; // Reset user type
                                       },
                                   },
                               });
@@ -24,5 +27,6 @@ const userSlice = createSlice({
 export const { setUser, login, logout } = userSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
+export const selectUserType = (state) => state.user.userType;
 
 export default userSlice.reducer;

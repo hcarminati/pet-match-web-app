@@ -4,16 +4,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 
-function AnimalCard() {
+function AnimalCard({animal}) {
     const [isLiked, setIsLiked] = useState(false);
 
     const toggleLike = () => {
         setIsLiked(!isLiked);
     };
 
+    console.log(animal)
+
     return (
         <div className={"card my-3 mx-3"}>
-            <div className="card-img-top"></div>
+            <div className="card-img-top">
+                <img
+                    src={animal.primary_photo_cropped ? animal.primary_photo_cropped.full : ""}
+                    alt="Animal Image"
+                    className="fill-image"
+                />
+            </div>
+
             <div className="vertical-dots">
                 <FontAwesomeIcon
                     className={`${isLiked ? 'text-danger' : 'text-white'}`}
@@ -23,12 +32,12 @@ function AnimalCard() {
             </div>
             <Link
                 // key={"pet"}
-                to={`/Pet`}
+                to={`/Pet/${animal.id}`}
                 className="text-decoration-none text-reset"
             >
                 <div className="card-body m-0">
-                    <h6 className="card-title">Pet Name</h6>
-                    <p className="card-text text-muted">Breed</p>
+                    <h6 className="card-title">{animal.name}</h6>
+                    <p className="card-text text-muted">{animal.breeds.primary}</p>
                 </div>
             </Link>
         </div>

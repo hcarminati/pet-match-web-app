@@ -5,6 +5,7 @@ import {Route} from "react-router-dom";
 import {Navigate, Routes} from "react-router";
 import Logout from "./Logout";
 import ProfileHome from "./ProfileHome";
+import EditProfile from "./Edit";
 
 const Profile = () => {
     return (
@@ -19,7 +20,7 @@ const Profile = () => {
                                 <Route path="Home" element={<ProfileHome/>}/>
                                 <Route path="Adopted" element={<h1>Adopted</h1>}/>
                                 <Route path="Favorites" element={<h1>Favorites</h1>}/>
-                                <Route path="Edit" element={<h1>Edit</h1>}/>
+                                <Route path="Edit" element={<EditProfile/>}/>
                                 <Route path="Logout" element={<Logout/>}/>
                             </Routes>
                         </div>

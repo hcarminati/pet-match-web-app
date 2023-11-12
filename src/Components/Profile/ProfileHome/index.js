@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faUser} from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
 
 const ProfileHome = () => {
     return (
@@ -11,7 +12,10 @@ const ProfileHome = () => {
                     <FontAwesomeIcon className="user-icon mb-3" icon={faUser}></FontAwesomeIcon>
                     <p className="profile-home-name mb-3">
                         Heather Carminati
-                        <FontAwesomeIcon className="ms-2 text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
+                        <Link to={`/Profile/Edit`} className="btn">
+                            <FontAwesomeIcon className="text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
+
+                        </Link>
                     </p>
                     <p>
                         Successful matches: 3
