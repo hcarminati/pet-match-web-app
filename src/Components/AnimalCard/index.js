@@ -3,15 +3,19 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
+import {useSelector} from "react-redux";
+import {selectIsLoggedIn, selectUserType} from "../Profile/userReducer";
 
 function AnimalCard({animal}) {
     const [isLiked, setIsLiked] = useState(false);
 
     const toggleLike = () => {
-        setIsLiked(!isLiked);
+        if (isLoggedIn) {
+            setIsLiked(!isLiked);
+        }
     };
 
-    console.log(animal)
+    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
 
     return (
         <div className={"card my-3 mx-3"}>

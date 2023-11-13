@@ -7,3 +7,22 @@
     justify-content: center;
     align-items: center;
 }
+
+.search-page-content {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*padding: 20px;*/
+}
+
+.filter-section {
+    width: 100%;
+    /*background-color: orange;*/
+    display: flex;
+    align-items: center;
+}
+
+.form-select {
+    margin-right: 10px; /* Adjust as needed */
+}

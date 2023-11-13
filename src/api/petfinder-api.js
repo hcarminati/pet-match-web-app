@@ -64,3 +64,29 @@ export async function getAnimalById(animalId) {
     const animalData = await response.json();
     return animalData.animal; // Return the individual animal data
 }
+
+export async function searchAnimals(query) {
+    const accessToken = await getAccessToken();
+    const apiUrl = 'https://api.petfinder.com/v2/animals';
+
+    const queryParams = new URLSearchParams(query);
+
+    const response = await fetch(`${apiUrl}?${queryParams}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch animals');
+    }
+
+    const animalData = await response.json();
+
+    // Filter out animals without photos
+    const animalsWithPhotos = animalData.animals.filter(animal => animal.primary_photo_cropped);
+
+    return { ...animalData, animals: animalsWithPhotos };
+}
+
