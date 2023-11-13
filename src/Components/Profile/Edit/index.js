@@ -1,55 +1,72 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser} from "../userReducer";
 
 function EditProfile() {
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.userReducer);
+    const [editedUsername, setEditedUsername] = useState(user.username);
+    const [editedDescription, setEditedDescription] = useState(user.description);
+
+    const handleUsernameChange = (e) => {
+        setEditedUsername(e.target.value);
+    };
+    const handleDescriptionChange = (e) => {
+        setEditedDescription(e.target.value);
+    };
+    const saveChanges = () => {
+        // Update the Redux store with the edited username
+        dispatch(setUser({ ...user, username: editedUsername, description: editedDescription }));
+        console.log(editedUsername);
+    };
+
     return (
         <div className="col-11 col-sm-12">
-            <p className="header-logo-quiz content-center mb-3">
-                Edit Profile
-            </p>
+            <p className="header-logo-quiz content-center mb-3">Edit Profile</p>
             <form className="pet-match-quiz mx-auto">
-                <form className="pet-match-quiz mx-auto">
-                    {/* Good w/ Dogs Text */}
-                    <div className="form-group">
-                        <label htmlFor="username" className="form-label">
-                            Display Name
-                        </label>
-                        <input
-                            type="text"
-                            className="search-bar form-control me-2"
-                            id="username"
-                            placeholder="Enter profile name"
-                        ></input>
-                    </div>
+                <div className="form-group">
+                    <label htmlFor="username" className="form-label">
+                        Display Name
+                    </label>
+                    <input
+                        type="text"
+                        className="search-bar form-control me-2"
+                        id="username"
+                        placeholder="Enter profile name"
+                        value={editedUsername} // Bind the input value to the local state
+                        onChange={(e) => handleUsernameChange(e)} // Handle changes to the username
+                    />
+                </div>
 
-                    {/* Description */}
-                    <div className="form-group mt-2">
-                        <label htmlFor="description" className="form-label">
-                            Description
-                        </label>
-                        <input
-                            type="text"
-                            className="search-bar form-control me-2"
-                            id="description"
-                            placeholder="Enter profile description"
-                        ></input>
-                    </div>
-                </form>
+                {/* Description */}
+                <div className="form-group mt-2">
+                    <label htmlFor="description" className="form-label">
+                        Description
+                    </label>
+                    <input
+                        type="text"
+                        className="search-bar form-control me-2"
+                        id="description"
+                        placeholder="Enter profile description"
+                        value={editedDescription}
+                        onChange={(e) => handleDescriptionChange(e)}
+                    />
+                </div>
 
                 <div className="form-group">
                     <div className="float-end mb-2">
-                        <Link to={`/Home`} className="btn btn-secondary mt-2">
-                                                 Cancel
-                                             </Link>
+                        <Link to="/Profile" className="btn btn-secondary mt-2">
+                            Cancel
+                        </Link>
 
-                                         <Link to={`/SearchResults`}>
-                                             <button className="btn btn-danger ms-2 mt-2">Enter</button>
-                                         </Link>
+                        <button type="button" className="btn btn-danger ms-2 mt-2" onClick={saveChanges}>
+                            Save Changes
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-        // </div>
     );
 }
 
