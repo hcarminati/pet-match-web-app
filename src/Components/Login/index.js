@@ -16,8 +16,7 @@ function Login() {
 
         const userData = {
             username, // Capture the username and password from the input fields
-            password,
-            userType: "userType", // Set the user type based on your logic
+            password, // Set the user type based on your logic
         };
 
         // Dispatch the login action with the user data
