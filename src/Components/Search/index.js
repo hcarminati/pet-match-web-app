@@ -2,23 +2,51 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import { searchAnimals } from "../../api/petfinder-api";
 import AnimalCard from "../AnimalCard";
+import {useLocation} from "react-router-dom";
 
 function Search() {
-    const [searchParameters, setSearchParameters] = useState({
-                                                                 name: "",
-                                                                 type: "",
-                                                                 size: "",
-                                                                 gender: "",
-                                                                 age: "",
-                                                             });
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+
+    const initialSearchParameters = {
+        name: searchParams.get("name") || "",
+        type: searchParams.get("type") || "",
+        size: searchParams.get("size") || "",
+        gender: searchParams.get("gender") || "",
+        age: searchParams.get("age") || "",
+    };
+
+    const [searchParameters, setSearchParameters] = useState(initialSearchParameters);
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        // Watch for changes in the URL parameters and update the search parameters
+        const updatedSearchParameters = {
+            name: searchParams.get("name") || "",
+            type: searchParams.get("type") || "",
+            size: searchParams.get("size") || "",
+            gender: searchParams.get("gender") || "",
+            age: searchParams.get("age") || "",
+        };
+        setSearchParameters(updatedSearchParameters);
+    }, [location.search]);
+
     const handleSearch = async () => {
         try {
             setLoading(true);
-            const query = new URLSearchParams(searchParameters);
+
+            // Construct the query from searchParameters and make the API call
+            const query = new URLSearchParams();
+            for (const key in searchParameters) {
+                if (searchParameters[key]) {
+                    query.set(key, searchParameters[key]);
+                }
+            }
+
+            // Update the URL with the current search parameters using replaceState
+            window.history.replaceState(null, "", `/Search?${query.toString()}`);
 
             const result = await searchAnimals(query);
             setSearchResults(result.animals);

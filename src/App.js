@@ -1,4 +1,4 @@
-import {HashRouter} from "react-router-dom";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 import {
     Routes, Route,
     Navigate
@@ -14,7 +14,7 @@ import PetProfile from "./Components/PetProfile";
 
 function App() {
     return (
-        <HashRouter>
+        <BrowserRouter>
             <div>
                 <Header/>
                 <Routes>
@@ -28,7 +28,7 @@ function App() {
                     <Route path="/Pet/:id" element={<PetProfile/>}/>
                 </Routes>
             </div>
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 
