@@ -8,11 +8,15 @@ function Login() {
     const dispatch = useDispatch();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
 
-    function handleLogin() {
-        // Here, you can add your login logic, validate the user's input, and then dispatch the login action.
-        // For simplicity, I'll dispatch the action immediately.
-        // In a real application, you would perform authentication, and if successful, dispatch the action.
+    function handleLogin(e) {
+        e.preventDefault();
+
+        if (!username || !password) {
+            setError("Please fill in all required fields.");
+            return;
+        }
 
         const userData = {
             username, // Capture the username and password from the input fields
@@ -54,9 +58,10 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
+                    {error && <p className="text-danger">{error}</p>}
                     <div className="form-group">
                         <div className="float-end mb-2">
-                            <Link to={`/Home`} onClick={handleLogin} className="btn btn-secondary mt-2">
+                            <Link to={`/Home`} onClick={(e) => handleLogin(e)} className="btn btn-secondary mt-2">
                                 Login
                             </Link>
                         </div>

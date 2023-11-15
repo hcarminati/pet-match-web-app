@@ -17,6 +17,11 @@ function Signup() {
     function handleSignup(e) {
         e.preventDefault();
 
+        if (!email || !username || !password || !userType) {
+            setError("Please fill in all required fields.");
+            return;
+        }
+
         let validReferralCodes = {
             admin: "123Admin",
         };
@@ -141,9 +146,9 @@ function Signup() {
                                      value={referralCode}
                                      onChange={(e) => setReferralCode(e.target.value)}
                                  />
-                                 {error && <p className="text-danger">{error}</p>}
                              </div>
                          )}
+                         {error && <p className="text-danger">{error}</p>}
                          <div className="form-group">
                              <div className="float-end mb-2">
                                  <button
