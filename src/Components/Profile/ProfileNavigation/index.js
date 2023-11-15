@@ -2,7 +2,7 @@ import {Link, useLocation} from "react-router-dom";
 import './index.css';
 
 const ProfileNavigation = () => {
-    const links = ["Home", "Adopted", "Favorites", "Edit", "Logout"];
+    const links = ["Home", "Adopted", "Favorites", "Settings"];
     const {pathname} = useLocation();
 
     return (
@@ -10,7 +10,7 @@ const ProfileNavigation = () => {
             {links.map((link, index) => (
                 <div className="courses-nav-item" key={index}>
                     <Link
-                        to={`/Profile/${link}`}
+                        to={link === "Home" ? `/Profile` : `/Profile/${link}`}
                         className={`courses-nav-link ${pathname.includes(link) && "active"}`}
                     >
                         {link}

@@ -4,6 +4,7 @@ import { login, setUser } from "../Profile/userReducer";
 import "./index.css";
 
 function Signup() {
+    const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [referralCode, setReferralCode] = useState("");
@@ -51,7 +52,20 @@ function Signup() {
                 ) : (
                      <form className="pet-match-quiz mx-auto">
                          <div className="form-group">
-                             <label htmlFor="username" className="form-label">
+                             <label htmlFor="email" className="form-label">
+                                 Email
+                             </label>
+                             <input
+                                 type="text"
+                                 className="search-bar form-control me-2"
+                                 id="email"
+                                 placeholder="Enter your email"
+                                 value={email}
+                                 onChange={(e) => setEmail(e.target.value)}
+                             />
+                         </div>
+                         <div className="form-group">
+                             <label htmlFor="username" className="form-label mt-1">
                                  Username
                              </label>
                              <input

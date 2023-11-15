@@ -5,7 +5,7 @@ import {Route} from "react-router-dom";
 import {Navigate, Routes} from "react-router";
 import Logout from "./Logout";
 import ProfileHome from "./ProfileHome";
-import EditProfile from "./Edit";
+import Settings from "./Settings";
 
 const Profile = () => {
     return (
@@ -16,12 +16,11 @@ const Profile = () => {
                         <ProfileNavigation/>
                         <div className="courses-content-container flex-grow-1">
                             <Routes>
-                                <Route path="/" element={<Navigate to="/Home"/>}/>
-                                <Route path="Home" element={<ProfileHome/>}/>
+                                <Route path="/" element={<ProfileHome/>}/>
+                                <Route path="Home" element={<Navigate to="/Profile"/>}/>
                                 <Route path="Adopted" element={<h1>Adopted</h1>}/>
                                 <Route path="Favorites" element={<h1>Favorites</h1>}/>
-                                <Route path="Edit" element={<EditProfile/>}/>
-                                <Route path="Logout" element={<Logout/>}/>
+                                <Route path="/Settings/*" element={<Settings />} />
                             </Routes>
                         </div>
                     </div>

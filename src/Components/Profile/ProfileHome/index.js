@@ -17,7 +17,7 @@ const ProfileHome = () => {
                     <FontAwesomeIcon className="user-icon mb-3" icon={faUser}></FontAwesomeIcon>
                     <p className="profile-home-name mb-3">
                         {user.username} {/* Display the user's username */}
-                        <Link to={`/Profile/Edit`} className="btn">
+                        <Link to={`/Profile/Settings/Edit`} className="btn">
                             <FontAwesomeIcon className="text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
                         </Link>
                     </p>
