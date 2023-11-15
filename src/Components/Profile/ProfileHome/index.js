@@ -8,19 +8,26 @@ import { useSelector } from "react-redux"; // Import useSelector from react-redu
 const ProfileHome = () => {
     // Use useSelector to access the user information from the Redux store
     const user = useSelector((state) => state.userReducer);
-    console.log("USER", user);
 
     return (
         <div className="profile-home-container">
             <div className="row">
                 <div className="col-12 col-sm-4 pe-3">
                     <FontAwesomeIcon className="user-icon mb-3" icon={faUser}></FontAwesomeIcon>
-                    <p className="profile-home-name mb-3">
-                        {user.username} {/* Display the user's username */}
+                    <h4 className="profile-home-name mb-3">
+                        {user.username}
+                        <span key="admin-badge" className={`badge badge-pill ms-2 ${
+                            user.userType === "admin" ? "bg-danger" :
+                            user.userType === "adopter" ? "bg-success" :
+                            user.userType === "uploader" ? "bg-primary" :
+                            "bg-secondary"
+                        } badge-xs`}>
+                            {user.userType}
+                        </span>
                         <Link to={`/Profile/Settings/Edit`} className="btn">
                             <FontAwesomeIcon className="text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
                         </Link>
-                    </p>
+                    </h4>
                     <p>
                         Successful matches: 3
                     </p>

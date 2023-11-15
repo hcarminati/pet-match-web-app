@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import {useSelector} from "react-redux";
-import {selectIsLoggedIn, selectUserType} from "../Profile/userReducer";
 
 function AnimalCard({animal}) {
     const [isLiked, setIsLiked] = useState(false);
@@ -35,7 +34,6 @@ function AnimalCard({animal}) {
                 />
             </div>
             <Link
-                // key={"pet"}
                 to={`/Pet/${animal.id}`}
                 className="text-decoration-none text-reset"
             >

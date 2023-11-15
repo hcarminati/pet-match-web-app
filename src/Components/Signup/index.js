@@ -7,34 +7,28 @@ function Signup() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [userType, setUserType] = useState("adopter"); // Default to "adopter"
     const [referralCode, setReferralCode] = useState("");
     const [error, setError] = useState(null);
-    const [signedUp, setSignedUp] = useState(false); // Track whether the sign-up is successful
+    const [signedUp, setSignedUp] = useState(false);
 
     const dispatch = useDispatch();
 
     function handleSignup(e) {
         e.preventDefault();
 
-        let userType = "guest";
+        let validReferralCodes = {
+            admin: "123Admin",
+        };
 
-        if (referralCode === "123Admin") {
-            userType = "admin";
-        } else if (referralCode === "456Adopt") {
-            userType = "adopter";
-        } else if (referralCode === "789Casual") {
-            userType = "casual";
-        } else {
-            setError("Invalid referral code. Please enter a valid code.");
-            return; // Don't proceed with sign-up
+        if (userType === "admin" && referralCode !== validReferralCodes.admin) {
+            setError("Invalid referral code for admin.");
+            return;
         }
-
         const user = { username, password, userType };
         dispatch(setUser(user));
         dispatch(login(user));
-        setError(""); // Clear any previous error message
-
-        // Set the signedUp state to true to trigger the success message
+        setError("");
         setSignedUp(true);
     }
 
@@ -43,7 +37,6 @@ function Signup() {
             <div className="col-11 col-sm-12">
                 <p className="header-logo-quiz content-center mb-3">Sign Up</p>
 
-                {/* Conditional rendering based on the signedUp state */}
                 {signedUp ? (
                     <div>
                         <p className="text-success">Sign-up successful!</p>
@@ -91,19 +84,66 @@ function Signup() {
                              />
                          </div>
                          <div className="form-group">
-                             <label htmlFor="referralCode" className="form-label mt-1">
-                                 Referral Code
-                             </label>
-                             <input
-                                 type="text"
-                                 className="search-bar form-control me-2"
-                                 id="referralCode"
-                                 placeholder="Enter your referral code"
-                                 value={referralCode}
-                                 onChange={(e) => setReferralCode(e.target.value)}
-                             />
-                             {error && <p className="text-danger">{error}</p>}
+                             <label className="form-label mt-1">User Type</label>
+                             <div className="form-check">
+                                 <input
+                                     type="radio"
+                                     id="adopter"
+                                     name="userType"
+                                     value="adopter"
+                                     checked={userType === "adopter"}
+                                     onChange={() => setUserType("adopter")}
+                                     className="form-check-input"
+                                 />
+                                 <label htmlFor="adopter" className="form-check-label">
+                                     Adopter
+                                 </label>
+                             </div>
+                             <div className="form-check">
+                                 <input
+                                     type="radio"
+                                     id="uploader"
+                                     name="userType"
+                                     value="uploader"
+                                     checked={userType === "uploader"}
+                                     onChange={() => setUserType("uploader")}
+                                     className="form-check-input"
+                                 />
+                                 <label htmlFor="uploader" className="form-check-label">
+                                     Uploader
+                                 </label>
+                             </div>
+                             <div className="form-check">
+                                 <input
+                                     type="radio"
+                                     id="admin"
+                                     name="userType"
+                                     value="admin"
+                                     checked={userType === "admin"}
+                                     onChange={() => setUserType("admin")}
+                                     className="form-check-input"
+                                 />
+                                 <label htmlFor="admin" className="form-check-label">
+                                     Admin
+                                 </label>
+                             </div>
                          </div>
+                         {userType !== "adopter" && (
+                             <div className="form-group">
+                                 <label htmlFor="referralCode" className="form-label mt-1">
+                                     Referral Code
+                                 </label>
+                                 <input
+                                     type="text"
+                                     className="search-bar form-control me-2"
+                                     id="referralCode"
+                                     placeholder="Enter your referral code"
+                                     value={referralCode}
+                                     onChange={(e) => setReferralCode(e.target.value)}
+                                 />
+                                 {error && <p className="text-danger">{error}</p>}
+                             </div>
+                         )}
                          <div className="form-group">
                              <div className="float-end mb-2">
                                  <button

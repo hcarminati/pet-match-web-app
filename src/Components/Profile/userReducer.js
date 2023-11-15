@@ -17,6 +17,7 @@ const userSlice = createSlice({
                                           state.username = action.payload.username;
                                           state.email = action.payload.email;
                                           state.description = action.payload.description;
+                                          state.userType = action.payload.userType;
                                       },
                                       login: (state, action) => {
                                           state.email = action.payload.email;

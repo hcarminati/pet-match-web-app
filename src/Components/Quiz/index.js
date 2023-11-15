@@ -79,7 +79,7 @@ function Quiz() {
                     </div>
 
                     {/* Good w/ Cats Text */}
-                    <div className="form-group">
+                    <div className="form-group ms-0">
                         <label htmlFor="good-w-cats" className="form-label">
                             Good with cats
                         </label>
