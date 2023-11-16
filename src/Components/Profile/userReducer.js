@@ -23,6 +23,8 @@ const userSlice = createSlice({
                                           state.email = action.payload.email;
                                           state.username = action.payload.username;
                                           state.password = action.payload.password;
+                                          state.userType = action.payload.userType;
+                                          state.description = action.payload.description;
                                           state.isLoggedIn = true;
                                       },
                                       logout: (state) => {

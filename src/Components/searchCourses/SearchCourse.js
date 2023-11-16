@@ -8,7 +8,7 @@ const SearchCourse = () => {
     return (
         <div className="course-search-container">
             <div className="course-search-content">
-                <h3>Take the quiz and get matched with a pet</h3>
+                <h3>Take the quiz to get matched with a pet</h3>
                 <Button linkTo="/Quiz" nameClass="basic-button grey-hover search-button"
                         text="Start Quiz"/>
                 <span>

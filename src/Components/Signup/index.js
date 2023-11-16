@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, setUser } from "../Profile/userReducer";
 import "./index.css";
+import * as client from "./client";
 
 function Signup() {
     const [email, setEmail] = useState("");
@@ -30,11 +31,22 @@ function Signup() {
             setError("Invalid referral code for admin.");
             return;
         }
-        const user = { username, password, userType };
-        dispatch(setUser(user));
-        dispatch(login(user));
-        setError("");
-        setSignedUp(true);
+
+        const user = { email, username, password, userType, referralCode };
+
+        client.register(user)
+            .then((userData) => {
+                dispatch({ type: "LOGIN_SUCCESS", payload: userData });
+                dispatch(setUser(user));
+                dispatch(login(user));
+                setError("");
+                setSignedUp(true);
+            })
+            .catch((err) => {
+                setError("Email or password already exists. Please try again.");
+            });
+
+
     }
 
     return (
@@ -133,7 +145,7 @@ function Signup() {
                                  </label>
                              </div>
                          </div>
-                         {userType !== "adopter" && (
+                         {userType !== "adopter" && userType !== "uploader" && (
                              <div className="form-group">
                                  <label htmlFor="referralCode" className="form-label mt-1">
                                      Referral Code
