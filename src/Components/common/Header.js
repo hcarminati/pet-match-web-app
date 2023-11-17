@@ -3,11 +3,14 @@ import {Link} from 'react-router-dom';
 import './Header.css';
 import Button from '../common/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faLock, faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useSelector} from "react-redux";
 
 const Header = () => {
     const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
+    const userType = useSelector((state) => state.userReducer.userType);
+
+    const isAdmin = userType === 'admin';
 
     return (
         <div className="header">
@@ -20,10 +23,17 @@ const Header = () => {
                 {isLoggedIn ? (
                     <div className="d-flex">
                         <div className="col">
-                            <Link to="/Search" className="header-profile text-muted me-3">
+                            <Link to="/Search" className="text-muted me-3">
                                 <FontAwesomeIcon icon={faSearch} size="lg"/>
                             </Link>
                         </div>
+                        {isAdmin && (
+                            <div className="col">
+                                <Link to="/Admin" className="text-danger me-3">
+                                    <FontAwesomeIcon icon={faLock} size="lg"/>
+                                </Link>
+                            </div>
+                        )}
                         <div className="col">
                             <Link to="/Profile/Home" className="header-profile">
                                 <FontAwesomeIcon icon={faUser} size="lg" />
