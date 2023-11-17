@@ -1,0 +1,8 @@
+.admin-container {
+}
+
+.admin-content {
+    display: flex;
+    flex-direction: column;
+    padding: 60px 0 0 0;
+}

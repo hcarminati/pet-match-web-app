@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import './Header.css';
 import Button from '../common/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faLock, faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCog, faLock, faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useSelector} from "react-redux";
 
 const Header = () => {
@@ -30,7 +30,7 @@ const Header = () => {
                         {isAdmin && (
                             <div className="col">
                                 <Link to="/Admin" className="text-danger me-3">
-                                    <FontAwesomeIcon icon={faLock} size="lg"/>
+                                    <FontAwesomeIcon icon={faCog} size="lg"/>
                                 </Link>
                             </div>
                         )}
