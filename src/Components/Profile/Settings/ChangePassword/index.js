@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {setUser} from "../../userReducer";
+import * as client from "../../Edit/client";
 
 function ChangePassword() {
     const dispatch = useDispatch();
@@ -23,18 +24,19 @@ function ChangePassword() {
         setNewPasswordAgain(e.target.value);
     };
 
-    const saveChanges = () => {
+    const saveChanges = async () => {
         if (user.password === oldPassword && newPassword === newPasswordAgain) {
-            dispatch(
-                setUser({
-                            ...user,
-                            password: newPassword,
-                        })
-            );
+            const newUser = {
+                ...user,
+                password: newPassword,
+            };
+            delete newUser.isLoggedIn;
+
+            dispatch(setUser(newUser));
             setError(null);
+            const status = await client.updateProfile(newUser, user.username);
             setSuccess("Password successfully changed.");
-        }
-        else {
+        } else {
             setError("Old password is invalid or new passwords don't match.");
             return;
         }

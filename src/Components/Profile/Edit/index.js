@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../userReducer";
+import * as client from "./client";
+import {updateProfile} from "./client";
 
 function EditProfile() {
     const dispatch = useDispatch();
@@ -21,17 +23,19 @@ function EditProfile() {
     const handleEmailChange = (e) => {
         setEditedEmail(e.target.value);
     };
-    const saveChanges = () => {
-        // Update the Redux store with the edited username
-        dispatch(
-            setUser({
-                        ...user,
-                        username: editedUsername,
-                        description: editedDescription,
-                        email: editedEmail,
-                    })
-        );
+    const saveChanges = async () => {
+        const newUser = {
+            ...user,
+            username: editedUsername,
+            description: editedDescription,
+            email: editedEmail,
+        };
+        delete newUser.isLoggedIn;
+
+        const status = await client.updateProfile(newUser, user.username);
+        dispatch(setUser(newUser));
         setSuccess("Profile successfully updated.");
+
     };
 
     return (
