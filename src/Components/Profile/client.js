@@ -1,0 +1,31 @@
+import axios from "axios";
+
+const request = axios.create({
+                                 withCredentials: true,
+                             });
+
+export const BASE_API = process.env.REACT_APP_API_BASE;
+export const USERS_API = `${BASE_API}/users`;
+export const USER_API = `${BASE_API}/user`;
+
+export const account = async () => {
+    const response = await request.post(`${USER_API}/account`);
+    return response.data;
+};
+export const getAccount = async () => {
+    const response = await request.get(`${USER_API}/account`);
+    return response.data;
+};
+
+export const findUserById = async (id) => {
+    const response = await request.get(`${USERS_API}/id/${id}`);
+    return response.data;
+};
+
+
+export const signup = async (credentials) => {
+    const response = await request.post(
+        `${USER_API}/register`, credentials);
+    return response.data;
+};
+

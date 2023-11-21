@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../userReducer";
 import * as client from "./client";
-import {updateProfile} from "./client";
+import {getByUsername} from "../../Login/client";
 
 function EditProfile() {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.userReducer);
-    const [editedUsername, setEditedUsername] = useState(user.username);
-    const [editedDescription, setEditedDescription] = useState(user.description);
-    const [editedEmail, setEditedEmail] = useState(user.email);
+    const userReducer = useSelector((state) => state.userReducer);
+    const [editedUsername, setEditedUsername] = useState(userReducer.username);
+    const [editedDescription, setEditedDescription] = useState(userReducer.description);
+    const [editedEmail, setEditedEmail] = useState(userReducer.email);
 
     const [success, setSuccess] = useState(null);
 
@@ -24,6 +24,7 @@ function EditProfile() {
         setEditedEmail(e.target.value);
     };
     const saveChanges = async () => {
+        const user = await getByUsername(userReducer.username);
         const newUser = {
             ...user,
             username: editedUsername,
@@ -32,7 +33,7 @@ function EditProfile() {
         };
         delete newUser.isLoggedIn;
 
-        const status = await client.updateProfile(newUser, user.username);
+        await client.updateProfile(newUser);
         dispatch(setUser(newUser));
         setSuccess("Profile successfully updated.");
 
@@ -56,7 +57,8 @@ function EditProfile() {
                                 id="username"
                                 placeholder="Enter profile name"
                                 value={editedUsername} // Bind the input value to the local state
-                                onChange={(e) => handleUsernameChange(e)} // Handle changes to the username
+                                onChange={(e) => handleUsernameChange(
+                                    e)} // Handle changes to the username
                             />
                         </div>
 

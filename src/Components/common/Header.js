@@ -8,9 +8,9 @@ import {useSelector} from "react-redux";
 
 const Header = () => {
     const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
-    const userType = useSelector((state) => state.userReducer.userType);
+    const role = useSelector((state) => state.userReducer.role);
 
-    const isAdmin = userType === 'admin';
+    const isAdmin = role === 'ADMIN';
 
     return (
         <div className="header">

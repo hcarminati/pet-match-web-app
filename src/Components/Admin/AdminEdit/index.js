@@ -4,19 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import * as client from "../client";
 import {setUser} from "../../Profile/userReducer";
 import {useParams} from "react-router";
-import {updateUserById} from "../client";
+import {deleteUser, updateUserById} from "../client";
+import {getByUsername} from "../../Login/client";
 
 function AdminEdit() {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.userReducer);
+    const userReducer = useSelector((state) => state.userReducer);
     const { id } = useParams();
-    const [editedUsername, setEditedUsername] = useState(user.username);
-    const [editedDescription, setEditedDescription] = useState(user.description);
-    const [editedEmail, setEditedEmail] = useState(user.email);
-    const [editedPassword, setEditedPassword] = useState(user.password);
+    const [editedUsername, setEditedUsername] = useState(userReducer.username);
+    const [editedDescription, setEditedDescription] = useState(userReducer.description);
+    const [editedEmail, setEditedEmail] = useState(userReducer.email);
+    const [editedPassword, setEditedPassword] = useState(userReducer.password);
     const [success, setSuccess] = useState(null);
     const [userToEdit, setUserToEdit] = useState({});
-    const [editedRole, setEditedRole] = useState(user.userType); // Define state for the role
+    const [editedRole, setEditedRole] = useState(userReducer.role); // Define state for the role
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -28,7 +29,7 @@ function AdminEdit() {
                 setEditedDescription(fetchedUser.description);
                 setEditedEmail(fetchedUser.email);
                 setEditedPassword(fetchedUser.password);
-                setEditedPassword(fetchedUser.userType);
+                setEditedPassword(fetchedUser.role);
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
@@ -50,19 +51,29 @@ function AdminEdit() {
         setEditedRole(e.target.value);
     };
     const saveChanges = async () => {
+        const user = await getByUsername(userReducer.username);
+
         const newUser = {
             ...userToEdit,
             username: editedUsername,
             description: editedDescription,
             email: editedEmail,
-            userType: editedRole,
+            role: editedRole,
         };
         delete newUser.isLoggedIn;
 
-        const status = await client.updateUserById(userToEdit.id, newUser);
+        await client.updateUserById(newUser);
         dispatch(setUser(newUser));
         setSuccess("Profile successfully updated.");
 
+    };
+    const handleDeleteUser = async () => {
+        try {
+            await client.deleteUser(id);
+            window.location.pathname = "/Admin/users";
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -123,7 +134,7 @@ function AdminEdit() {
                                 <input
                                     type="radio"
                                     id="adopter"
-                                    name="userType"
+                                    name="role"
                                     value="adopter"
                                     checked={editedRole === "adopter"}
                                     onChange={() => setEditedRole("adopter")}
@@ -137,7 +148,7 @@ function AdminEdit() {
                                 <input
                                     type="radio"
                                     id="uploader"
-                                    name="userType"
+                                    name="role"
                                     value="uploader"
                                     checked={editedRole === "uploader"}
                                     onChange={() => setEditedRole("uploader")}
@@ -151,10 +162,10 @@ function AdminEdit() {
                                 <input
                                     type="radio"
                                     id="admin"
-                                    name="userType"
+                                    name="role"
                                     value="admin"
-                                    checked={editedRole === "admin"}
-                                    onChange={() => setEditedRole("admin")}
+                                    checked={editedRole === "ADMIN"}
+                                    onChange={() => setEditedRole("ADMIN")}
                                     className="form-check-input"
                                 />
                                 <label htmlFor="admin" className="form-check-label">
@@ -165,7 +176,10 @@ function AdminEdit() {
 
                         <div className="form-group">
                             <div className="float-end mt-3">
-                                <Link to="/Admin/users" className="btn btn-secondary mt-2">
+                                <Link onClick={() => handleDeleteUser()} className="btn btn-warning mt-2">
+                                    Delete Profile
+                                </Link>
+                                <Link to="/Admin/users" className="btn btn-secondary ms-2 mt-2">
                                     Cancel
                                 </Link>
 

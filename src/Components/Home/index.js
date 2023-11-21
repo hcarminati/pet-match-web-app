@@ -3,22 +3,26 @@ import SearchCourse from "../searchCourses/SearchCourse";
 import AnimalCard from "../AnimalCard";
 import {getAnimals} from "../../api/petfinder-api";
 import "./index.css";
+import {getAvailablePets} from "../Admin/client";
 
 function HomePage() {
 
-        const [animals, setAnimals] = useState([]);
+    const [animals, setAnimals] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-        useEffect(() => {
-            // Fetch animals when the component mounts
-            getAnimals()
-                .then((data) => {
-                    // Update the state with the fetched animals
-                    setAnimals(data.animals);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }, []);
+    useEffect(() => {
+        // Fetch animals when the component mounts
+        getAvailablePets()
+            .then((data) => {
+                // Update the state with the fetched animals
+                setAnimals(data);
+                setLoading(false); // Update loading state when data is fetched
+            })
+            .catch((error) => {
+                console.error(error);
+                setLoading(false); // Update loading state if there's an error
+            });
+    }, []);
 
     return (
         <div className="home-container">
@@ -28,8 +32,12 @@ function HomePage() {
             <div className="home-content">
                 <h4 className="mt-4">Recently Added</h4>
                 <div className="list-group d-flex flex-row flex-wrap">
-                    {animals.map((animal) =>
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                    animals.map((animal) =>
                                    (<AnimalCard animal={animal}/>)
+                    )
                     )}
                 </div>
 

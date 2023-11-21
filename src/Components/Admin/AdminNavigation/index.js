@@ -7,6 +7,14 @@ const AdminNavigation = () => {
         "url": "add",
     },
         {
+            "name": "Available Pets",
+            "url": "available",
+        },
+        {
+            "name": "Adopted Pets",
+            "url": "adopted",
+        },
+        {
             "name": "Users",
             "url": "users",
         }];

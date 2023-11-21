@@ -34,12 +34,12 @@ const PublicProfile = () => {
                     <h4 className="profile-home-name mb-3">
                         {user.username}
                         <span key="admin-badge" className={`badge badge-pill ms-2 ${
-                            user.userType === "admin" ? "bg-danger" :
-                            user.userType === "adopter" ? "bg-success" :
-                            user.userType === "uploader" ? "bg-primary" :
+                            user.role === "ADMIN" ? "bg-danger" :
+                            user.role === "ADOPTER" ? "bg-success" :
+                            user.role === "UPLOADER" ? "bg-primary" :
                             "bg-secondary"
                         } badge-xs`}>
-                            {user.userType}
+                            {user.role}
                         </span>
                     </h4>
                     <p className="text-muted">

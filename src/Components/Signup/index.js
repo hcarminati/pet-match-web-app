@@ -3,12 +3,13 @@ import { useDispatch } from "react-redux";
 import { login, setUser } from "../Profile/userReducer";
 import "./index.css";
 import * as client from "./client";
+import {signin} from "./client";
 
 function Signup() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [userType, setUserType] = useState("adopter"); // Default to "adopter"
+    const [role, setRole] = useState("ADOPTER"); // Default to "adopter"
     const [referralCode, setReferralCode] = useState("");
     const [error, setError] = useState(null);
     const [signedUp, setSignedUp] = useState(false);
@@ -18,23 +19,24 @@ function Signup() {
     function handleSignup(e) {
         e.preventDefault();
 
-        if (!email || !username || !password || !userType) {
+        if (!email || !username || !password || !role) {
             setError("Please fill in all required fields.");
             return;
         }
 
         let validReferralCodes = {
-            admin: "123Admin",
+            ADMIN: "123Admin",
         };
 
-        if (userType === "admin" && referralCode !== validReferralCodes.admin) {
+        if (role === "ADMIN" && referralCode !== validReferralCodes.ADMIN) {
             setError("Invalid referral code for admin.");
             return;
         }
 
-        const user = { email, username, password, userType, referralCode };
+        const user = { email, username, password, role,
+            firstName: "", lastName: "", dob: ""};
 
-        client.register(user)
+        client.signup(user)
             .then((userData) => {
                 dispatch({ type: "LOGIN_SUCCESS", payload: userData });
                 dispatch(setUser(user));
@@ -43,7 +45,7 @@ function Signup() {
                 setSignedUp(true);
             })
             .catch((err) => {
-                setError("Email or password already exists. Please try again.");
+                setError("Email or username already exists. Please try again.");
             });
 
 
@@ -105,11 +107,11 @@ function Signup() {
                              <div className="form-check">
                                  <input
                                      type="radio"
-                                     id="adopter"
-                                     name="userType"
-                                     value="adopter"
-                                     checked={userType === "adopter"}
-                                     onChange={() => setUserType("adopter")}
+                                     id="ADOPTER"
+                                     name="role"
+                                     value="ADOPTER"
+                                     checked={role === "ADOPTER"}
+                                     onChange={() => setRole("ADOPTER")}
                                      className="form-check-input"
                                  />
                                  <label htmlFor="adopter" className="form-check-label">
@@ -119,11 +121,11 @@ function Signup() {
                              <div className="form-check">
                                  <input
                                      type="radio"
-                                     id="uploader"
-                                     name="userType"
-                                     value="uploader"
-                                     checked={userType === "uploader"}
-                                     onChange={() => setUserType("uploader")}
+                                     id="UPLOADER"
+                                     name="role"
+                                     value="UPLOADER"
+                                     checked={role === "UPLOADER"}
+                                     onChange={() => setRole("UPLOADER")}
                                      className="form-check-input"
                                  />
                                  <label htmlFor="uploader" className="form-check-label">
@@ -133,11 +135,11 @@ function Signup() {
                              <div className="form-check">
                                  <input
                                      type="radio"
-                                     id="admin"
-                                     name="userType"
-                                     value="admin"
-                                     checked={userType === "admin"}
-                                     onChange={() => setUserType("admin")}
+                                     id="ADMIN"
+                                     name="role"
+                                     value="ADMIN"
+                                     checked={role === "ADMIN"}
+                                     onChange={() => setRole("ADMIN")}
                                      className="form-check-input"
                                  />
                                  <label htmlFor="admin" className="form-check-label">
@@ -145,7 +147,7 @@ function Signup() {
                                  </label>
                              </div>
                          </div>
-                         {userType !== "adopter" && userType !== "uploader" && (
+                         {role !== "ADOPTER" && role !== "UPLOADER" && (
                              <div className="form-group">
                                  <label htmlFor="referralCode" className="form-label mt-1">
                                      Referral Code

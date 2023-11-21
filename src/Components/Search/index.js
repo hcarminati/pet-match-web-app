@@ -117,7 +117,8 @@ function Search() {
                         <option value="">Type</option>
                         <option value="dog">Dog</option>
                         <option value="cat">Cat</option>
-                        <option value="cat">Rabbit</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="rat">Rat</option>
                         {/* Add more options as needed */}
                     </select>
             </div>

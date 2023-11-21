@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {setUser} from "../../userReducer";
 import * as client from "../../Edit/client";
+import {getByUsername} from "../../../Login/client";
 
 function ChangePassword() {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.userReducer);
+    const userReducer = useSelector((state) => state.userReducer);
     const [oldPassword, setOldPassword] = useState();
     const [newPassword, setNewPassword] = useState();
     const [newPasswordAgain, setNewPasswordAgain] = useState();
@@ -25,6 +26,7 @@ function ChangePassword() {
     };
 
     const saveChanges = async () => {
+        const user = await getByUsername(userReducer.username);
         if (user.password === oldPassword && newPassword === newPasswordAgain) {
             const newUser = {
                 ...user,
@@ -34,7 +36,7 @@ function ChangePassword() {
 
             dispatch(setUser(newUser));
             setError(null);
-            const status = await client.updateProfile(newUser, user.username);
+            await client.updateProfile(newUser);
             setSuccess("Password successfully changed.");
         } else {
             setError("Old password is invalid or new passwords don't match.");

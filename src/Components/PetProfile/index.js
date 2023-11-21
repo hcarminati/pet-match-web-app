@@ -15,6 +15,7 @@ const PetProfile = () => {
         getAnimalById(id)
             .then(data => {
                 setPetData(data);
+                console.log(data)
             })
             .catch(error => {
                 console.error(error);

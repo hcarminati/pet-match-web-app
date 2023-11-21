@@ -27,7 +27,7 @@ const Users = () => {
     const filteredUsers = users.filter(user =>
                                            (user.username.toLowerCase().includes(searchTerm.toLowerCase())
                                             || searchTerm === "") &&
-                                           (roleFilter === "all" || user.userType === roleFilter)
+                                           (roleFilter === "all" || user.role === roleFilter)
     );
 
     const handleSearchChange = (e) => {
@@ -54,26 +54,26 @@ const Users = () => {
                     onChange={handleRoleFilterChange}
                 >
                     <option value="all">All Roles</option>
-                    <option value="admin">Admin</option>
-                    <option value="adopter">Adopter</option>
-                    <option value="uploader">Uploader</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="ADOPTER">Adopter</option>
+                    <option value="UPLOADER">Uploader</option>
                 </select>
             </div>
             <ul>
                 {filteredUsers.map(user => (
                     <div key={user.id} className="user-item">
-                        <Link to={`${user.id}`} className="text-decoration-none text-black ps-2">
+                        <Link to={`${user._id}`} className="text-decoration-none text-black ps-2">
                             {user.username}
                         </Link>
                         <span key="admin-badge" className={`badge badge-pill ms-2 me-2 ${
-                            user.userType === "admin" ? "bg-danger" :
-                            user.userType === "adopter" ? "bg-success" :
-                            user.userType === "uploader" ? "bg-primary" :
+                            user.role === "ADMIN" ? "bg-danger" :
+                            user.role === "ADOPTER" ? "bg-success" :
+                            user.role === "UPLOADER" ? "bg-primary" :
                             "bg-secondary"
                         } badge-xs`}>
-                            {user.userType}
+                            {user.role}
                         </span>
-                        <Link to={`edit/${user.id}`}>
+                        <Link to={`edit/${user._id}`}>
                             <FontAwesomeIcon icon={faEdit} className="text-muted" />
                         </Link>
                     </div>

@@ -5,7 +5,7 @@ const initialState = {
     username: null,
     password: null,
     isLoggedIn: false,
-    userType: 'guest',
+    role: 'GUEST',
     description: '',
 };
 
@@ -17,13 +17,13 @@ const userSlice = createSlice({
                                           state.username = action.payload.username;
                                           state.email = action.payload.email;
                                           state.description = action.payload.description;
-                                          state.userType = action.payload.userType;
+                                          state.role = action.payload.role;
                                       },
                                       login: (state, action) => {
                                           state.email = action.payload.email;
                                           state.username = action.payload.username;
                                           state.password = action.payload.password;
-                                          state.userType = action.payload.userType;
+                                          state.role = action.payload.role;
                                           state.description = action.payload.description;
                                           state.isLoggedIn = true;
                                       },
@@ -32,17 +32,13 @@ const userSlice = createSlice({
                                           state.email = null;
                                           state.username = null; // Clear user data on logout
                                           state.password = null;
-                                          state.userType = 'guest'; // Reset user type
+                                          state.role = 'guest'; // Reset user type
                                       },
                                       changePassword: (state, action) => {
-                                          // Validate current password before changing
                                           if (action.payload.currentPassword !== state.password) {
-                                              // Handle error or dispatch an action to indicate an error
                                               console.error('Current password is incorrect');
                                               return;
                                           }
-
-                                          // Update the password
                                           state.password = action.payload.newPassword;
                                       },
                                   },

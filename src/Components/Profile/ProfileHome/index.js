@@ -3,10 +3,9 @@ import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux"; // Import useSelector from react-redux
+import { useSelector } from "react-redux";
 
 const ProfileHome = () => {
-    // Use useSelector to access the user information from the Redux store
     const user = useSelector((state) => state.userReducer);
 
     return (
@@ -17,12 +16,12 @@ const ProfileHome = () => {
                     <h4 className="profile-home-name mb-3">
                         {user.username}
                         <span key="admin-badge" className={`badge badge-pill ms-2 ${
-                            user.userType === "admin" ? "bg-danger" :
-                            user.userType === "adopter" ? "bg-success" :
-                            user.userType === "uploader" ? "bg-primary" :
+                            user.role === "ADMIN" ? "bg-danger" :
+                            user.role === "ADOPTER" ? "bg-success" :
+                            user.role === "UPLOADER" ? "bg-primary" :
                             "bg-secondary"
                         } badge-xs`}>
-                            {user.userType}
+                            {user.role}
                         </span>
                         <Link to={`/Profile/Settings/Edit`} className="btn">
                             <FontAwesomeIcon className="text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
