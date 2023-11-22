@@ -7,6 +7,7 @@ const request = axios.create({
 export const BASE_API = process.env.REACT_APP_API_BASE;
 export const USERS_API = `${BASE_API}/users`;
 export const USER_API = `${BASE_API}/user`;
+export const COMMENTS_API = `${BASE_API}/comments`;
 
 export const account = async () => {
     const response = await request.post(`${USER_API}/account`);
@@ -29,3 +30,7 @@ export const signup = async (credentials) => {
     return response.data;
 };
 
+export const findCommentsByUserId = async (userId) => {
+    const response = await request.get(`${COMMENTS_API}/user/${userId}`);
+    return response.data;
+};

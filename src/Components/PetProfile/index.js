@@ -8,6 +8,7 @@ import * as client from "./client";
 import {useDispatch, useSelector} from "react-redux";
 import {getByUsername} from "../Login/client";
 import {deleteComment, findAllComments, findCommentsByPetId} from "./client";
+import CommentComponent from "../Comments";
 
 const PetProfile = () => {
     const { id } = useParams();
@@ -147,28 +148,7 @@ const PetProfile = () => {
                             <button className="btn btn-primary" onClick={addComment}>Add Comment</button>
                         </div>
                                                      : <></>}
-                        <ul>
-                            {comments.map((comment) => (
-                                <div className="comment-container me-5">
-                                    <div className="d-flex mt-2">
-                                        <Link className="single-comment text-decoration-none text-black" key={comment._id}>
-                                            {comment.username}
-                                            <span className="ms-3 text-muted">
-                                                {comment.date}
-                                            </span>
-                                        </Link>
-                                        {(comment.username === userReducer.username
-                                          | userReducer.role === "ADMIN" ) ?
-                                         <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteComment(comment._id)}></FontAwesomeIcon>
-                                                                           : <></>}
-                                    </div>
-                                    <p className="ms-4">
-                                        {comment.comment}
-                                    </p>
-                                </div>
-                            ))}
-
-                        </ul>
+                        <CommentComponent comments={comments} handleDeleteComment={handleDeleteComment}/>
                     </div>
                 </div>
             </div>

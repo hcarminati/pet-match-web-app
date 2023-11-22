@@ -4,10 +4,13 @@ import {Link, useParams} from 'react-router-dom';
 import * as client from '../../Admin/client';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faUser} from "@fortawesome/free-solid-svg-icons";
+import CommentComponent from "../../Comments";
+import * as profileClient from "../client";
 
 const PublicProfile = () => {
     const { id } = useParams();
     const [user, setUser] = useState(null);
+    const [comments, setComments] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -19,12 +22,24 @@ const PublicProfile = () => {
             }
         };
 
+        const comments = async () => {
+            try {
+                const comments = await profileClient.findCommentsByUserId(id);
+                setComments(comments);
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
         fetchUser();
+        comments();
     }, [id]);
 
     if (!user) {
         return <div>Loading...</div>;
     }
+
+    console.log(comments)
 
     return (
         <div className="profile-container">
@@ -50,6 +65,7 @@ const PublicProfile = () => {
                     <h4>Adopted</h4>
                     <h4>Favorites</h4>
                     <h4>Comments</h4>
+                    <CommentComponent comments={comments} />
                 </div>
             </div>
         </div>
