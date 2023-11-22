@@ -14,7 +14,10 @@ const CommentComponent = ({comments, handleDeleteComment}) => {
             {comments.map((comment) => (
                 <div className="comment-container me-5">
                     <div className="d-flex mt-2">
-                        <Link className="single-comment text-decoration-none text-black" key={comment._id}>
+                        <Link
+                            to={`/user/${comment.userId}`}
+                            className="single-comment text-decoration-none text-black"
+                              key={comment._id}>
                             {comment.username}
                             <span className="ms-3 text-muted">
                                                 {comment.date}
