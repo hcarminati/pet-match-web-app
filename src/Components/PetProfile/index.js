@@ -1,33 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from 'react-router-dom';
+import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {Link, useParams} from 'react-router-dom';
 import { getAnimalById } from '../../api/petfinder-api';
+import * as client from "./client";
+import {useDispatch, useSelector} from "react-redux";
+import {getByUsername} from "../Login/client";
+import {deleteComment, findAllComments, findCommentsByPetId} from "./client";
 
 const PetProfile = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
+    const userReducer = useSelector((state) => state.userReducer);
+    const [user, setUser] = useState();
     const [petData, setPetData] = useState(null);
     const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState('');
+    const [newComment, setNewComment] = useState({
+                                                     userId: "",
+                                                     username: "",
+                                                     petId: id,
+                                                     date: Date(),
+                                                     comment: "",
+                                                 });
+
+    const getComments = async () => {
+        const comments = await findCommentsByPetId(id);
+        setComments(comments);
+    }
+    const getUser = async () => {
+        const user = await getByUsername(userReducer.username);
+        setUser(user);
+    }
 
     useEffect(() => {
+        getComments();
+        getUser();
         getAnimalById(id)
             .then(data => {
                 setPetData(data);
-                console.log(data)
             })
             .catch(error => {
                 console.error(error);
             });
+
     }, [id]);
 
-    const addComment = () => {
-        if (newComment.trim() !== '') {
-            setComments([...comments, newComment]);
-            setNewComment('');
+    const addComment = async () => {
+        if (newComment.comment.trim() !== '') {
+            const comment = {
+                              userId: user._id,
+                              username: userReducer.username,
+                              petId: newComment.petId,
+                              date: Date(),
+                              comment: newComment.comment,
+                          };
+            client.addComment(id, comment).then(() => {
+                setComments([
+                                ...comments,
+                                comment
+                ]);
+                setNewComment({
+                                  userId: "",
+                                  username: "",
+                                  petId: id,
+                                  date: Date(),
+                                  comment: "",
+                              });
+            });
         }
     };
+
+    const handleDeleteComment = async (commentId) => {
+        await deleteComment(commentId);
+        console.log(commentId)
+    }
 
     if (!petData) {
         return <div>Loading...</div>;
@@ -86,18 +133,41 @@ const PetProfile = () => {
                 <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>
-                        <textarea
-                            rows="4"
-                            className="form-control mb-2"
-                            placeholder="Add a comment"
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                        />
-                        <button className="btn btn-primary" onClick={addComment}>Add Comment</button>
+                        {userReducer.role != "GUEST" ?
+                        <div>
+                            <textarea
+                                rows="4"
+                                className="form-control mb-2"
+                                placeholder="Add a comment"
+                                value={newComment.comment}
+                                onChange={(e) => setNewComment({
+                                                                   ...newComment,
+                                                                   comment: e.target.value})}
+                            />
+                            <button className="btn btn-primary" onClick={addComment}>Add Comment</button>
+                        </div>
+                                                     : <></>}
                         <ul>
-                            {comments.map((comment, index) => (
-                                <li key={index}>{comment}</li>
+                            {comments.map((comment) => (
+                                <div className="comment-container me-5">
+                                    <div className="d-flex mt-2">
+                                        <Link className="single-comment text-decoration-none text-black" key={comment._id}>
+                                            {comment.username}
+                                            <span className="ms-3 text-muted">
+                                                {comment.date}
+                                            </span>
+                                        </Link>
+                                        {(comment.username === userReducer.username
+                                          | userReducer.role === "ADMIN" ) ?
+                                         <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteComment(comment._id)}></FontAwesomeIcon>
+                                                                           : <></>}
+                                    </div>
+                                    <p className="ms-4">
+                                        {comment.comment}
+                                    </p>
+                                </div>
                             ))}
+
                         </ul>
                     </div>
                 </div>
