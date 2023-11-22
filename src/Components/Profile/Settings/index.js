@@ -7,7 +7,7 @@ import ChangePassword from "./ChangePassword";
 
 const Settings = () => {
     return (
-        <div className="profile-container">
+        <div className="settings-container">
             <div className="d-flex">
                 <SettingsNavigation />
 

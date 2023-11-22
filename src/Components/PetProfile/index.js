@@ -100,6 +100,14 @@ const PetProfile = () => {
                         <p><strong>Age:</strong> {petData.age}</p>
                         <p><strong>Species:</strong> {petData.species}</p>
                         <p><strong>Breed:</strong> {petData.breeds.primary}</p>
+                        {userReducer.role === "ADOPTER" ?
+                         <button className="btn btn-info">
+                             <Link className="text-decoration-none text-black"
+                                   to="/Profile/Adopted">
+                                 Adopt
+                             </Link>
+                         </button> :
+                        <></>}
 
                         <div className="d-flex flex-wrap">
                             {petData.tags.map((tag, index) => (

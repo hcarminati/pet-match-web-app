@@ -71,7 +71,7 @@ function AnimalCard({animal, add, removeAnimal}) {
                      icon={faHeart}
                      onClick={toggleLike}
                  />}
-                {add ? <></>
+                {!add ? <></>
                      : <FontAwesomeIcon
                      className='text-white ms-1'
                      icon={faTrash}

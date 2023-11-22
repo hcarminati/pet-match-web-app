@@ -4,7 +4,7 @@ import {Link, Route} from "react-router-dom";
 function SettingsNavigation() {
 
     return (
-            <div className="col-md-3">
+            <div className="settings-navigation-container col-md-3">
                 <div className="list-group">
                     <Link to="/Profile/Settings/Edit" className="list-group-item">
                         Edit Profile

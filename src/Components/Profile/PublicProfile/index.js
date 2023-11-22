@@ -42,7 +42,7 @@ const PublicProfile = () => {
     console.log(comments)
 
     return (
-        <div className="profile-container">
+        <div className="public-profile-container">
             <div className="row">
                 <div className="col-12 col-sm-4 pe-3">
                     <FontAwesomeIcon className="user-icon mb-3" icon={faUser}></FontAwesomeIcon>

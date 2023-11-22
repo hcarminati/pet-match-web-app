@@ -36,7 +36,7 @@ function HomePage() {
                         <p>Loading...</p>
                     ) : (
                     animals.map((animal) =>
-                                   (<AnimalCard animal={animal}/>)
+                                   (<AnimalCard animal={animal} add={false}/>)
                     )
                     )}
                 </div>
