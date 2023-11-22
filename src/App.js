@@ -11,6 +11,7 @@ import PetProfile from "./Components/PetProfile";
 import Admin from "./Components/Admin";
 import PrivateRoute from "./Components/PrivateRoutes";
 import Unauthorized from "./Components/Unauthorized";
+import PublicProfile from "./Components/Profile/PublicProfile";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/Admin/*" element={
                         <PrivateRoute element={<Admin />} /> } />
                     <Route path="/Pet/:id" element={<PetProfile />} />
+                    <Route path="/user/:id" element={<PublicProfile />} />
 
                     <Route path="/Unauthorized" element={<Unauthorized />} />
                 </Routes>
