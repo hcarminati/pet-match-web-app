@@ -49,3 +49,8 @@ export const getUserByUsername = async (username) => {
         throw new Error(`Error fetching user by ID: ${error.message}`);
     }
 };
+
+export const findAllUsers = async () => {
+    const response = await request.get(`${USERS_API}`);
+    return response.data;
+}

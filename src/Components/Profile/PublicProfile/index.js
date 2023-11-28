@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import * as client from '../../Admin/client';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenToSquare, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 import CommentComponent from "../../Comments";
 import * as profileClient from "../client";
-import {getByUsername} from "../../Login/client";
 import {useDispatch, useSelector} from "react-redux";
 import LikesComponent from "../../LikesComponent";
 import {deleteComment} from "../../PetProfile/client";

@@ -7,6 +7,7 @@ const initialState = {
     isLoggedIn: false,
     role: 'GUEST',
     description: '',
+    likes: [],
 };
 
 const userSlice = createSlice({
