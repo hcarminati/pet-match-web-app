@@ -70,7 +70,8 @@ function AdminEdit() {
     const handleDeleteUser = async () => {
         try {
             await client.deleteUser(id);
-            window.location.pathname = "/Admin/users";
+            // window.location.pathname = "/Admin/users";
+            setSuccess("Account successfully deleted.");
         } catch (err) {
             console.log(err);
         }
@@ -172,10 +173,11 @@ function AdminEdit() {
                                     Admin
                                 </label>
                             </div>
+                            {success && <p className="text-success mt-2">{success}</p>}
                         </div>
 
                         <div className="form-group">
-                            <div className="float-end mt-3">
+                            <div className="float-end">
                                 <Link onClick={() => handleDeleteUser()} className="btn btn-warning mt-2">
                                     Delete Profile
                                 </Link>
@@ -192,7 +194,6 @@ function AdminEdit() {
                                 </button>
                             </div>
                         </div>
-                        {success && <p className="text-success mt-2">{success}</p>}
                     </form>
                 </div>
             </div>

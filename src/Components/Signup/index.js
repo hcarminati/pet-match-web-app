@@ -45,6 +45,7 @@ function Signup() {
                 setSignedUp(true);
             })
             .catch((err) => {
+                console.log("ERRR----", err);
                 setError("Email or username already exists. Please try again.");
             });
 
