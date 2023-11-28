@@ -20,7 +20,6 @@ export const addComment = async (petId, comment) => {
 
 export const deleteComment = async (commentId) => {
     const response = await request.delete(`${COMMENTS_URL}/pet/${commentId}`);
-    console.log(response)
     return response.data;
 };
 

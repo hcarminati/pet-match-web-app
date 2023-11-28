@@ -6,17 +6,30 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faUser} from "@fortawesome/free-solid-svg-icons";
 import CommentComponent from "../../Comments";
 import * as profileClient from "../client";
+import {getByUsername} from "../../Login/client";
+import {useDispatch, useSelector} from "react-redux";
+import LikesComponent from "../../LikesComponent";
+import {deleteComment} from "../../PetProfile/client";
 
 const PublicProfile = () => {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [comments, setComments] = useState([]);
+    const [likes, setLikes] = useState([]);
+    const dispatch = useDispatch();
+    const userReducer = useSelector((state) => state.userReducer);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const fetchedUser = await client.getUserById(id);
-                setUser(fetchedUser);
+                if(id === 'Home') {
+                    const fetchedUser = await profileClient.getUserByUsername(userReducer.username);
+                    setUser(fetchedUser);
+                }
+                else {
+                    const fetchedUser = await client.getUserById(id);
+                    setUser(fetchedUser);
+                }
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
@@ -24,8 +37,18 @@ const PublicProfile = () => {
 
         const comments = async () => {
             try {
-                const comments = await profileClient.findCommentsByUserId(id);
-                setComments(comments);
+                if(id === 'Home') {
+                    const comments = await profileClient.findCommentsByUserId(user._id);
+                    setComments(comments);
+                    const likes = await profileClient.findLikesByUserId(user._id);
+                    setLikes(likes);
+                }
+                else {
+                    const comments = await profileClient.findCommentsByUserId(id);
+                    setComments(comments);
+                    const likes = await profileClient.findLikesByUserId(id);
+                    setLikes(likes);
+                }
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -39,7 +62,11 @@ const PublicProfile = () => {
         return <div>Loading...</div>;
     }
 
-    console.log(comments)
+    const handleDeleteComment = async (commentId) => {
+        await deleteComment(commentId);
+        const updatedComments = comments.filter(comment => comment._id !== commentId);
+        setComments(updatedComments);
+    }
 
     return (
         <div className="public-profile-container">
@@ -64,8 +91,9 @@ const PublicProfile = () => {
                 <div className="col-12 col-sm-8">
                     <h4>Adopted</h4>
                     <h4>Favorites</h4>
+                    <LikesComponent likes={likes}/>
                     <h4>Comments</h4>
-                    <CommentComponent comments={comments} />
+                    <CommentComponent comments={comments} handleDeleteComment={handleDeleteComment}/>
                 </div>
             </div>
         </div>

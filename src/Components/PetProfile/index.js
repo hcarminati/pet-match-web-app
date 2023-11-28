@@ -74,7 +74,6 @@ const PetProfile = () => {
 
     const handleDeleteComment = async (commentId) => {
         await deleteComment(commentId);
-        console.log(commentId)
     }
 
     if (!petData) {

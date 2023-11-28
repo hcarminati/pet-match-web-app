@@ -11,8 +11,6 @@ const USERS_URL = `${API_BASE}/users`;
 
 export const updateProfile = async (user) => {
     const response = await request.put(`${USERS_URL}/id/${user._id}`, user);
-    console.log(`${USERS_URL}/id/${user._id}`)
-    console.log(user)
     return response.data;
 }
 export const account = async () => {

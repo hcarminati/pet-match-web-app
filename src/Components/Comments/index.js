@@ -15,7 +15,7 @@ const CommentComponent = ({comments, handleDeleteComment}) => {
                 <div className="comment-container me-5">
                     <div className="d-flex mt-2">
                         <Link
-                            to={`/user/${comment.userId}`}
+                            to={`/user/profile/${comment.userId}`}
                             className="single-comment text-decoration-none text-black"
                               key={comment._id}>
                             {comment.username}

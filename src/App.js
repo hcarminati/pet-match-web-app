@@ -29,7 +29,7 @@ function App() {
                     <Route path="/Admin/*" element={
                         <PrivateRoute element={<Admin />} /> } />
                     <Route path="/Pet/:id" element={<PetProfile />} />
-                    <Route path="/user/:id" element={<PublicProfile />} />
+                    <Route path="/user/profile/:id" element={<PublicProfile />} />
 
                     <Route path="/Unauthorized" element={<Unauthorized />} />
                 </Routes>

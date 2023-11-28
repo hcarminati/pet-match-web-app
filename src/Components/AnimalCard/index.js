@@ -1,21 +1,63 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import {useSelector} from "react-redux";
 import * as client from "./client";
+import {getByUsername} from "../Login/client";
+import {deleteLike} from "./client";
 
-function AnimalCard({animal, add, removeAnimal}) {
-    const role = useSelector((state) => state.userReducer.role);
+function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
+    const userReducer = useSelector((state) => state.userReducer);
     const [isLiked, setIsLiked] = useState(false);
-    const toggleLike = () => {
+    const [likedLikeId, setLikedLikeId] = useState(null);
+    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
+
+    useEffect(() => {
+        const checkLikedStatus = async () => {
+            if (isLoggedIn) {
+                const user = await getByUsername(userReducer.username);
+                const likedPets = await client.getLikedPets(user._id);
+                const alreadyLiked = likedPets.some(pet => pet.petId === animal._id);
+                setIsLiked(alreadyLiked);
+                if (alreadyLiked) {
+                    const likedAnimal = likedPets.find(pet => pet.petId === animal._id);
+                    setLikedLikeId(likedAnimal._id);
+                }
+            }
+        };
+
+        checkLikedStatus();
+    }, [isLoggedIn, userReducer.username, animal._id]);
+
+    const toggleLike = async () => {
         if (isLoggedIn) {
+            const user = await getByUsername(userReducer.username);
+            const userLikes =  await client.getUserLikes(user._id);
+
+            if (isLiked) {
+                if (onUnlike) {
+                    onUnlike();
+                }
+                const likedAnimal = userLikes.find(pet => pet.petId === animal._id);
+                await client.deleteLike(likedAnimal._id);
+                setLikedLikeId(null);
+            } else {
+                const like = {
+                    userId: user._id,
+                    username: userReducer.username,
+                    petId: animal._id,
+                    date: new Date(),
+                };
+                await client.addLike(like);
+            }
+
             setIsLiked(!isLiked);
         }
     };
 
-    console.log(animal)
+    // console.log(animal)
 
     const addPet = async () => {
         const newAnimal = {
@@ -47,8 +89,6 @@ function AnimalCard({animal, add, removeAnimal}) {
         }
         await client.deletePet(animal);
     }
-
-    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
 
     return (
         <div className={"card my-3 mx-3"}>

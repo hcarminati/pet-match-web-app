@@ -22,7 +22,6 @@ export const updateProfile = async (user, username) => {
 export const getUserById = async (userId) => {
     try {
         const response = await request.get(`${USERS_URL}/id/${userId}`);
-        console.log(response)
         return response.data;
     } catch (error) {
         throw new Error(`Error fetching user by ID: ${error.message}`);

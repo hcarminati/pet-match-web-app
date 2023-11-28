@@ -4,8 +4,11 @@ import AnimalCard from "../AnimalCard";
 import {getAnimals} from "../../api/petfinder-api";
 import "./index.css";
 import {getAvailablePets} from "../Admin/client";
+import {useDispatch, useSelector} from "react-redux";
 
 function HomePage() {
+    const dispatch = useDispatch();
+    const userReducer = useSelector((state) => state.userReducer);
 
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,7 +30,11 @@ function HomePage() {
     return (
         <div className="home-container">
             <div className="home-search-content">
-                <SearchCourse/>
+                {
+                    userReducer.role === 'GUEST'
+                    ? <SearchCourse/>
+                    : <></>
+                }
             </div>
             <div className="home-content">
                 <h4 className="mt-4">Recently Added</h4>
