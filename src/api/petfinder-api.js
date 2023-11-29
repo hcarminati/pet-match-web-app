@@ -1,4 +1,6 @@
 // Replace with your actual Petfinder API credentials
+import * as client from "../Components/AnimalCard/client";
+
 const clientId = 'kbEjL4iJRDrshuPiCJR1zsRuwZ5YKnpxsXCzGIo9MSTREPvx1s';
 const clientSecret = 'd57cKyVgUhB7QUXFPiGi3J3284PYz24Y229PLzMp';
 
@@ -62,7 +64,13 @@ export async function getAnimalById(animalId) {
     }
 
     const animalData = await response.json();
-    return animalData.animal; // Return the individual animal data
+
+    const animal = await client.findPetByOriginalId(animalId);
+
+    return {
+        ...animalData.animal,
+        status: animal.status,
+    }; // Return the individual animal data
 }
 
 export async function searchAnimals(query) {

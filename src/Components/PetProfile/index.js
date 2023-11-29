@@ -96,6 +96,7 @@ const PetProfile = () => {
                         </div>
                     </div>
                     <div className="pet-profile-top-info col-12 col-sm-4 col-md-6">
+                        <span className="badge bg-danger me-2 mb-2">{petData.status}</span>
                         <p><strong>Age:</strong> {petData.age}</p>
                         <p><strong>Species:</strong> {petData.species}</p>
                         <p><strong>Breed:</strong> {petData.breeds.primary}</p>

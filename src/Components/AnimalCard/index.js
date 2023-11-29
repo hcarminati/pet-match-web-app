@@ -71,7 +71,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
             size: animal.size,
             colors: animal.colors,
             description: animal.description,
-            status: animal.status,
+            status: "adoptable",
             primary_photo_cropped: animal.primary_photo_cropped,
             photos: animal.photos,
             published_at: animal.published_at,
