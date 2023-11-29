@@ -7,6 +7,7 @@ const request = axios.create({
 const API_BASE = process.env.REACT_APP_API_BASE;
 const COMMENTS_URL = `${API_BASE}/comments`;
 const USER_URL = `${API_BASE}/user`;
+const PETS_URL = `${API_BASE}/pets`;
 
 export const findCommentsByPetId = async (petId) => {
     const response = await request.get(`${COMMENTS_URL}/pet/${petId}`);
@@ -29,5 +30,14 @@ export const getUserByUsername = async (username) => {
         return response.data;
     } catch (error) {
         throw new Error(`Error fetching user by ID: ${error.message}`);
+    }
+};
+
+export const updatePetById = async (updatedPetData) => {
+    try {
+        const response = await request.put(`${PETS_URL}/${updatedPetData._id}`, updatedPetData);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error fetching pet by ID: ${error.message}`);
     }
 };

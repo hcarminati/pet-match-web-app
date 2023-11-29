@@ -5,16 +5,18 @@ import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link, useParams} from 'react-router-dom';
 import { getAnimalById } from '../../api/petfinder-api';
 import * as client from "./client";
+import * as adminClient from "../Admin/client";
+import * as animalClient from "../AnimalCard/client";
 import {useDispatch, useSelector} from "react-redux";
 import {getByUsername} from "../Login/client";
-import {deleteComment, findAllComments, findCommentsByPetId} from "./client";
+import {deleteComment, findCommentsByPetId} from "./client";
 import CommentComponent from "../Comments";
 
 const PetProfile = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const userReducer = useSelector((state) => state.userReducer);
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({ adoptedPet: [] });
     const [petData, setPetData] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState({
@@ -80,6 +82,14 @@ const PetProfile = () => {
         return <div>Loading...</div>;
     }
 
+    const handleAdoptPet = async () => {
+        let pet = await animalClient.findPetByOriginalId(petData.id);
+        pet = {
+            ...pet,
+            status: "adopted",
+        }
+        await client.updatePetById(pet);
+    }
     return (
         <div className="pet-profile-container">
             <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
@@ -100,20 +110,23 @@ const PetProfile = () => {
                         <p><strong>Age:</strong> {petData.age}</p>
                         <p><strong>Species:</strong> {petData.species}</p>
                         <p><strong>Breed:</strong> {petData.breeds.primary}</p>
-                        {userReducer.role === "ADOPTER" ?
-                         <button className="btn btn-info">
-                             <Link className="text-decoration-none text-black"
-                                   to="/Profile/Adopted">
-                                 Adopt
-                             </Link>
-                         </button> :
-                        <></>}
 
                         <div className="d-flex flex-wrap">
                             {petData.tags.map((tag, index) => (
                                 <span key={index} className="badge bg-secondary me-2 mb-2">{tag}</span>
                             ))}
                         </div>
+
+                        {userReducer.role === "ADOPTER" && petData.status === "adoptable" ?
+                         <button className="btn btn-info mt-2">
+                             <Link className="text-decoration-none text-black"
+                                   // to="/Profile/Adopted"
+                                 onClick={handleAdoptPet()}
+                             >
+                                 Adopt
+                             </Link>
+                         </button> :
+                         <></>}
                     </div>
                 </div>
 
