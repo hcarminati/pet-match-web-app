@@ -36,16 +36,60 @@ function HomePage() {
                     : <></>
                 }
             </div>
+
             <div className="home-content">
+                {userReducer.role === 'ADMIN' &&
+                 <div>
+                     <h4 className="mt-4">Recently Added by You</h4>
+                     <div className="list-group d-flex flex-row flex-wrap">
+                         {loading ? (
+                             <p>Loading...</p>
+                         ) : (
+                              animals.slice(0, 4).map((animal) => (
+                                  <AnimalCard key={animal._id} animal={animal} add={false} />
+                              ))
+                          )}
+                     </div>
+                 </div>
+                }
+                {userReducer.role === 'UPLOADER' &&
+                 <div>
+                     <h4 className="mt-4">Recently Uploaded by You</h4>
+                     <div className="list-group d-flex flex-row flex-wrap">
+                         {loading ? (
+                             <p>Loading...</p>
+                         ) : (
+                              animals.slice(0, 4).map((animal) => (
+                                  <AnimalCard key={animal._id} animal={animal} add={false} />
+                              ))
+                          )}
+                     </div>
+                 </div>
+                }
+                {userReducer.role === 'ADOPTER' &&
+                 <div>
+                     <h4 className="mt-4">Recently Adopted by You</h4>
+                     <div className="list-group d-flex flex-row flex-wrap">
+                         {loading ? (
+                             <p>Loading...</p>
+                         ) : (
+                              animals.slice(0, 4).map((animal) => (
+                                  <AnimalCard key={animal._id} animal={animal} add={false} />
+                              ))
+                          )}
+                     </div>
+                 </div>
+                }
+
                 <h4 className="mt-4">Recently Added</h4>
                 <div className="list-group d-flex flex-row flex-wrap">
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
-                    animals.map((animal) =>
-                                   (<AnimalCard animal={animal} add={false}/>)
-                    )
-                    )}
+                         animals.slice(0, 4).map((animal) => (
+                             <AnimalCard key={animal._id} animal={animal} add={false} />
+                         ))
+                     )}
                 </div>
 
                 <h4>Recently Adopted</h4>
