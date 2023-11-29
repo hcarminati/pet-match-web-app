@@ -14,6 +14,11 @@ export const signin = async (credentials) => {
     return response.data;
 };
 
+export const logout = async () => {
+    const response = await request.post(`${USER_URL}/logout`);
+    return response.data;
+};
+
 export const getByUsername = async (username) => {
     const response = await request.get(`${USERS_URL}/${username}`);
     return response.data;
