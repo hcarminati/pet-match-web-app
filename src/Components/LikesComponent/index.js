@@ -15,10 +15,12 @@ const LikesComponent = ({ likes }) => {
                     const userLikes = await animalClient.getUserLikes(like.userId);
                     const allPets = await animalClient.findAllPets();
                     const animal = allPets.find(pet => pet._id === like.petId)
-                    return <AnimalCard key={animal._id}
-                                       animal={animal}
-                                       onUnlike={() => handleUnlike(like.petId)}
-                    />;
+                    if (animal) {
+                        return (<AnimalCard key={animal._id}
+                                           animal={animal}
+                                           onUnlike={() => handleUnlike(like.petId)} />);
+                    }
+
                 })
             );
             setAnimals(animalData);
