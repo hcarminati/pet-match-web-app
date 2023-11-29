@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import './Header.css';
 import Button from '../common/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCog, faLock, faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCog, faLock, faSearch, faUpload, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useSelector} from "react-redux";
 
 const Header = () => {
@@ -11,6 +11,7 @@ const Header = () => {
     const role = useSelector((state) => state.userReducer.role);
 
     const isAdmin = role === 'ADMIN';
+    const isUploader = role === 'UPLOADER';
 
     return (
         <div className="header">
@@ -31,6 +32,13 @@ const Header = () => {
                             <div className="col">
                                 <Link to="/Admin" className="text-danger me-3">
                                     <FontAwesomeIcon icon={faCog} size="lg"/>
+                                </Link>
+                            </div>
+                        )}
+                        {isUploader && (
+                            <div className="col">
+                                <Link to="/Upload" className="text-danger me-3">
+                                    <FontAwesomeIcon icon={faUpload} size="lg"/>
                                 </Link>
                             </div>
                         )}

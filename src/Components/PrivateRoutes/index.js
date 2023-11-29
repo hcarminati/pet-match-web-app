@@ -2,12 +2,14 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const PrivateRoute = ({ element }) => {
+const PrivateRoute = ({ element, role }) => {
     const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
+    const userRole = useSelector((state) => state.userReducer.role);
 
     return (
-        // isLoggedIn ? element : <Navigate to="/Unauthorized" />
-        isLoggedIn ? element : <Navigate to="/Register" />
+        isLoggedIn ? (
+            userRole === role ? element : <Navigate to="/Home" />
+        ) : <Navigate to="/Register" />
     );
 };
 

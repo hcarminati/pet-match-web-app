@@ -12,6 +12,7 @@ import Admin from "./Components/Admin";
 import PrivateRoute from "./Components/PrivateRoutes";
 import Unauthorized from "./Components/Unauthorized";
 import PublicProfile from "./Components/Profile/PublicProfile";
+import Upload from "./Components/Upload";
 
 function App() {
     return (
@@ -27,7 +28,9 @@ function App() {
                     <Route path="/Search" element={<Search />} />
                     <Route path="/Profile/*" element={<Profile />} />
                     <Route path="/Admin/*" element={
-                        <PrivateRoute element={<Admin />} /> } />
+                        <PrivateRoute element={<Admin />} role={"ADMIN"} /> } />
+                    <Route path="/Upload/*" element={
+                        <PrivateRoute element={<Upload />} role={"UPLOADER"} /> } />
                     <Route path="/Pet/:id" element={<PetProfile />} />
                     <Route path="/user/profile/:id" element={<PublicProfile />} />
 
