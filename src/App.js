@@ -13,6 +13,7 @@ import PrivateRoute from "./Components/PrivateRoutes";
 import Unauthorized from "./Components/Unauthorized";
 import PublicProfile from "./Components/Profile/PublicProfile";
 import Upload from "./Components/Upload";
+import PrivateRoutes from "./Components/PrivateRoutes";
 
 function App() {
     return (
@@ -26,7 +27,10 @@ function App() {
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Register" element={<Signup />} />
                     <Route path="/Search" element={<Search />} />
-                    <Route path="/Profile/*" element={<Profile />} />
+                    <Route path="/Profile/*" element={
+                        <PrivateRoute element={<Profile />}
+                                      roles={["ADMIN", "UPLOADER", "ADOPTER"]}/>
+                    } />
                     <Route path="/Admin/*" element={
                         <PrivateRoute element={<Admin />} role={"ADMIN"} /> } />
                     <Route path="/Upload/*" element={
