@@ -23,6 +23,7 @@ const PetProfile = () => {
                                                      date: Date(),
                                                      comment: "",
                                                  });
+    const [isAdopted, setIsAdopted] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -101,8 +102,14 @@ const PetProfile = () => {
             status: "adopted"
         };
 
+        setPetData({
+                       ...petData,
+                       status: 'Adopted',
+                   });
+
         await client.updatePetById(updatedPet);
         await client.addAdoptedPet(id, adoptedPet);
+        setIsAdopted(true);
     }
 
     return (
@@ -133,16 +140,18 @@ const PetProfile = () => {
                             ))}
                         </div>
 
-                        {user.role === "ADOPTER" && petData.status === "adoptable" ?
-                         <button className="btn btn-info mt-2">
-                             <Link className="text-decoration-none text-black"
-                                   // to="/Profile/Adopted"
-                                 onClick={handleAdoptPet}
-                             >
-                                 Adopt
-                             </Link>
-                         </button> :
-                         <></>}
+                        {user.role === 'ADOPTER' && petData.status === 'adoptable' && !isAdopted ? (
+                            <button className="btn btn-info mt-2">
+                                <Link
+                                    className="text-decoration-none text-black"
+                                    onClick={handleAdoptPet}
+                                >
+                                    Adopt
+                                </Link>
+                            </button>
+                        ) : (
+                             <></>
+                         )}
                     </div>
                 </div>
 

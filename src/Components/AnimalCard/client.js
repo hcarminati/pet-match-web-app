@@ -18,6 +18,11 @@ export const deletePet = async (pet) => {
     return response.data;
 };
 
+export const findPetById = async (id) => {
+    const response = await request.get(`${PETS_URL}/id/${id}`);
+    return response.data;
+};
+
 export const findPetByOriginalId = async (id) => {
     const response = await request.get(`${PETS_URL}/original/${id}`);
     return response.data;

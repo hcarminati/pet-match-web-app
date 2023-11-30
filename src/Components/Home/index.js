@@ -4,12 +4,22 @@ import AnimalCard from "../AnimalCard";
 import "./index.css";
 import { getAvailablePets } from "../Admin/client";
 import * as profileClient from "../Profile/client";
+import * as petProfileClient from "../PetProfile/client";
+import * as animalCardClient from "../AnimalCard/client";
+import {findPetById} from "../AnimalCard/client";
 
 function HomePage() {
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
+
+    const [allAdoptedPets, setAllAdoptedPets] = useState([]);
+    const [allAdoptedPetsLoading, setAllAdoptedPetsLoading] = useState(true);
+
+    const [adoptedByUser, setAdoptedByUser] = useState([]);
+    const [adoptedByUserLoading, setAdoptedByUserLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,6 +54,48 @@ function HomePage() {
         fetchAnimals();
     }, []);
 
+    useEffect(() => {
+        const fetchAllAdoptedPets = async () => {
+            try {
+                const data = await petProfileClient.getAllAdoptedPets();
+                const animalDataPromises = data.map(animal => animalCardClient.findPetById(animal.petId));
+
+                Promise.all(animalDataPromises)
+                    .then(animalData => {
+                        setAllAdoptedPets(animalData);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                setAllAdoptedPetsLoading(false);
+            } catch (error) {
+                console.error('Error fetching adopted pets:', error);
+                setAllAdoptedPetsLoading(false);
+            }
+        };
+        const fetchAdoptedByUser = async () => {
+            try {
+                const animalDataPromises = allAdoptedPets.filter(animal => animal.userId === user._id);
+
+                Promise.all(animalDataPromises)
+                    .then(animalData => {
+                        setAdoptedByUser(animalData);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                setAdoptedByUserLoading(false);
+            } catch (error) {
+                console.error('Error fetching adopted pets:', error);
+                setAdoptedByUserLoading(false);
+            }
+        };
+
+        fetchAllAdoptedPets();
+        fetchAdoptedByUser();
+    }, []);
+
+
     if (userLoading) {
         return <div>Loading user...</div>;
     }
@@ -63,12 +115,12 @@ function HomePage() {
                  <div>
                      <h4 className="mt-4">Recently Added by You</h4>
                      <div className="list-group d-flex flex-row flex-wrap">
-                         {loading ? (
-                             <p>Loading...</p>
-                         ) : (
-                              animals.slice(0, 4).map((animal) => (
-                                  <AnimalCard key={animal._id} animal={animal} add={false} />
-                              ))
+                         {/*{adoptedByUserLoading ? (*/}
+                         {/*    <p>Loading...</p>*/}
+                         {/*) : (*/}
+                         {/*    adoptedByUser.slice(0, 4).map((animal) => (*/}
+                         {/*         <AnimalCard key={animal._id} animal={animal} add={false} />*/}
+                         {/*     ))*/}
                           )}
                      </div>
                  </div>
@@ -91,10 +143,10 @@ function HomePage() {
                  <div>
                      <h4 className="mt-4">Recently Adopted by You</h4>
                      <div className="list-group d-flex flex-row flex-wrap">
-                         {loading ? (
+                         {adoptedByUserLoading ? (
                              <p>Loading...</p>
                          ) : (
-                              animals.slice(0, 4).map((animal) => (
+                             adoptedByUser.slice(0, 4).map((animal) => (
                                   <AnimalCard key={animal._id} animal={animal} add={false} />
                               ))
                           )}
@@ -121,11 +173,19 @@ function HomePage() {
 
                 <h4>Recently Adopted</h4>
                 <div className="list-group d-flex flex-row flex-wrap">
-                    {/*<AnimalCard/>*/}
-                    {/*<AnimalCard/>*/}
-                    {/*<AnimalCard/>*/}
-                    {/*<AnimalCard/>*/}
-                    {/*<AnimalCard/>*/}
+                    {Array.isArray(allAdoptedPets) && allAdoptedPets.length > 0 ? (
+                        <div className="list-group d-flex flex-row flex-wrap">
+                            {allAdoptedPetsLoading ? (
+                                <p>Loading...</p>
+                            ) : (
+                                 allAdoptedPets.slice(0, 4).map((animal) => (
+                                     <AnimalCard key={animal._id} animal={animal} add={false} />
+                                 ))
+                             )}
+                        </div>
+                    ) : (
+                         <p>No animals found.</p>
+                     )}
                 </div>
             </div>
 

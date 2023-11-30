@@ -37,6 +37,8 @@ const ProfileHome = () => {
         const fetchData = async () => {
             try {
                 if (user && user._id) {
+                    const userAdoptedPets = await profileClient.findAdoptedPetsByUserId(user._id);
+                    setAdoptedPets(userAdoptedPets || []);
                     const userComments = await profileClient.findCommentsByUserId(user._id);
                     setComments(userComments || []);
                     const userLikes = await profileClient.findLikesByUserId(user._id);
@@ -79,7 +81,7 @@ const ProfileHome = () => {
                 </div>
                 <div className="col-12 col-sm-8">
                     <h4>Adopted</h4>
-                    {/*<AdoptedComponent/>*/}
+                    <AdoptedComponent adoptedPets={adoptedPets}/>
                     <h4>Favorites</h4>
                     <LikesComponent likes={likes}/>
                     <h4>Comments</h4>

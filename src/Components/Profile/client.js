@@ -9,6 +9,7 @@ export const USERS_API = `${BASE_API}/users`;
 export const USER_API = `${BASE_API}/user`;
 export const COMMENTS_API = `${BASE_API}/comments`;
 export const LIKES_API = `${BASE_API}/likes`;
+export const ADOPTEDPETS_API = `${BASE_API}/adoptedPets`;
 
 export const account = async () => {
     const response = await request.post(`${USER_API}/account`);
@@ -54,3 +55,8 @@ export const findAllUsers = async () => {
     const response = await request.get(`${USERS_API}`);
     return response.data;
 }
+
+export const findAdoptedPetsByUserId = async (userId) => {
+    const response = await request.get(`${ADOPTEDPETS_API}/user/${userId}`);
+    return response.data;
+};

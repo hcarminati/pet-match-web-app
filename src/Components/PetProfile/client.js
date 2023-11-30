@@ -47,3 +47,8 @@ export const addAdoptedPet = async (petId, adoptedPet) => {
     const response = await request.post(`${ADOPTEDPETS_URL}/pet/${petId}`, adoptedPet);
     return response.data;
 };
+
+export const getAllAdoptedPets = async () => {
+    const response = await request.get(`${ADOPTEDPETS_URL}`);
+    return response.data;
+};
