@@ -7,27 +7,31 @@ import {useDispatch, useSelector} from "react-redux";
 import LikesComponent from "../../LikesComponent";
 import {useEffect, useState} from "react";
 import * as profileClient from "../client";
+import AdoptedComponent from "../../AdoptedComponent";
+import CommentComponent from "../../Comments";
 
 const ProfileHome = () => {
-    const userReducer = useSelector((state) => state.userReducer);
     const { id } = useParams();
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({});
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
+    const [adoptedPets, setAdoptedPets] = useState([]);
+
     const dispatch = useDispatch();
+    const userReducer = useSelector((state) => state.userReducer);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const fetchedUser = await profileClient.getUserByUsername(userReducer.username);
-                setUser(fetchedUser);
+                const userData = await profileClient.getAccount();
+                setUser(userData);
             } catch (error) {
-                console.error('Error fetching user:', error);
+                setUser(null);
             }
         };
 
         fetchUser();
-    }, [userReducer.username]);
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,36 +52,43 @@ const ProfileHome = () => {
 
     return (
         <div className="profile-home-container">
+            {user ? (
             <div className="row">
                 <div className="col-12 col-sm-4 pe-3">
                     <FontAwesomeIcon className="user-icon mb-3" icon={faUser}></FontAwesomeIcon>
                     <h4 className="profile-home-name mb-3">
-                        {userReducer.username}
+                        {user.username}
                         <span key="admin-badge" className={`badge badge-pill ms-2 ${
-                            userReducer.role === "ADMIN" ? "bg-danger" :
-                            userReducer.role === "ADOPTER" ? "bg-success" :
-                            userReducer.role === "UPLOADER" ? "bg-primary" :
+                            user.role === "ADMIN" ? "bg-danger" :
+                            user.role === "ADOPTER" ? "bg-success" :
+                            user.role === "UPLOADER" ? "bg-primary" :
                             "bg-secondary"
                         } badge-xs`}>
-                            {userReducer.role}
+                            {user.role}
                         </span>
                         <Link to={`/Profile/Settings/Edit`} className="btn">
                             <FontAwesomeIcon className="text-muted" size="sm" icon={faPenToSquare}></FontAwesomeIcon>
                         </Link>
                     </h4>
                     <p>
-                        {userReducer.email}
+                        {user.email}
                     </p>
                     <p className="text-muted">
-                        {userReducer.description}
+                        {user.description}
                     </p>
                 </div>
                 <div className="col-12 col-sm-8">
                     <h4>Adopted</h4>
+                    {/*<AdoptedComponent/>*/}
                     <h4>Favorites</h4>
                     <LikesComponent likes={likes}/>
+                    <h4>Comments</h4>
+                    <CommentComponent user={user} comments={comments}/>
                 </div>
             </div>
+            ) : (
+                 <p>Loading...</p>
+             )}
         </div>
     );
 }

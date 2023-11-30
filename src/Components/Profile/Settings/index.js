@@ -4,6 +4,7 @@ import Logout from "../Logout";
 import SettingsNavigation from "./SettingsNavigation";
 import EditProfile from "../Edit";
 import ChangePassword from "./ChangePassword";
+import Delete from "../DeleteAccount";
 
 const Settings = () => {
     return (
@@ -17,6 +18,7 @@ const Settings = () => {
                         <Route path="Edit" element={<EditProfile/>} />
                         <Route path="change-password" element={<ChangePassword/>} />
                         <Route path="Logout" element={<Logout />} />
+                        <Route path="Delete" element={<Delete />} />
                     </Routes>
                 </div>
             </div>

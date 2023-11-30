@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import * as profileClient from "../Profile/client";
 
 const PrivateRoute = ({ element, role }) => {
-    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
-    const userRole = useSelector((state) => state.userReducer.role);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    return (
-        isLoggedIn ? (
-            userRole === role ? element : <Navigate to="/Home" />
-        ) : <Navigate to="/Register" />
-    );
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!user) {
+        return <Navigate to="/Register" />;
+    }
+
+    if (user.role !== role) {
+        return <Navigate to="/Home" />;
+    }
+
+    return element;
 };
 
 export default PrivateRoute;

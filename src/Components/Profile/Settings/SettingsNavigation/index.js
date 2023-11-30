@@ -15,6 +15,9 @@ function SettingsNavigation() {
                     <Link to="/Profile/Settings/Logout" className="list-group-item">
                         Logout
                     </Link>
+                    <Link to="/Profile/Settings/Delete" className="list-group-item">
+                        Delete Account
+                    </Link>
                 </div>
             </div>
     );

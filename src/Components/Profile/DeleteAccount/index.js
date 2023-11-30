@@ -1,33 +1,48 @@
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import React from "react";
-import {logout} from "../userReducer";
-import {useDispatch} from "react-redux";
-import * as client from "../../Login/client";
+import * as loginClient from "../../Login/client";
+import * as adminClient from "../../Admin/client";
+import {useEffect, useState} from "react";
+import * as profileClient from "../client";
 
-function Logout() {
-    const dispatch = useDispatch();
+function Delete() {
+    const [user, setUser] = useState({});
 
-    const handleLogout = async () => {
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    const handleDelete = async () => {
         try {
-            await client.logout(); // Call the client-side logout function
-            dispatch(logout()); // Dispatch the logout action to update the state
-        } catch (error) {
-            console.error("Logout failed:", error);
-            // Handle any logout failure (e.g., display an error message)
+            await adminClient.deleteUser(user._id);
+            await loginClient.logout(user._id);
+            // window.location.pathname = "/Admin/users";
+        } catch (err) {
+            console.log(err);
         }
     };
+
 
 
     return (
         <div className="logout-container d-flex justify-content-center align-items-center">
             <div className="col-11 col-sm-12">
                 <p className="header-logo-quiz text-center mb-3">
-                    Logout
+                    Delete Account
                 </p>
                 <form className="pet-match-quiz mx-auto">
                     <div className="form-group text-center">
                         <label htmlFor="logout-confirmation" className="form-label">
-                            Are you sure you want to log out?
+                            Are you sure you want to delete your account?
                         </label>
                     </div>
 
@@ -39,8 +54,8 @@ function Logout() {
                             <Link
                                 to={`/Home`}
                                 className="btn btn-danger me-2"
-                                onClick={handleLogout}>
-                                Logout
+                                onClick={handleDelete}>
+                                Delete
                             </Link>
                         </div>
                     </div>
@@ -50,5 +65,5 @@ function Logout() {
     );
 }
 
-export default Logout;
+export default Delete;
 

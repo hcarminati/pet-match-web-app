@@ -3,12 +3,10 @@ import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import * as profileClient from "../Profile/client";
 
-const CommentComponent = ({comments, handleDeleteComment}) => {
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
-
+const CommentComponent = ({user, comments, handleDeleteComment}) => {
     return (
         <ul>
             {comments.map((comment) => (
@@ -17,14 +15,15 @@ const CommentComponent = ({comments, handleDeleteComment}) => {
                         <Link
                             to={`/user/profile/${comment.userId}`}
                             className="single-comment text-decoration-none text-black"
-                              key={comment._id}>
+                              key={comment._id}
+                        >
                             {comment.username}
                             <span className="ms-3 text-muted">
                                                 {comment.date}
                                             </span>
                         </Link>
-                        {(comment.username === userReducer.username
-                          | userReducer.role === "ADMIN" ) ?
+                        {(comment.username === user.username
+                          | user.role === "ADMIN" ) ?
                          <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteComment(comment._id)}></FontAwesomeIcon>
                                                            : <></>}
                     </div>

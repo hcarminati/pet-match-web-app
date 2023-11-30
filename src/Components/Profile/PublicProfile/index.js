@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 import {useParams} from 'react-router-dom';
-import * as client from '../../Admin/client';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import CommentComponent from "../../Comments";
 import * as profileClient from "../client";
-import {useDispatch, useSelector} from "react-redux";
 import LikesComponent from "../../LikesComponent";
 import {deleteComment} from "../../PetProfile/client";
 
@@ -15,25 +13,21 @@ const PublicProfile = () => {
     const [user, setUser] = useState(null);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchData = async () => {
             try {
-                if(id === 'Home') {
-                    const fetchedUser = await profileClient.getUserByUsername(userReducer.username);
-                    setUser(fetchedUser);
-                }
-                else {
-                    const fetchedUser = await client.getUserById(id);
-                    setUser(fetchedUser);
-                }
+                const userData = await profileClient.getAccount();
+                setUser(userData);
             } catch (error) {
-                console.error('Error fetching user:', error);
+                setUser(null);
             }
         };
 
+        fetchData();
+    }, []);
+
+    useEffect(() => {
         const comments = async () => {
             try {
                 if(id === 'Home') {
@@ -53,7 +47,6 @@ const PublicProfile = () => {
             }
         };
 
-        fetchUser();
         comments();
     }, [id]);
 
@@ -92,7 +85,7 @@ const PublicProfile = () => {
                     <h4>Favorites</h4>
                     <LikesComponent likes={likes}/>
                     <h4>Comments</h4>
-                    <CommentComponent comments={comments} handleDeleteComment={handleDeleteComment}/>
+                    <CommentComponent user={user} comments={comments} handleDeleteComment={handleDeleteComment}/>
                 </div>
             </div>
         </div>

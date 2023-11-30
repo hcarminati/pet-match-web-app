@@ -1,17 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import './Header.css';
 import Button from '../common/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCog, faLock, faSearch, faUpload, faUser} from "@fortawesome/free-solid-svg-icons";
-import {useSelector} from "react-redux";
+import {faCog, faSearch, faUpload, faUser} from "@fortawesome/free-solid-svg-icons";
+import * as profileClient from "../Profile/client";
 
 const Header = () => {
-    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
-    const role = useSelector((state) => state.userReducer.role);
+    const [user, setUser] = useState(null);
 
-    const isAdmin = role === 'ADMIN';
-    const isUploader = role === 'UPLOADER';
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    const isAdmin = user && user.role === 'ADMIN';
+    const isUploader = user && user.role === 'UPLOADER';
 
     return (
         <div className="header">
@@ -21,7 +33,7 @@ const Header = () => {
                 </Link>
             </div>
             <div className="header-right">
-                {isLoggedIn ? (
+                {user ? (
                     <div className="d-flex">
                         <div className="col">
                             <Link to="/Search" className="text-muted me-3">
@@ -60,3 +72,4 @@ const Header = () => {
 };
 
 export default Header;
+

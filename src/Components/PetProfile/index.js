@@ -11,12 +11,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {getByUsername} from "../Login/client";
 import {deleteComment, findCommentsByPetId} from "./client";
 import CommentComponent from "../Comments";
+import * as profileClient from "../Profile/client";
 
 const PetProfile = () => {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
-    const [user, setUser] = useState({ adoptedPet: [] });
+    const [user, setUser] = useState(null);
+
     const [petData, setPetData] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState({
@@ -27,18 +27,26 @@ const PetProfile = () => {
                                                      comment: "",
                                                  });
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const getComments = async () => {
         const comments = await findCommentsByPetId(id);
         setComments(comments);
     }
-    const getUser = async () => {
-        const user = await getByUsername(userReducer.username);
-        setUser(user);
-    }
 
     useEffect(() => {
         getComments();
-        getUser();
         getAnimalById(id)
             .then(data => {
                 setPetData(data);
@@ -53,7 +61,7 @@ const PetProfile = () => {
         if (newComment.comment.trim() !== '') {
             const comment = {
                               userId: user._id,
-                              username: userReducer.username,
+                              username: user.username,
                               petId: newComment.petId,
                               date: Date(),
                               comment: newComment.comment,
@@ -84,11 +92,7 @@ const PetProfile = () => {
 
     const handleAdoptPet = async () => {
         let pet = await animalClient.findPetByOriginalId(petData.id);
-        pet = {
-            ...pet,
-            status: "adopted",
-        }
-        await client.updatePetById(pet);
+        console.log(user)
     }
     return (
         <div className="pet-profile-container">
@@ -106,7 +110,8 @@ const PetProfile = () => {
                         </div>
                     </div>
                     <div className="pet-profile-top-info col-12 col-sm-4 col-md-6">
-                        <span className="badge bg-danger me-2 mb-2">{petData.status}</span>
+                        <span className="badge bg-danger me-2 mb-2">
+                            {petData.status === "adoptable" ? "Adoptable" : "Adopted"}</span>
                         <p><strong>Age:</strong> {petData.age}</p>
                         <p><strong>Species:</strong> {petData.species}</p>
                         <p><strong>Breed:</strong> {petData.breeds.primary}</p>
@@ -117,11 +122,11 @@ const PetProfile = () => {
                             ))}
                         </div>
 
-                        {userReducer.role === "ADOPTER" && petData.status === "adoptable" ?
+                        {user.role === "ADOPTER" && petData.status === "adoptable" ?
                          <button className="btn btn-info mt-2">
                              <Link className="text-decoration-none text-black"
                                    // to="/Profile/Adopted"
-                                 onClick={handleAdoptPet()}
+                                 onClick={handleAdoptPet}
                              >
                                  Adopt
                              </Link>
@@ -155,7 +160,7 @@ const PetProfile = () => {
                 <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>
-                        {userReducer.role != "GUEST" ?
+                        {user.role != "GUEST" ?
                         <div>
                             <textarea
                                 rows="4"
@@ -169,7 +174,7 @@ const PetProfile = () => {
                             <button className="btn btn-primary" onClick={addComment}>Add Comment</button>
                         </div>
                                                      : <></>}
-                        <CommentComponent comments={comments} handleDeleteComment={handleDeleteComment}/>
+                        <CommentComponent user={user} comments={comments} handleDeleteComment={handleDeleteComment}/>
                     </div>
                 </div>
             </div>

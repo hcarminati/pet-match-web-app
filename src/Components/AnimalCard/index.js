@@ -3,37 +3,52 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
-import {useSelector} from "react-redux";
 import * as client from "./client";
 import {getByUsername} from "../Login/client";
-import {deleteLike} from "./client";
+import * as profileClient from "../Profile/client";
 
 function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
-    const userReducer = useSelector((state) => state.userReducer);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+            } catch (error) {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
     const [isLiked, setIsLiked] = useState(false);
     const [likedLikeId, setLikedLikeId] = useState(null);
-    const isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
 
     useEffect(() => {
         const checkLikedStatus = async () => {
-            if (isLoggedIn) {
-                const user = await getByUsername(userReducer.username);
+            if (user && user.username) {
                 const likedPets = await client.getLikedPets(user._id);
-                const alreadyLiked = likedPets.some(pet => pet.petId === animal._id);
-                setIsLiked(alreadyLiked);
-                if (alreadyLiked) {
-                    const likedAnimal = likedPets.find(pet => pet.petId === animal._id);
-                    setLikedLikeId(likedAnimal._id);
+                // Look for the likes for this pet
+                const petLikes = likedPets.filter(pet => pet.petId === animal._id);
+
+                // Go through to see if this user liked it
+                if (petLikes.length >= 1) {
+                    const like = petLikes.some(like => like.userId === user._id);
+                    setIsLiked(like);
                 }
             }
         };
 
         checkLikedStatus();
-    }, [isLoggedIn, userReducer.username, animal._id]);
+    }, [user, animal._id]);
 
     const toggleLike = async () => {
-        if (isLoggedIn) {
-            const user = await getByUsername(userReducer.username);
+        if (user) {
             const userLikes =  await client.getUserLikes(user._id);
 
             if (isLiked) {
@@ -46,7 +61,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
             } else {
                 const like = {
                     userId: user._id,
-                    username: userReducer.username,
+                    username: user.username,
                     petId: animal._id,
                     date: new Date(),
                 };
@@ -56,8 +71,6 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
             setIsLiked(!isLiked);
         }
     };
-
-    // console.log(animal)
 
     const addPet = async () => {
         const newAnimal = {
@@ -100,7 +113,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                 />
             </div>
 
-            {isLoggedIn ? <div className="vertical-dots">
+            {user ? <div className="vertical-dots">
                 {add ? <FontAwesomeIcon
                          className={`${isLiked ? 'text-danger' : 'text-white'}`}
                          icon={faPlus}
@@ -111,12 +124,13 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                      icon={faHeart}
                      onClick={toggleLike}
                  />}
-                {add ? <></>
-                     : <FontAwesomeIcon
+                {!add && user.role === "ADMIN" ?
+                 <FontAwesomeIcon
                      className='text-white ms-1'
                      icon={faTrash}
                      onClick={deletePet}
-                 />}
+                 /> : <></>
+                }
             </div> : <></>}
             <Link
                 to={`/Pet/${animal._id ? animal.originalId  :animal.id}`}
