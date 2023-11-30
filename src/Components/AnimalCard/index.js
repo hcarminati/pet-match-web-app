@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import * as client from "./client";
-import {getByUsername} from "../Login/client";
 import * as profileClient from "../Profile/client";
 
 function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
