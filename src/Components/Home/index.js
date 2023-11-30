@@ -7,6 +7,7 @@ import * as profileClient from "../Profile/client";
 import * as petProfileClient from "../PetProfile/client";
 import * as animalCardClient from "../AnimalCard/client";
 import {findPetById} from "../AnimalCard/client";
+import {Link} from "react-router-dom";
 
 function HomePage() {
     const [animals, setAnimals] = useState([]);
@@ -104,7 +105,7 @@ function HomePage() {
         <div className="home-container">
             <div className="home-search-content">
                 {
-                    user && user.role === 'GUEST'
+                    !user
                     ? <SearchCourse/>
                     : <></>
                 }

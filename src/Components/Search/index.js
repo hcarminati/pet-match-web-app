@@ -3,6 +3,7 @@ import "./index.css";
 import { searchAnimals } from "../../api/petfinder-api";
 import AnimalCard from "../AnimalCard";
 import {useLocation} from "react-router-dom";
+import * as animalCardClient from "../AnimalCard/client";
 
 function Search() {
     const location = useLocation();
@@ -21,6 +22,15 @@ function Search() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    useEffect( () => {
+        const allPets = async () => {
+            const pets = await animalCardClient.findAllPets();
+            setSearchResults(pets);
+        };
+
+        allPets();
+    }, []);
+
     useEffect(() => {
         // Watch for changes in the URL parameters and update the search parameters
         const updatedSearchParameters = {
@@ -37,18 +47,26 @@ function Search() {
         try {
             setLoading(true);
 
-            // Construct the query from searchParameters and make the API call
             const query = new URLSearchParams();
+            let hasSearchParams = false;
+
             for (const key in searchParameters) {
                 if (searchParameters[key]) {
                     query.set(key, searchParameters[key]);
+                    hasSearchParams = true;
                 }
             }
 
-            // Update the URL with the current search parameters using replaceState
             window.history.replaceState(null, "", `/Search?${query.toString()}`);
 
-            const result = await searchAnimals(query);
+            let result;
+            if (hasSearchParams) {
+                result = await searchAnimals(query);
+            } else {
+                const allPets = await animalCardClient.findAllPets();
+                result = { animals: allPets };
+            }
+
             setSearchResults(result.animals);
         } catch (err) {
             setError(err.message);
@@ -56,6 +74,7 @@ function Search() {
             setLoading(false);
         }
     };
+
 
     const handleParameterChange = (parameter, value) => {
         setSearchParameters((prevParameters) => ({
