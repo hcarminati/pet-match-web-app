@@ -34,7 +34,7 @@ const AddPets = () => {
             ) : (
                  <div className="list-group d-flex flex-row flex-wrap">
                      {animals
-                         .filter((animal) => !isInDatabase(animal)) // Filter out animals already in the database
+                         .filter((animal) => isInDatabase(animal)) // Filter out animals already in the database
                          .map((animal) => (
                              <AnimalCard key={animal.id} animal={animal} add={true} />
                          ))}

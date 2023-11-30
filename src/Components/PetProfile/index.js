@@ -5,10 +5,7 @@ import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link, useParams} from 'react-router-dom';
 import { getAnimalById } from '../../api/petfinder-api';
 import * as client from "./client";
-import * as adminClient from "../Admin/client";
 import * as animalClient from "../AnimalCard/client";
-import {useDispatch, useSelector} from "react-redux";
-import {getByUsername} from "../Login/client";
 import {deleteComment, findCommentsByPetId} from "./client";
 import CommentComponent from "../Comments";
 import * as profileClient from "../Profile/client";
@@ -92,8 +89,22 @@ const PetProfile = () => {
 
     const handleAdoptPet = async () => {
         let pet = await animalClient.findPetByOriginalId(petData.id);
-        console.log(user)
+        const adoptedPet = {
+            userId: user._id,
+            username: user.username,
+            petId: pet._id,
+            date: Date(),
+        };
+
+        const updatedPet = {
+            ...pet,
+            status: "adopted"
+        };
+
+        await client.updatePetById(updatedPet);
+        await client.addAdoptedPet(id, adoptedPet);
     }
+
     return (
         <div className="pet-profile-container">
             <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>

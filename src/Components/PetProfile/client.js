@@ -8,6 +8,7 @@ const API_BASE = process.env.REACT_APP_API_BASE;
 const COMMENTS_URL = `${API_BASE}/comments`;
 const USER_URL = `${API_BASE}/user`;
 const PETS_URL = `${API_BASE}/pets`;
+const ADOPTEDPETS_URL = `${API_BASE}/adoptedPets`;
 
 export const findCommentsByPetId = async (petId) => {
     const response = await request.get(`${COMMENTS_URL}/pet/${petId}`);
@@ -40,4 +41,9 @@ export const updatePetById = async (updatedPetData) => {
     } catch (error) {
         throw new Error(`Error fetching pet by ID: ${error.message}`);
     }
+};
+
+export const addAdoptedPet = async (petId, adoptedPet) => {
+    const response = await request.post(`${ADOPTEDPETS_URL}/pet/${petId}`, adoptedPet);
+    return response.data;
 };
