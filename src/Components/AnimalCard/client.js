@@ -10,6 +10,7 @@ const LIKES_URL = `${API_BASE}/likes`;
 
 export const addPet = async (pet) => {
     const response = await request.post(`${PETS_URL}`, pet);
+    console.log(response)
     return response.data;
 };
 

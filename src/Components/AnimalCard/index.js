@@ -89,6 +89,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
             published_at: animal.published_at,
             tags: animal.tags,
             type: animal.type,
+            uploader: user._id,
         }
 
         await client.addPet(newAnimal);
@@ -132,7 +133,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                 }
             </div> : <></>}
             <Link
-                to={`/Pet/${animal._id ? animal.originalId  :animal.id}`}
+                to={`/Pet/${animal._id}`}
                 className="text-decoration-none text-reset"
             >
                 <div className="card-body m-0">

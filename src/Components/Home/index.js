@@ -6,8 +6,6 @@ import { getAvailablePets } from "../Admin/client";
 import * as profileClient from "../Profile/client";
 import * as petProfileClient from "../PetProfile/client";
 import * as animalCardClient from "../AnimalCard/client";
-import {findPetById} from "../AnimalCard/client";
-import {Link} from "react-router-dom";
 
 function HomePage() {
     const [animals, setAnimals] = useState([]);
@@ -16,13 +14,28 @@ function HomePage() {
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
 
+    const [allAdoptedPetsMinData, setAllAdoptedPetsMinData] = useState([]);
     const [allAdoptedPets, setAllAdoptedPets] = useState([]);
     const [allAdoptedPetsLoading, setAllAdoptedPetsLoading] = useState(true);
 
     const [adoptedByUser, setAdoptedByUser] = useState([]);
     const [adoptedByUserLoading, setAdoptedByUserLoading] = useState(true);
 
+    const [uploadedByUser, setUploadedByUser] = useState([]);
+    const [uploadedByUserLoading, setUploadedByUserLoading] = useState(true);
+
     useEffect(() => {
+        const fetchAnimals = async () => {
+            getAvailablePets()
+                .then((data) => {
+                    setAnimals(data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setLoading(false);
+                });
+        };
         const fetchData = async () => {
             try {
                 const userData = await profileClient.getAccount();
@@ -34,31 +47,15 @@ function HomePage() {
             }
         };
 
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const fetchAnimals = async () => {
-            // Fetch animals when the component mounts
-            getAvailablePets()
-                .then((data) => {
-                    // Update the state with the fetched animals
-                    setAnimals(data);
-                    setLoading(false); // Update loading state when data is fetched
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setLoading(false); // Update loading state if there's an error
-                });
-        };
-
         fetchAnimals();
+        fetchData();
     }, []);
 
     useEffect(() => {
         const fetchAllAdoptedPets = async () => {
             try {
                 const data = await petProfileClient.getAllAdoptedPets();
+                setAllAdoptedPetsMinData(data)
                 const animalDataPromises = data.map(animal => animalCardClient.findPetById(animal.petId));
 
                 Promise.all(animalDataPromises)
@@ -74,10 +71,33 @@ function HomePage() {
                 setAllAdoptedPetsLoading(false);
             }
         };
+        if (user && user._id && animals.length > 0) {
+            fetchAllAdoptedPets();
+        }
+    }, [user, animals]);
+
+    useEffect(() => {
+        const fetchUploadedByUser = async () => {
+            try {
+                if (user && user._id) {
+                    const uploadedPets = animals.filter(animal => animal.uploader === user._id);
+                    setUploadedByUser(uploadedPets);
+                    setUploadedByUserLoading(false);
+                }
+            } catch (error) {
+                console.error('Error fetching uploaded pets:', error);
+            }
+        };
+        if (user && user._id && animals.length > 0) {
+            fetchUploadedByUser();
+        }
+    }, [user, animals]);
+
+    useEffect(() => {
         const fetchAdoptedByUser = async () => {
             try {
-                const animalDataPromises = allAdoptedPets.filter(animal => animal.userId === user._id);
-
+                const adoptedByUser= allAdoptedPetsMinData.filter(animal => animal.userId === user._id);
+                const animalDataPromises = adoptedByUser.map(animal => animalCardClient.findPetById(animal.petId));
                 Promise.all(animalDataPromises)
                     .then(animalData => {
                         setAdoptedByUser(animalData);
@@ -91,11 +111,10 @@ function HomePage() {
                 setAdoptedByUserLoading(false);
             }
         };
-
-        fetchAllAdoptedPets();
-        fetchAdoptedByUser();
-    }, []);
-
+        if (user && user._id && animals.length > 0) {
+            fetchAdoptedByUser();
+        }
+    }, [user, allAdoptedPetsMinData]);
 
     if (userLoading) {
         return <div>Loading user...</div>;
@@ -116,12 +135,12 @@ function HomePage() {
                  <div>
                      <h4 className="mt-4">Recently Added by You</h4>
                      <div className="list-group d-flex flex-row flex-wrap">
-                         {/*{adoptedByUserLoading ? (*/}
-                         {/*    <p>Loading...</p>*/}
-                         {/*) : (*/}
-                         {/*    adoptedByUser.slice(0, 4).map((animal) => (*/}
-                         {/*         <AnimalCard key={animal._id} animal={animal} add={false} />*/}
-                         {/*     ))*/}
+                         {uploadedByUserLoading ? (
+                             <p>Loading...</p>
+                         ) : (
+                             uploadedByUser.slice(uploadedByUser.length-4, uploadedByUser.length).map((animal) => (
+                                  <AnimalCard key={animal._id} animal={animal} add={false} />
+                              ))
                           )}
                      </div>
                  </div>
@@ -133,7 +152,7 @@ function HomePage() {
                          {loading ? (
                              <p>Loading...</p>
                          ) : (
-                              animals.slice(0, 4).map((animal) => (
+                              animals.slice(animals.length-4, animals.length).map((animal) => (
                                   <AnimalCard key={animal._id} animal={animal} add={false} />
                               ))
                           )}
@@ -147,7 +166,7 @@ function HomePage() {
                          {adoptedByUserLoading ? (
                              <p>Loading...</p>
                          ) : (
-                             adoptedByUser.slice(0, 4).map((animal) => (
+                             adoptedByUser.slice(adoptedByUser.length-4, adoptedByUser.length).map((animal) => (
                                   <AnimalCard key={animal._id} animal={animal} add={false} />
                               ))
                           )}
@@ -162,7 +181,7 @@ function HomePage() {
                             {loading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 animals.slice(0, 4).map((animal) => (
+                                 animals.slice(animals.length-4, animals.length).map((animal) => (
                                      <AnimalCard key={animal._id} animal={animal} add={false} />
                                  ))
                              )}
@@ -179,7 +198,7 @@ function HomePage() {
                             {allAdoptedPetsLoading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 allAdoptedPets.slice(0, 4).map((animal) => (
+                                 allAdoptedPets.slice(allAdoptedPets.length-4, allAdoptedPets.length).map((animal) => (
                                      <AnimalCard key={animal._id} animal={animal} add={false} />
                                  ))
                              )}

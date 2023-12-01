@@ -9,6 +9,7 @@ import * as animalClient from "../AnimalCard/client";
 import {deleteComment, findCommentsByPetId} from "./client";
 import CommentComponent from "../Comments";
 import * as profileClient from "../Profile/client";
+import {findPetById} from "../AnimalCard/client";
 
 const PetProfile = () => {
     const { id } = useParams();
@@ -38,21 +39,26 @@ const PetProfile = () => {
         fetchData();
     }, []);
 
-    const getComments = async () => {
-        const comments = await findCommentsByPetId(id);
-        setComments(comments);
-    }
 
     useEffect(() => {
-        getComments();
-        getAnimalById(id)
-            .then(data => {
-                setPetData(data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        const getComments = async () => {
+            const comments = await findCommentsByPetId(id);
+            setComments(comments);
+        }
+        // const fetchPet = async () => {
+        //     const pet = await animalClient.findPetById(id);
+        //     setPetData(pet);
+        // }
 
+        animalClient.findPetById(id).then(data => {
+            setPetData(data);
+            console.log(data)
+        }).catch(error => {
+            console.error(error);
+        });
+
+        getComments();
+        // fetchPet();
     }, [id]);
 
     const addComment = async () => {
@@ -89,7 +95,7 @@ const PetProfile = () => {
     }
 
     const handleAdoptPet = async () => {
-        let pet = await animalClient.findPetByOriginalId(petData.id);
+        let pet = await animalClient.findPetById(petData._id);
         const adoptedPet = {
             userId: user._id,
             username: user.username,

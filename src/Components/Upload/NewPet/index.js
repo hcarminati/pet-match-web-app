@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import './index.css';
+import * as animalCardClient from "../../AnimalCard/client";
+import {useEffect} from "react";
+import * as profileClient from "../../Profile/client";
 
 const NewPet = () => {
+    const [user, setUser] = useState(null);
+
     const [formData, setFormData] = useState({
                                                  age: '',
                                                  name: '',
@@ -38,47 +43,57 @@ const NewPet = () => {
                                                  published_at: '',
                                                  tags: [],
                                                  type: '',
+                                                 uploader: '',
                                              });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userData = await profileClient.getAccount();
+            setUser(userData);
+            const newFormData = {
+                ...formData,
+                uploader: userData._id,
+            };
+            setFormData(newFormData)
+        };
 
-        // Handle nested objects (attributes, breeds, colors, primary_photo_cropped)
-        if (name.includes('.')) {
-            const [parent, child] = name.split('.');
-            setFormData({
-                            ...formData,
-                            [parent]: {
-                                ...formData[parent],
-                                [child]: value
-                            }
-                        });
-        } else {
-            // Convert the comma-separated tags into an array
-            if (name === 'tags') {
-                const tagsArray = value.split(',').map(tag => tag.trim());
+        fetchUser();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        // Handle checkbox inputs
+            if (name.includes('.')) {
+                const [parent, child] = name.split('.');
                 setFormData({
                                 ...formData,
-                                [name]: tagsArray
+                                [parent]: {
+                                    ...formData[parent],
+                                    [child]: value
+                                }
                             });
             } else {
-                setFormData({
-                                ...formData,
-                                [name]: value
-                            });
+                // Convert the comma-separated tags into an array
+                if (name === 'tags') {
+                    const tagsArray = value.split(',').map(tag => tag.trim());
+                    setFormData({
+                                    ...formData,
+                                    [name]: tagsArray
+                                });
+                } else {
+                    setFormData({
+                                    ...formData,
+                                    [name]: value
+                                });
+                }
             }
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Call the function to add a new pet with the formData
-            // await addPet(formData);
-            // Optionally, perform any other necessary actions after successful submission
-            // For example, show a success message, redirect, etc.
+            await animalCardClient.addPet(formData);
         } catch (error) {
-            // Handle errors, show an error message, etc.
             console.error('Error adding new pet:', error);
         }
     };
@@ -123,7 +138,13 @@ const NewPet = () => {
                             id="declawed"
                             name="attributes.declawed"
                             checked={formData.attributes.declawed}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             attributes: {
+                                                                 ...formData.attributes,
+                                                                 declawed: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="declawed">Declawed</label>
                     </div>
@@ -135,7 +156,13 @@ const NewPet = () => {
                             id="house_trained"
                             name="attributes.house_trained"
                             checked={formData.attributes.house_trained}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             attributes: {
+                                                                 ...formData.attributes,
+                                                                 house_trained: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="house_trained">House Trained</label>
                     </div>
@@ -147,7 +174,13 @@ const NewPet = () => {
                             id="shots_current"
                             name="attributes.shots_current"
                             checked={formData.attributes.shots_current}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             attributes: {
+                                                                 ...formData.attributes,
+                                                                 shots_current: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="shots_current">Shots Current</label>
                     </div>
@@ -159,7 +192,13 @@ const NewPet = () => {
                             id="spayed_neutered"
                             name="attributes.spayed_neutered"
                             checked={formData.attributes.spayed_neutered}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             attributes: {
+                                                                 ...formData.attributes,
+                                                                 spayed_neutered: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="spayed_neutered">Spayed Neutered</label>
                     </div>
@@ -171,7 +210,13 @@ const NewPet = () => {
                             id="special_needs"
                             name="attributes.special_needs"
                             checked={formData.attributes.special_needs}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             attributes: {
+                                                                 ...formData.attributes,
+                                                                 special_needs: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="special_needs">Special Needs</label>
                     </div>
@@ -210,7 +255,13 @@ const NewPet = () => {
                             id="mixed"
                             name="breeds.mixed"
                             checked={formData.breeds.mixed}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             breeds: {
+                                                                 ...formData.breeds,
+                                                                 mixed: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="mixed">Mixed</label>
                     </div>
@@ -222,7 +273,13 @@ const NewPet = () => {
                             id="unknown"
                             name="breeds.unknown"
                             checked={formData.breeds.unknown}
-                            onChange={handleInputChange}
+                            onChange={(e) => setFormData({
+                                                             ...formData,
+                                                             breeds: {
+                                                                 ...formData.breeds,
+                                                                 unknown: e.target.checked
+                                                             }
+                                                         })}
                         />
                         <label className="form-check-label" htmlFor="unknown">Unknown</label>
                     </div>
@@ -336,7 +393,6 @@ const NewPet = () => {
                     >
                         <option value="">Select Status</option>
                         <option value="available">Available</option>
-                        <option value="pending">Pending</option>
                         <option value="adopted">Adopted</option>
                     </select>
                 </div>
