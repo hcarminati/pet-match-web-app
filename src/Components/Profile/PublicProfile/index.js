@@ -8,6 +8,7 @@ import * as profileClient from "../client";
 import LikesComponent from "../../LikesComponent";
 import {deleteComment} from "../../PetProfile/client";
 import AdoptedComponent from "../../AdoptedComponent";
+import {findUserById} from "../client";
 
 const PublicProfile = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ const PublicProfile = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userData = await profileClient.getAccount();
+                const userData = await profileClient.findUserById(id);
                 setUser(userData);
             } catch (error) {
                 setUser(null);
