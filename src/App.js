@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {Routes, Route, Navigate, HashRouter} from "react-router-dom";
 import Header from "./Components/common/Header";
 import HomePage from "./Components/Home";
 import Quiz from "./Components/Quiz";
@@ -13,11 +13,10 @@ import PrivateRoute from "./Components/PrivateRoutes";
 import Unauthorized from "./Components/Unauthorized";
 import PublicProfile from "./Components/Profile/PublicProfile";
 import Upload from "./Components/Upload";
-import PrivateRoutes from "./Components/PrivateRoutes";
 
 function App() {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div>
                 <Header/>
                 <Routes>
@@ -41,7 +40,7 @@ function App() {
                     <Route path="/Unauthorized" element={<Unauthorized />} />
                 </Routes>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
