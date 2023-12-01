@@ -93,7 +93,10 @@ const PublicProfile = () => {
                     <h4>Favorites</h4>
                     <LikesComponent likes={likes}/>
                     <h4>Comments</h4>
-                    <CommentComponent user={user} comments={comments} handleDeleteComment={handleDeleteComment}/>
+                    <CommentComponent user={user}
+                                      comments={comments}
+                                      handleDeleteComment={handleDeleteComment}
+                                      publicProfile={true}/>
                 </div>
             </div>
         </div>

@@ -6,14 +6,15 @@ import {Link} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import * as profileClient from "../Profile/client";
 
-const CommentComponent = ({user, comments, handleDeleteComment}) => {
+const CommentComponent = ({user, comments, handleDeleteComment, publicProfile}) => {
     return (
         <ul>
             {comments.map((comment) => (
                 <div className="comment-container me-5">
                     <div className="d-flex mt-2">
                         <Link
-                            to={`/user/profile/${comment.userId}`}
+                            to={publicProfile ? `/Pet/${comment.petId}`
+                                              :`/user/profile/${comment.userId}`}
                             className="single-comment text-decoration-none text-black"
                               key={comment._id}
                         >
