@@ -133,7 +133,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                 }
             </div> : <></>}
             <Link
-                to={`/Pet/${animal._id}`}
+                to={animal._id ? `/Pet/${animal._id}` : `/Admin/Pet/${animal.id}`}
                 className="text-decoration-none text-reset"
             >
                 <div className="card-body m-0">

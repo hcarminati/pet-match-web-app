@@ -69,7 +69,7 @@ export async function getAnimalById(animalId) {
 
     return {
         ...animalData.animal,
-        status: animal.status,
+        // status: animal.status,
     }; // Return the individual animal data
 }
 

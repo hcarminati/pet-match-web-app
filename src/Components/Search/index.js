@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import { searchAnimals } from "../../api/petfinder-api";
 import AnimalCard from "../AnimalCard";
 import {useLocation} from "react-router-dom";
 import * as animalCardClient from "../AnimalCard/client";
@@ -32,7 +31,6 @@ function Search() {
 
         allPets();
     }, []);
-
 
     const handleSearch = async () => {
         try {
@@ -74,7 +72,6 @@ function Search() {
             setLoading(false);
         }
     };
-
 
     const handleParameterChange = (parameter, value) => {
         setSearchParameters((prevParameters) => ({

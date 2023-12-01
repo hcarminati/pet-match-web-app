@@ -13,6 +13,7 @@ import PrivateRoute from "./Components/PrivateRoutes";
 import Unauthorized from "./Components/Unauthorized";
 import PublicProfile from "./Components/Profile/PublicProfile";
 import Upload from "./Components/Upload";
+import AdminPetProfile from "./Components/PetProfile/AdminPetProfile";
 
 function App() {
     return (
