@@ -1,18 +1,32 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../userReducer";
+import {Link} from "react-router-dom";
 import * as client from "./client";
 import {getByUsername} from "../../Login/client";
+import {useEffect} from "react";
+import * as profileClient from "../client";
 
 function EditProfile() {
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
-    const [editedUsername, setEditedUsername] = useState(userReducer.username);
-    const [editedDescription, setEditedDescription] = useState(userReducer.description);
-    const [editedEmail, setEditedEmail] = useState(userReducer.email);
-
+    const [user, setUser] = useState({});
+    const [editedUsername, setEditedUsername] = useState('');
+    const [editedDescription, setEditedDescription] = useState('');
+    const [editedEmail, setEditedEmail] = useState('');
     const [success, setSuccess] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await profileClient.getAccount();
+                setUser(userData);
+                setEditedUsername(userData.username || '');
+                setEditedDescription(userData.description || '');
+                setEditedEmail(userData.email || '');
+            } catch (error) {
+                setUser(null);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const handleUsernameChange = (e) => {
         setEditedUsername(e.target.value);
@@ -24,7 +38,6 @@ function EditProfile() {
         setEditedEmail(e.target.value);
     };
     const saveChanges = async () => {
-        const user = await getByUsername(userReducer.username);
         const newUser = {
             ...user,
             username: editedUsername,
@@ -34,7 +47,7 @@ function EditProfile() {
         delete newUser.isLoggedIn;
 
         await client.updateProfile(newUser);
-        dispatch(setUser(newUser));
+        console.log(newUser)
         setSuccess("Profile successfully updated.");
 
     };

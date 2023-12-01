@@ -11,14 +11,10 @@ import AdoptedComponent from "../../AdoptedComponent";
 import CommentComponent from "../../Comments";
 
 const ProfileHome = () => {
-    const { id } = useParams();
     const [user, setUser] = useState({});
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [adoptedPets, setAdoptedPets] = useState([]);
-
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -77,6 +73,7 @@ const ProfileHome = () => {
                     </p>
                     <p className="text-muted">
                         {user.description}
+                        {console.log(user)}
                     </p>
                 </div>
                 <div className="col-12 col-sm-8">
