@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {Link, useParams} from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAnimalById } from '../../api/petfinder-api';
 import * as client from "./client";
 import * as animalClient from "../AnimalCard/client";
@@ -13,6 +13,8 @@ import {findPetById} from "../AnimalCard/client";
 
 const PetProfile = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const [user, setUser] = useState(null);
 
     const [petData, setPetData] = useState(null);
@@ -120,7 +122,7 @@ const PetProfile = () => {
 
     return (
         <div className="pet-profile-container">
-            <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
+            <FontAwesomeIcon icon={faChevronLeft} onClick={() => navigate(-1)}></FontAwesomeIcon>
             <div className="pet-profile-content">
                 <div className="row">
                     <div className="col-12 col-sm-8 col-md-6 pe-3">

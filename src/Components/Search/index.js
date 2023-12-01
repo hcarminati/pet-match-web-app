@@ -17,31 +17,22 @@ function Search() {
         age: searchParams.get("age") || "",
     };
 
+    const [allPets, setAllPets] = useState([]);
     const [searchParameters, setSearchParameters] = useState(initialSearchParameters);
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect( () => {
+    useEffect(() => {
         const allPets = async () => {
             const pets = await animalCardClient.findAllPets();
             setSearchResults(pets);
+            setAllPets(pets);
         };
 
         allPets();
     }, []);
 
-    useEffect(() => {
-        // Watch for changes in the URL parameters and update the search parameters
-        const updatedSearchParameters = {
-            name: searchParams.get("name") || "",
-            type: searchParams.get("type") || "",
-            size: searchParams.get("size") || "",
-            gender: searchParams.get("gender") || "",
-            age: searchParams.get("age") || "",
-        };
-        setSearchParameters(updatedSearchParameters);
-    }, [location.search]);
 
     const handleSearch = async () => {
         try {
@@ -49,7 +40,6 @@ function Search() {
 
             const query = new URLSearchParams();
             let hasSearchParams = false;
-
             for (const key in searchParameters) {
                 if (searchParameters[key]) {
                     query.set(key, searchParameters[key]);
@@ -57,14 +47,24 @@ function Search() {
                 }
             }
 
-            window.history.replaceState(null, "", `/Search?${query.toString()}`);
-
             let result;
-            if (hasSearchParams) {
-                result = await searchAnimals(query);
+            if (searchParameters.name || searchParameters.type || searchParameters.size || searchParameters.gender || searchParameters.age) {
+                // Filter the pets based on search parameters from the database
+                const filteredPets = allPets.filter(animal => {
+                    return (
+                        (!searchParameters.name || animal.name.toLowerCase().includes(searchParameters.name.toLowerCase())) &&
+                        (!searchParameters.type || animal.type.toLowerCase() === searchParameters.type.toLowerCase()) &&
+                        (!searchParameters.size || animal.size.toLowerCase() === searchParameters.size.toLowerCase()) &&
+                        (!searchParameters.gender || animal.gender.toLowerCase() === searchParameters.gender.toLowerCase()) &&
+                        (!searchParameters.age || animal.age.toLowerCase() === searchParameters.age.toLowerCase())
+                    );
+                });
+
+                window.history.replaceState(null, "", `#/Search?${query.toString()}`);
+
+                result = { animals: filteredPets };
             } else {
-                const allPets = await animalCardClient.findAllPets();
-                result = { animals: allPets };
+                result = { animals: searchResults };
             }
 
             setSearchResults(result.animals);
