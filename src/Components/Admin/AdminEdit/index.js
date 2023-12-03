@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as client from "../client";
 import {setUser} from "../../Profile/userReducer";
 import {useParams} from "react-router";
-import {deleteUser, updateUserById} from "../client";
+import {deleteUser, updateUserById} from "../../Admin/client";
 import {getByUsername} from "../../Login/client";
 
 function AdminEdit() {

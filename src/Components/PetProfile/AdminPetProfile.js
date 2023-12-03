@@ -3,30 +3,17 @@ import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import * as profileClient from "../Profile/client";
 import {getAnimalById} from "../../api/petfinder-api";
-import CommentComponent from "../Comments";
 import * as client from "../AnimalCard/client";
+import {useSelector} from "react-redux";
 
 const AdminPetProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [user, setUser] = useState(null);
+    const user = useSelector(state => state.userReducer);
 
     const [petData, setPetData] = useState(null);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
-            } catch (error) {
-                setUser(null);
-            }
-        };
-
-        fetchData();
-    }, []);
 
 
     useEffect(() => {

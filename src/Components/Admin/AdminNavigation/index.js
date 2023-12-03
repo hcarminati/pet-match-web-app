@@ -15,13 +15,17 @@ const AdminNavigation = () => {
             "url": "adopted",
         },
         {
+            "name": "Adoption Centers",
+            "url": "acenter",
+        },
+        {
             "name": "Users",
             "url": "users",
         }];
     const {pathname} = useLocation();
 
     return (
-        <div className="list-group admin-nav-container d-none d-sm-block">
+        <div className="list-group admin-navigation-container d-none d-sm-block">
             {links.map((link, index) => (
                 <div className="admin-nav-item" key={index}>
                     <Link

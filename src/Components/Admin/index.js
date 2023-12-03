@@ -9,6 +9,7 @@ import PublicProfile from "../Profile/PublicProfile";
 import AddPets from "./AddPets";
 import AvailablePets from "./AvailablePets";
 import AdminPetProfile from "../PetProfile/AdminPetProfile";
+import AdoptionCenters from "./AdoptionCenters";
 
 
 const Admin = () => {
@@ -27,9 +28,7 @@ const Admin = () => {
                                 <Route path="users/edit/:id" element={<AdminEdit/>}/>
                                 <Route path="available" element={<AvailablePets/>}/>
                                 <Route path="pet/:id" element={<AdminPetProfile />} />
-                                {/*<Route path="Adopted" element={<h1>Adopted</h1>}/>*/}
-                                {/*<Route path="Favorites" element={<h1>Favorites</h1>}/>*/}
-                                {/*<Route path="/Settings/*" element={<Settings />} />*/}
+                                <Route path="acenter" element={<AdoptionCenters />} />
                             </Routes>
                         </div>
                     </div>

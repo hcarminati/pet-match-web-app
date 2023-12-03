@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./index.css";
-import {Link, useNavigate} from "react-router-dom";
-import {login, setUser} from "../Profile/userReducer";
+import {Link} from "react-router-dom";
+import {login} from "../Profile/userReducer";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import * as client from "./client";
 import {getByUsername} from "./client";
 
@@ -26,7 +25,6 @@ function Login() {
             dispatch({type: "LOGIN_SUCCESS", payload: userData});
             setLoggedIn(true);
             const user = await getByUsername(credentials.username);
-            dispatch(setUser(user));
             dispatch(login(user));
         })
             .catch((err) => {

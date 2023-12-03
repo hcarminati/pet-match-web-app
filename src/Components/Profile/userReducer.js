@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+    _id: '',
     email: null,
     username: null,
     password: null,
-    isLoggedIn: false,
+    firstName: '',
+    lastName: '',
+    dob: '',
     role: 'GUEST',
     description: '',
-    likes: [],
 };
 
 const userSlice = createSlice({
@@ -15,18 +17,26 @@ const userSlice = createSlice({
                                   initialState,
                                   reducers: {
                                       setUser: (state, action) => {
-                                          state.username = action.payload.username;
-                                          state.email = action.payload.email;
-                                          state.description = action.payload.description;
-                                          state.role = action.payload.role;
-                                      },
-                                      login: (state, action) => {
+                                          state._id = action.payload._id;
                                           state.email = action.payload.email;
                                           state.username = action.payload.username;
                                           state.password = action.payload.password;
+                                          state.firstName = action.payload.firstName;
+                                          state.lastName = action.payload.lastName;
+                                          state.dob = action.payload.dob;
                                           state.role = action.payload.role;
                                           state.description = action.payload.description;
-                                          state.isLoggedIn = true;
+                                      },
+                                      login: (state, action) => {
+                                          state._id = action.payload._id;
+                                          state.email = action.payload.email;
+                                          state.username = action.payload.username;
+                                          state.password = action.payload.password;
+                                          state.firstName = action.payload.firstName;
+                                          state.lastName = action.payload.lastName;
+                                          state.dob = action.payload.dob;
+                                          state.role = action.payload.role;
+                                          state.description = action.payload.description;
                                       },
                                       logout: (state) => {
                                           state.isLoggedIn = false;

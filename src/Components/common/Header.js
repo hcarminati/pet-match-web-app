@@ -5,22 +5,11 @@ import Button from '../common/Button';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCog, faSearch, faUpload, faUser} from "@fortawesome/free-solid-svg-icons";
 import * as profileClient from "../Profile/client";
+import {useDispatch, useSelector} from "react-redux";
 
 const Header = () => {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
-            } catch (error) {
-                console.error('Error fetching user:', error);
-            }
-        };
-
-        fetchUser();
-    }, []);
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.userReducer);
 
     const isAdmin = user && user.role === 'ADMIN';
     const isUploader = user && user.role === 'UPLOADER';
@@ -33,7 +22,7 @@ const Header = () => {
                 </Link>
             </div>
             <div className="header-right">
-                {user ? (
+                {user.username ? (
                     <div className="d-flex">
                         <div className="col">
                             <Link to="/Search" className="text-muted me-3">

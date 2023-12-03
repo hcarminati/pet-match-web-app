@@ -8,6 +8,7 @@ const API_BASE = process.env.REACT_APP_API_BASE;
 const USERS_URL = `${API_BASE}/users`;
 const USER_URL = `${API_BASE}/user`;
 const PETS_URL = `${API_BASE}/pets`;
+const ACENTERS_URL = `${API_BASE}/adoptionCenters`;
 
 export const getUsers = async () => {
     const response = await request.get(`${USERS_URL}`);
@@ -44,5 +45,28 @@ export const getAvailablePets = async () => {
 
 export const deleteUser = async (id) => {
     const response = await request.delete(`${USERS_URL}/id/${id}`);
+}
+
+// Adoption Centers Routes
+export const findAllAdoptionCenters = async () => {
+    const response = await request.get(`${ACENTERS_URL}`);
     return response.data;
 };
+export const addAdoptionCenter = async (aCenter) => {
+    const response = await request.post(`${ACENTERS_URL}`, aCenter);
+    return response.data;
+};
+export const deleteAdoptionCenter = async (id) => {
+    const response = await request.delete(`${ACENTERS_URL}/${id}`);
+    return response.data;
+};
+export const updateAdoptionCenterById = async (id, aCenter) => {
+    const response = await request.put(`${ACENTERS_URL}/${id}`, aCenter);
+    return response.data;
+};
+export const findAdoptionCenterById = async (id) => {
+    const response = await request.get(`${ACENTERS_URL}/${id}`);
+    return response.data;
+};
+
+

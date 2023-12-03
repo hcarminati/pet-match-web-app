@@ -1,53 +1,18 @@
 import React, { useState } from "react";
 import {Link} from "react-router-dom";
 import * as client from "./client";
-import {getByUsername} from "../../Login/client";
-import {useEffect} from "react";
-import * as profileClient from "../client";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser} from "../userReducer";
 
 function EditProfile() {
-    const [user, setUser] = useState({});
-    const [editedUsername, setEditedUsername] = useState('');
-    const [editedDescription, setEditedDescription] = useState('');
-    const [editedEmail, setEditedEmail] = useState('');
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.userReducer);
+    const [editedUser, setEditedUser] = useState(user);
     const [success, setSuccess] = useState(null);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
-                setEditedUsername(userData.username || '');
-                setEditedDescription(userData.description || '');
-                setEditedEmail(userData.email || '');
-            } catch (error) {
-                setUser(null);
-            }
-        };
-
-        fetchUser();
-    }, []);
-
-    const handleUsernameChange = (e) => {
-        setEditedUsername(e.target.value);
-    };
-    const handleDescriptionChange = (e) => {
-        setEditedDescription(e.target.value);
-    };
-    const handleEmailChange = (e) => {
-        setEditedEmail(e.target.value);
-    };
     const saveChanges = async () => {
-        const newUser = {
-            ...user,
-            username: editedUsername,
-            description: editedDescription,
-            email: editedEmail,
-        };
-        delete newUser.isLoggedIn;
-
-        await client.updateProfile(newUser);
-        console.log(newUser)
+        await client.updateProfile(editedUser);
+        dispatch(setUser(editedUser));
         setSuccess("Profile successfully updated.");
 
     };
@@ -69,9 +34,11 @@ function EditProfile() {
                                 className="search-bar form-control me-2"
                                 id="username"
                                 placeholder="Enter profile name"
-                                value={editedUsername} // Bind the input value to the local state
-                                onChange={(e) => handleUsernameChange(
-                                    e)} // Handle changes to the username
+                                value={editedUser.username} // Bind the input value to the local state
+                                onChange={(e) => setEditedUser({
+                                    ...editedUser,
+                                    username: e.target.value
+                                                               })}
                             />
                         </div>
 
@@ -85,8 +52,11 @@ function EditProfile() {
                                 className="search-bar form-control me-2"
                                 id="email"
                                 placeholder="Enter profile email"
-                                value={editedEmail}
-                                onChange={(e) => handleEmailChange(e)}
+                                value={editedUser.email}
+                                onChange={(e) => setEditedUser({
+                                                                   ...editedUser,
+                                                                   email: e.target.value
+                                                               })}
                             />
                         </div>
 
@@ -100,8 +70,11 @@ function EditProfile() {
                                 className="search-bar form-control me-2"
                                 id="description"
                                 placeholder="Enter profile description"
-                                value={editedDescription}
-                                onChange={(e) => handleDescriptionChange(e)}
+                                value={editedUser.description}
+                                onChange={(e) => setEditedUser({
+                                                                   ...editedUser,
+                                                                   description: e.target.value
+                                                               })}
                             />
                             {success && <p className="text-success">{success}</p>}
                         </div>

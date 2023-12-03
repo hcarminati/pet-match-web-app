@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronLeft, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown, faChevronLeft, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAnimalById } from '../../api/petfinder-api';
 import * as client from "./client";
 import * as animalClient from "../AnimalCard/client";
+import * as adminClient from "../Admin/client";
 import {deleteComment, findCommentsByPetId} from "./client";
 import CommentComponent from "../Comments";
 import * as profileClient from "../Profile/client";
 import {findPetById} from "../AnimalCard/client";
+import {useSelector} from "react-redux";
+import {findAdoptionCenterById} from "../Admin/client";
 
 const PetProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [user, setUser] = useState(null);
+    const user = useSelector(state => state.userReducer);
 
     const [petData, setPetData] = useState(null);
+    const [adoptionCenter, setAdoptionCenter] = useState({});
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState({
                                                      userId: "",
@@ -27,40 +31,26 @@ const PetProfile = () => {
                                                      comment: "",
                                                  });
     const [isAdopted, setIsAdopted] = useState(false);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
-            } catch (error) {
-                setUser(null);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+    const [expandedCenter, setExpandedCenter] = useState(false);
 
     useEffect(() => {
         const getComments = async () => {
             const comments = await findCommentsByPetId(id);
             setComments(comments);
         }
-        // const fetchPet = async () => {
-        //     const pet = await animalClient.findPetById(id);
-        //     setPetData(pet);
-        // }
+        const getAdoptionCenter = async (data) => {
+            const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
+            setAdoptionCenter(center);
+        }
 
         animalClient.findPetById(id).then(data => {
             setPetData(data);
-            console.log(data)
+            getAdoptionCenter(data);
         }).catch(error => {
             console.error(error);
         });
 
         getComments();
-        // fetchPet();
     }, [id]);
 
     const addComment = async () => {
@@ -119,6 +109,11 @@ const PetProfile = () => {
         await client.addAdoptedPet(id, adoptedPet);
         setIsAdopted(true);
     }
+
+
+    const handleExpand = () => {
+        setExpandedCenter(!expandedCenter);
+    };
 
     return (
         <div className="pet-profile-container">
@@ -183,8 +178,45 @@ const PetProfile = () => {
                         </ul>
                     </div>
                 </div>
+                    <div>
+                        <div className="row mt-3">
+                            {adoptionCenter && (
+                                <div className="row mt-3">
+                                    {adoptionCenter.name && (
+                                        <div className="d-flex justify-content-between w-100">
+                                            <h3>{adoptionCenter.name}</h3>
+                                            <Link
+                                                className="text-black float-end"
+                                                onClick={() => handleExpand()}
+                                            >
+                                                <FontAwesomeIcon icon={faChevronDown} />
+                                            </Link>
+                                        </div>
+                                    )}
+                                    <p>{adoptionCenter.address && adoptionCenter.address.street ? adoptionCenter.address.street : ''},
+                                        {adoptionCenter.address && adoptionCenter.address.city ? adoptionCenter.address.city : ''},
+                                        {adoptionCenter.address && adoptionCenter.address.zipcode ? adoptionCenter.address.zipcode : ''}</p>
+                                    <p>Contact Info: {adoptionCenter.contactInfo ? adoptionCenter.contactInfo : ''}</p>
+                                    {expandedCenter && <div className="expanded-details">
+                                        <p>Website: {adoptionCenter.website ? adoptionCenter.website : ''}</p>
+                                        <p>Operating Hours:</p>
+                                        <ul>
+                                            <li>Monday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.monday : ''}</li>
+                                            <li>Tuesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.tuesday : ''}</li>
+                                            <li>Wednesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.wednesday : ''}</li>
+                                            <li>Thursday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.thursday : ''}</li>
+                                            <li>Friday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.friday : ''}</li>
+                                            <li>Saturday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.saturday : ''}</li>
+                                            <li>Sunday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.sunday : ''}</li>
+                                            {/* Similarly check other days */}
+                                        </ul>
+                                    </div> }
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
-                {/* Comment section */}
+                 {/*Comment section*/}
                 <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>

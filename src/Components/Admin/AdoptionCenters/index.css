@@ -1,0 +1,85 @@
+.admin-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    /*background-color: orange;*/
+}
+
+/* Style for each user item */
+.add-pets-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* Add these styles to your index.css file or create a new CSS file for styling */
+/* Center card styles */
+.center-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.center-card h3 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+}
+
+.center-card p {
+    margin-bottom: 3px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Form styles (adjust as needed) */
+.admin-form {
+    /* Add form-specific styles */
+    /* Example: */
+    /*max-width: 500px;*/
+    margin: auto;
+    padding: 20px;
+}
+
+/* Button styles */
+.btn-primary {
+    /* Add button styles */
+    /* Example: */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Existing CSS styles */
+
+/* Style for the delete button */
+.delete-button {
+    /*position: absolute;*/
+    /*top: 10px; !* Adjust the top distance as needed *!*/
+    /*right: 10px; !* Adjust the right distance as needed *!*/
+}
+
+/* Additional styles for center cards, adjust as needed */
+.center-card {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    /* Add other styling properties */
+}

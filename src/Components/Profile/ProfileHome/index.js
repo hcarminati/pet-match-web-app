@@ -2,8 +2,8 @@ import React from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
-import {Link, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 import LikesComponent from "../../LikesComponent";
 import {useEffect, useState} from "react";
 import * as profileClient from "../client";
@@ -11,23 +11,10 @@ import AdoptedComponent from "../../AdoptedComponent";
 import CommentComponent from "../../Comments";
 
 const ProfileHome = () => {
-    const [user, setUser] = useState({});
+    const user = useSelector(state => state.userReducer);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [adoptedPets, setAdoptedPets] = useState([]);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
-            } catch (error) {
-                setUser(null);
-            }
-        };
-
-        fetchUser();
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,7 +60,6 @@ const ProfileHome = () => {
                     </p>
                     <p className="text-muted">
                         {user.description}
-                        {console.log(user)}
                     </p>
                 </div>
                 <div className="col-12 col-sm-8">
