@@ -37,6 +37,7 @@ export const getUserByUsername = async (username) => {
 export const updatePetById = async (updatedPetData) => {
     try {
         const response = await request.put(`${PETS_URL}/${updatedPetData._id}`, updatedPetData);
+        console.log(updatedPetData)
         return response.data;
     } catch (error) {
         throw new Error(`Error fetching pet by ID: ${error.message}`);

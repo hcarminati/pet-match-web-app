@@ -388,6 +388,7 @@ const AdminPage = () => {
                                     </ul>
                                 </div>
                             )}
+                            <p>Center Id: {center._id}</p>
                         </div>
                     ))}
                 </div>

@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import { Modal, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faEdit, faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import * as client from "./client";
 import * as profileClient from "../Profile/client";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import Button from "../common/Button";
+import EditAnimal from "../EditAnimal";
 
 function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
     const [user, setUser] = useState(null);
@@ -27,6 +31,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
 
     const [isLiked, setIsLiked] = useState(false);
     const [likedLikeId, setLikedLikeId] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
         const checkLikedStatus = async () => {
@@ -103,6 +108,16 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
         await client.deletePet(animal);
     }
 
+    const editPet = async () => {
+        // Implement logic to show the edit modal/pop-up
+        setShowEditModal(true);
+    };
+
+    const closeEditModal = () => {
+        // Implement logic to close the edit modal/pop-up
+        setShowEditModal(false);
+    };
+
     return (
         <div className={"card my-3 mx-3"}>
             <div className="card-img-top">
@@ -112,8 +127,12 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                     className="fill-image"
                 />
             </div>
-
-            {user ? <div className="vertical-dots">
+            {showEditModal && (
+                <Popup trigger={<button> Trigger</button>} position="right center" modal>
+                    <div>Popup content here !!</div>
+                </Popup>
+            )}
+            {user ? <div className="vertical-dots d-flex">
                 {add ? <FontAwesomeIcon
                          className={`${isLiked ? 'text-danger' : 'text-white'}`}
                          icon={faPlus}
@@ -125,11 +144,31 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                      onClick={toggleLike}
                  />}
                 {!add && user.role === "ADMIN" ?
-                 <FontAwesomeIcon
-                     className='text-white ms-1'
-                     icon={faTrash}
-                     onClick={deletePet}
-                 /> : <></>
+                 <div className="d-flex">
+                     <FontAwesomeIcon
+                         className='text-white ms-1'
+                         icon={faTrash}
+                         onClick={deletePet}
+                     />
+                     <Popup
+                         trigger={
+                             <FontAwesomeIcon
+                                 className='text-white ms-1'
+                                 icon={faEdit}
+                                 onClick={editPet}
+                             />
+                         }
+                         position="right center"
+                         modal
+                         contentStyle={{
+                             width: "50%",
+                             height: "70vh",
+                             overflowY: "auto",
+                         }}
+                     >
+                         <EditAnimal animal={animal} />
+                     </Popup>
+                 </div>: <></>
                 }
             </div> : <></>}
             <Link
