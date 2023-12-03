@@ -1,16 +1,52 @@
 import React, {useEffect, useState} from "react";
 import "./index.css";
 import 'reactjs-popup/dist/index.css';
-import Button from "../common/Button";
+
 import * as petClient from "../PetProfile/client";
 import {Link} from "react-router-dom";
+import {addMedicalRecord, findAllMedicalRecords, findMedicalRecordById} from "../PetProfile/client";
 
 function EditAnimal({ animal }) {
     const [formData, setFormData] = useState(animal);
-    console.log(animal)
     const [success, setSuccess] = useState(null);
+    const [newRecord, setNewRecord] = useState(false);
+    const [medicalRecord, setMedicalRecord] = useState({
+                                                           petId: animal._id,
+                                                           vaccinationHistory: '',
+                                                           medicalConditions: '',
+                                                           prescription: '',
+                                                           treatmentHistory: '',
+                                                       });
+
+    useEffect(() => {
+        const newMedicalRecord = async () => {
+            const records = await petClient.findAllMedicalRecords();
+            const petRecord = await records.filter(r => r.petId === animal._id)
+            if (petRecord[0]) {
+                setMedicalRecord(petRecord[0]);
+            } else {
+                setNewRecord(true);
+            }
+        }
+
+        newMedicalRecord();
+
+    }, []);
 
     const handleUpdateAnimal = async () => {
+        if (newRecord) {
+            await petClient.addMedicalRecord(medicalRecord);
+            const records = await petClient.findAllMedicalRecords();
+            const petRecord = records.filter(r => r.petId === animal._id)
+            const newFormData = {
+                ...formData,
+                medicalRecord: petRecord[0]._id,
+            };
+            setFormData(newFormData);
+        } else {
+            await petClient.updateMedicalRecordById(medicalRecord);
+        }
+
         await petClient.updatePetById(formData);
         setSuccess("Pet successfully updated.");
     };
@@ -73,102 +109,6 @@ function EditAnimal({ animal }) {
                             onChange={handleInputChange}
                         />
                     </div>
-
-                    {/*Attributes*/}
-                    {/*<div className="mb-3">*/}
-                    {/*    <label>Attributes:</label>*/}
-                    {/*    <div className="form-check">*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            id="declawed"*/}
-                    {/*            name="attributes.declawed"*/}
-                    {/*            checked={formData.attributes[0].declawed}*/}
-                    {/*            onChange={(e) => {*/}
-                    {/*                const updatedAttributes = [...formData.attributes, { declawed: !formData.attributes[0].declawed }];*/}
-                    {/*                setFormData({*/}
-                    {/*                                ...formData,*/}
-                    {/*                                attributes: updatedAttributes,*/}
-                    {/*                            });*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label" htmlFor="declawed">Declawed</label>*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="form-check">*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            id="house_trained"*/}
-                    {/*            name="attributes.house_trained"*/}
-                    {/*            checked={formData.attributes[0].house_trained}*/}
-                    {/*            onChange={(e) => {*/}
-                    {/*                const val = formData.attributes[0].house_trained;*/}
-                    {/*                const updatedAttributes = [...formData.attributes, { house_trained: !val }];*/}
-                    {/*                console.log(updatedAttributes)*/}
-                    {/*                setFormData({*/}
-                    {/*                                ...formData,*/}
-                    {/*                                attributes: updatedAttributes,*/}
-                    {/*                            });*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label" htmlFor="house_trained">House Trained</label>*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="form-check">*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            id="shots_current"*/}
-                    {/*            name="attributes.shots_current"*/}
-                    {/*            checked={formData.attributes[0].shots_current}*/}
-                    {/*            onChange={(e) => {*/}
-                    {/*                const updatedAttributes = [...formData.attributes, { shots_current: !formData.attributes[0].shots_current }];*/}
-                    {/*                setFormData({*/}
-                    {/*                                ...formData,*/}
-                    {/*                                attributes: updatedAttributes,*/}
-                    {/*                            });*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label" htmlFor="shots_current">Shots Current</label>*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="form-check">*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            id="spayed_neutered"*/}
-                    {/*            name="attributes.spayed_neutered"*/}
-                    {/*            checked={formData.attributes[0].spayed_neutered}*/}
-                    {/*            onChange={(e) => {*/}
-                    {/*                const updatedAttributes = [...formData.attributes, { spayed_neutered: !formData.attributes[0].spayed_neutered }];*/}
-                    {/*                setFormData({*/}
-                    {/*                                ...formData,*/}
-                    {/*                                attributes: updatedAttributes,*/}
-                    {/*                            });*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label" htmlFor="spayed_neutered">Spayed Neutered</label>*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="form-check">*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            id="special_needs"*/}
-                    {/*            name="attributes.special_needs"*/}
-                    {/*            checked={formData.attributes[0].special_needs}*/}
-                    {/*            onChange={(e) => {*/}
-                    {/*                const updatedAttributes = [...formData.attributes, { special_needs: !formData.attributes[0].special_needs }];*/}
-                    {/*                setFormData({*/}
-                    {/*                                ...formData,*/}
-                    {/*                                attributes: updatedAttributes,*/}
-                    {/*                            });*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label" htmlFor="special_needs">Special Needs</label>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                     {/*Adoption Center*/}
                     <div className="mb-3">
@@ -377,6 +317,68 @@ function EditAnimal({ animal }) {
 
                     {/*Type*/}
                 </form>
+
+                {/*Medical Record*/}
+                <form>
+                    <div className="mb-3">
+                        <h4>Medical Record</h4>
+                        <label htmlFor="name" className="form-label">Vaccination History</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="medicalRecord-vaccinationHistory"
+                            name="medicalRecord-vaccinationHistory"
+                            value={medicalRecord?.vaccinationHistory || ''}
+                            onChange={(e) => setMedicalRecord({
+                                                                  ...medicalRecord,
+                                                                  vaccinationHistory: e.target.value,
+                                                              })}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Medical Conditions</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="medicalRecord-vaccinationHistory"
+                            name="medicalRecord-vaccinationHistory"
+                            value={medicalRecord?.medicalConditions || ''}
+                            onChange={(e) => setMedicalRecord({
+                                                                  ...medicalRecord,
+                                                                  medicalConditions: e.target.value,
+                                                              })}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Prescription</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="medicalRecord-vaccinationHistory"
+                            name="medicalRecord-vaccinationHistory"
+                            value={medicalRecord?.prescription || ''}
+                            onChange={(e) => setMedicalRecord({
+                                                                  ...medicalRecord,
+                                                                  prescription: e.target.value,
+                                                              })}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Treatment History</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="medicalRecord-vaccinationHistory"
+                            name="medicalRecord-vaccinationHistory"
+                            value={medicalRecord?.treatmentHistory || ''}
+                            onChange={(e) => setMedicalRecord({
+                                                                  ...medicalRecord,
+                                                                  treatmentHistory: e.target.value,
+                                                              })}
+                        />
+                    </div>
+                </form>
+
                 {success && <p className="text-success mt-2">{success}</p>}
                 <Link className="btn btn-danger"
                       onClick={handleUpdateAnimal}>

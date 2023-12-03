@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faChevronDown, faChevronLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {getAnimalById} from "../../api/petfinder-api";
 import * as client from "../AnimalCard/client";
+import * as petProfileClient from "../PetProfile/client";
 import {useSelector} from "react-redux";
+import {findCommentsByPetId} from "./client";
+import * as adminClient from "../Admin/client";
+import * as animalClient from "../AnimalCard/client";
 
 const AdminPetProfile = () => {
     const { id } = useParams();
@@ -14,25 +18,39 @@ const AdminPetProfile = () => {
     const user = useSelector(state => state.userReducer);
 
     const [petData, setPetData] = useState(null);
-
+    const [adoptionCenter, setAdoptionCenter] = useState({});
+    const [expandedCenter, setExpandedCenter] = useState(false);
+    const [medicalRecord, setMedicalRecord] = useState();
 
     useEffect(() => {
-        const fetchAnimalInfoAndLog = async () => {
-            try {
-                const animalInfo = await getAnimalById(id);
-                console.log(animalInfo);
-                setPetData(animalInfo);
-            } catch (error) {
-                console.error('Error fetching animal information:', error);
+        const getAdoptionCenter = async (data) => {
+            const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
+            setAdoptionCenter(center);
+        }
+        const getMedicalRecord = async (data, id) => {
+            if(data.medicalRecord) {
+                const record = await petProfileClient.findMedicalRecordById(id);
+                setMedicalRecord(record);
             }
-        };
+        }
 
-        fetchAnimalInfoAndLog(id);
+        animalClient.findPetById(id).then(data => {
+            setPetData(data);
+            getAdoptionCenter(data);
+            getMedicalRecord(data, data.medicalRecord)
+        }).catch(error => {
+            console.error(error);
+        });
+
     }, [id]);
 
     if (!petData) {
         return <div>No data...</div>;
     }
+
+    const handleExpand = () => {
+        setExpandedCenter(!expandedCenter);
+    };
 
     const addPet = async () => {
         const newAnimal = {
@@ -102,6 +120,20 @@ const AdminPetProfile = () => {
                         <p>{petData.description}</p>
                     </div>
                 </div>
+                <div className="row mt-4">
+                    <div className="col-12">
+                        <h5>Medical Record</h5>
+                        {medicalRecord ? <ul>
+                            <li><strong>Vaccination
+                                History:</strong> {medicalRecord.vaccinationHistory}</li>
+                            <li><strong>Medical
+                                Conditions:</strong> {medicalRecord.medicalConditions}</li>
+                            <li><strong>Prescription:</strong> {medicalRecord.prescription}</li>
+                            <li><strong>Treatment History:</strong> {medicalRecord.treatmentHistory}
+                            </li>
+                        </ul> : <p>None.</p>}
+                    </div>
+                </div>
                 <div className="row mt-3">
                     {/* Additional information section */}
                     <div className="col-12">
@@ -114,6 +146,43 @@ const AdminPetProfile = () => {
                             <li><strong>Status:</strong> {petData.status}</li>
                             <li><strong>Type:</strong> {petData.type}</li>
                         </ul>
+                    </div>
+                </div>
+                <div>
+                    <div className="row mt-3">
+                        {adoptionCenter && (
+                            <div className="row mt-3">
+                                {adoptionCenter.name && (
+                                    <div className="d-flex justify-content-between w-100">
+                                        <h5>{adoptionCenter.name}</h5>
+                                        <Link
+                                            className="text-black float-end"
+                                            onClick={() => handleExpand()}
+                                        >
+                                            <FontAwesomeIcon icon={faChevronDown} />
+                                        </Link>
+                                    </div>
+                                )}
+                                <p>{adoptionCenter.address && adoptionCenter.address.street ? adoptionCenter.address.street : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.city ? adoptionCenter.address.city : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.zipcode ? adoptionCenter.address.zipcode : ''}</p>
+                                <p>Contact Info: {adoptionCenter.contactInfo ? adoptionCenter.contactInfo : ''}</p>
+                                {expandedCenter && <div className="expanded-details">
+                                    <p>Website: {adoptionCenter.website ? adoptionCenter.website : ''}</p>
+                                    <p>Operating Hours:</p>
+                                    <ul>
+                                        <li>Monday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.monday : ''}</li>
+                                        <li>Tuesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.tuesday : ''}</li>
+                                        <li>Wednesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.wednesday : ''}</li>
+                                        <li>Thursday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.thursday : ''}</li>
+                                        <li>Friday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.friday : ''}</li>
+                                        <li>Saturday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.saturday : ''}</li>
+                                        <li>Sunday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.sunday : ''}</li>
+                                        {/* Similarly check other days */}
+                                    </ul>
+                                </div> }
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

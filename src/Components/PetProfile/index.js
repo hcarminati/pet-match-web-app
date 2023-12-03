@@ -3,16 +3,12 @@ import './index.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronDown, faChevronLeft, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getAnimalById } from '../../api/petfinder-api';
 import * as client from "./client";
 import * as animalClient from "../AnimalCard/client";
 import * as adminClient from "../Admin/client";
-import {deleteComment, findCommentsByPetId} from "./client";
+import {deleteComment, findCommentsByPetId, findMedicalRecordById} from "./client";
 import CommentComponent from "../Comments";
-import * as profileClient from "../Profile/client";
-import {findPetById} from "../AnimalCard/client";
 import {useSelector} from "react-redux";
-import {findAdoptionCenterById} from "../Admin/client";
 
 const PetProfile = () => {
     const { id } = useParams();
@@ -32,6 +28,7 @@ const PetProfile = () => {
                                                  });
     const [isAdopted, setIsAdopted] = useState(false);
     const [expandedCenter, setExpandedCenter] = useState(false);
+    const [medicalRecord, setMedicalRecord] = useState();
 
     useEffect(() => {
         const getComments = async () => {
@@ -42,10 +39,17 @@ const PetProfile = () => {
             const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
             setAdoptionCenter(center);
         }
+        const getMedicalRecord = async (data, id) => {
+            if(data.medicalRecord) {
+                const record = await client.findMedicalRecordById(id);
+                setMedicalRecord(record);
+            }
+        }
 
         animalClient.findPetById(id).then(data => {
             setPetData(data);
             getAdoptionCenter(data);
+            getMedicalRecord(data, data.medicalRecord)
         }).catch(error => {
             console.error(error);
         });
@@ -164,6 +168,20 @@ const PetProfile = () => {
                         <p>{petData.description}</p>
                     </div>
                 </div>
+                <div className="row mt-4">
+                    <div className="col-12">
+                        <h5>Medical Record</h5>
+                        {medicalRecord ? <ul>
+                            <li><strong>Vaccination
+                                History:</strong> {medicalRecord.vaccinationHistory}</li>
+                            <li><strong>Medical
+                                Conditions:</strong> {medicalRecord.medicalConditions}</li>
+                            <li><strong>Prescription:</strong> {medicalRecord.prescription}</li>
+                            <li><strong>Treatment History:</strong> {medicalRecord.treatmentHistory}
+                            </li>
+                        </ul> : <p>None.</p>}
+                    </div>
+                </div>
                 <div className="row mt-3">
                     {/* Additional information section */}
                     <div className="col-12">
@@ -184,7 +202,7 @@ const PetProfile = () => {
                                 <div className="row mt-3">
                                     {adoptionCenter.name && (
                                         <div className="d-flex justify-content-between w-100">
-                                            <h3>{adoptionCenter.name}</h3>
+                                            <h5>{adoptionCenter.name}</h5>
                                             <Link
                                                 className="text-black float-end"
                                                 onClick={() => handleExpand()}
