@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../userReducer";
 import * as client from "../../Edit/client";
 import {getByUsername} from "../../../Login/client";
@@ -40,7 +40,7 @@ function ChangePassword() {
             setSuccess("Password successfully changed.");
         } else {
             setError("Old password is invalid or new passwords don't match.");
-            return;
+
         }
     };
 
@@ -61,7 +61,8 @@ function ChangePassword() {
                                 className="search-bar form-control me-2"
                                 id="old-password"
                                 placeholder="Enter old password"
-                                onChange={(e) => handleOldPasswordChange(e)} // Handle changes to the username
+                                onChange={(e) => handleOldPasswordChange(
+                                    e)} // Handle changes to the username
                             />
                         </div>
 

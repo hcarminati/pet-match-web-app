@@ -1,8 +1,7 @@
-import {Link, useParams} from "react-router-dom";
-import React from "react";
+import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import * as loginClient from "../../Login/client";
 import * as adminClient from "../../Admin/client";
-import {useEffect, useState} from "react";
 import * as profileClient from "../client";
 
 function Delete() {
@@ -30,8 +29,6 @@ function Delete() {
             console.log(err);
         }
     };
-
-
 
     return (
         <div className="logout-container d-flex justify-content-center align-items-center">

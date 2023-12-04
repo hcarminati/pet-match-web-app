@@ -14,7 +14,7 @@ export function CurrentUser({children}) {
 
     useEffect(() => {
         fetchCurrentUser();
-    }, []);
+    });
 
-    return (<>{!loading && children}</> );
+    return (<>{!loading && children}</>);
 }

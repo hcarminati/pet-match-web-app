@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as animalCardClient from "../../AnimalCard/client";
-import {useEffect} from "react";
 import * as profileClient from "../../Profile/client";
 
 const NewPet = () => {
-    const [user, setUser] = useState(null);
-
     const [formData, setFormData] = useState({
                                                  age: '',
                                                  name: '',
@@ -49,7 +46,6 @@ const NewPet = () => {
     useEffect(() => {
         const fetchUser = async () => {
             const userData = await profileClient.getAccount();
-            setUser(userData);
             const newFormData = {
                 ...formData,
                 uploader: userData._id,
@@ -58,35 +54,35 @@ const NewPet = () => {
         };
 
         fetchUser();
-    }, []);
+    });
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const {name, value} = e.target;
         // Handle checkbox inputs
-            if (name.includes('.')) {
-                const [parent, child] = name.split('.');
+        if (name.includes('.')) {
+            const [parent, child] = name.split('.');
+            setFormData({
+                            ...formData,
+                            [parent]: {
+                                ...formData[parent],
+                                [child]: value
+                            }
+                        });
+        } else {
+            // Convert the comma-separated tags into an array
+            if (name === 'tags') {
+                const tagsArray = value.split(',').map(tag => tag.trim());
                 setFormData({
                                 ...formData,
-                                [parent]: {
-                                    ...formData[parent],
-                                    [child]: value
-                                }
+                                [name]: tagsArray
                             });
             } else {
-                // Convert the comma-separated tags into an array
-                if (name === 'tags') {
-                    const tagsArray = value.split(',').map(tag => tag.trim());
-                    setFormData({
-                                    ...formData,
-                                    [name]: tagsArray
-                                });
-                } else {
-                    setFormData({
-                                    ...formData,
-                                    [name]: value
-                                });
-                }
+                setFormData({
+                                ...formData,
+                                [name]: value
+                            });
             }
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -164,7 +160,8 @@ const NewPet = () => {
                                                              }
                                                          })}
                         />
-                        <label className="form-check-label" htmlFor="house_trained">House Trained</label>
+                        <label className="form-check-label" htmlFor="house_trained">House
+                            Trained</label>
                     </div>
 
                     <div className="form-check">
@@ -182,7 +179,8 @@ const NewPet = () => {
                                                              }
                                                          })}
                         />
-                        <label className="form-check-label" htmlFor="shots_current">Shots Current</label>
+                        <label className="form-check-label" htmlFor="shots_current">Shots
+                            Current</label>
                     </div>
 
                     <div className="form-check">
@@ -200,7 +198,8 @@ const NewPet = () => {
                                                              }
                                                          })}
                         />
-                        <label className="form-check-label" htmlFor="spayed_neutered">Spayed Neutered</label>
+                        <label className="form-check-label" htmlFor="spayed_neutered">Spayed
+                            Neutered</label>
                     </div>
 
                     <div className="form-check">
@@ -218,7 +217,8 @@ const NewPet = () => {
                                                              }
                                                          })}
                         />
-                        <label className="form-check-label" htmlFor="special_needs">Special Needs</label>
+                        <label className="form-check-label" htmlFor="special_needs">Special
+                            Needs</label>
                     </div>
                 </div>
 

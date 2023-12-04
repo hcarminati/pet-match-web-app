@@ -11,7 +11,6 @@ import AvailablePets from "./AvailablePets";
 import AdminPetProfile from "../PetProfile/AdminPetProfile";
 import AdoptionCenters from "./AdoptionCenters";
 
-
 const Admin = () => {
     return (
         <div className="admin-container">
@@ -21,14 +20,14 @@ const Admin = () => {
                         <AdminNavigation/>
                         <div className="courses-content-container flex-grow-1">
                             <Routes>
-                                <Route path="/" element={<Navigate to="/Admin/add"/>} />
+                                <Route path="/" element={<Navigate to="/Admin/add"/>}/>
                                 <Route path="add" element={<AddPets/>}/>
                                 <Route path="users" element={<Users/>}/>
                                 <Route path="users/:id" element={<PublicProfile/>}/>
                                 <Route path="users/edit/:id" element={<AdminEdit/>}/>
                                 <Route path="available" element={<AvailablePets/>}/>
-                                <Route path="pet/:id" element={<AdminPetProfile />} />
-                                <Route path="acenter" element={<AdoptionCenters />} />
+                                <Route path="pet/:id" element={<AdminPetProfile/>}/>
+                                <Route path="acenter" element={<AdoptionCenters/>}/>
                             </Routes>
                         </div>
                     </div>

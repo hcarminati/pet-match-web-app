@@ -6,7 +6,6 @@ const request = axios.create({
                              });
 
 const API_BASE = process.env.REACT_APP_API_BASE;
-const USER_URL = `${API_BASE}/user`;
 const USERS_URL = `${API_BASE}/users`;
 
 export const updateProfile = async (user) => {

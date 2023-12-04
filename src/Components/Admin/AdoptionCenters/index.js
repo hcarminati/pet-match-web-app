@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as client from "../client";
-import {useEffect} from "react";
-import * as profileClient from "../../Profile/client";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
-import {addAdoptionCenter, updateAdoptionCenterById} from "../client";
 
 const AdminPage = () => {
     const [allCenters, setAllCenters] = useState([]);
@@ -51,32 +48,6 @@ const AdminPage = () => {
             setEditingCenterId(centerId);
             setShowForm(true);
         }
-    };
-
-    const handleCancelEdit = () => {
-        setEditingCenterId(null);
-        setShowForm(false);
-        setFormData({
-                        name: '',
-                        address: {
-                            street: '',
-                            city: '',
-                            zipcode: '',
-                        },
-                        contactInfo: '',
-                        centerType: '',
-                        operatingHours: {
-                            monday: '',
-                            tuesday: '',
-                            wednesday: '',
-                            thursday: '',
-                            friday: '',
-                            saturday: '',
-                            sunday: '',
-                        },
-                        website: '',
-                        centerDescription: '',
-                    });
     };
 
     const handleSubmit = async (e) => {
@@ -151,19 +122,21 @@ const AdminPage = () => {
                             {/* Name */}
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Name:</label>
-                                <input type="text" className="form-control" id="name" name="name" value={formData.name}
+                                <input type="text" className="form-control" id="name" name="name"
+                                       value={formData.name}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
                                                            name: e.target.value,
-                                                       })} />
+                                                       })}/>
                             </div>
 
                             {/* Address */}
                             <div className="mb-3">
                                 <p>Address:</p>
                                 <label htmlFor="street" className="form-label">Street</label>
-                                <input type="text" className="form-control" id="street" name="address.street" value={formData.address.street}
+                                <input type="text" className="form-control" id="street"
+                                       name="address.street" value={formData.address.street}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -176,7 +149,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="street" className="form-label">City</label>
-                                <input type="text" className="form-control" id="street" name="address.street" value={formData.address.city}
+                                <input type="text" className="form-control" id="street"
+                                       name="address.street" value={formData.address.city}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -189,7 +163,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="street" className="form-label">Zipcode</label>
-                                <input type="text" className="form-control" id="street" name="address.street" value={formData.address.zipcode}
+                                <input type="text" className="form-control" id="street"
+                                       name="address.street" value={formData.address.zipcode}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -203,8 +178,10 @@ const AdminPage = () => {
 
                             {/* Contact Info */}
                             <div className="mb-3">
-                                <label htmlFor="contactInfo" className="form-label">Contact Info:</label>
-                                <input type="text" className="form-control" id="contactInfo" name="contactInfo" value={formData.contactInfo}
+                                <label htmlFor="contactInfo" className="form-label">Contact
+                                    Info:</label>
+                                <input type="text" className="form-control" id="contactInfo"
+                                       name="contactInfo" value={formData.contactInfo}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -215,8 +192,10 @@ const AdminPage = () => {
 
                             {/* Center Type */}
                             <div className="mb-3">
-                                <label htmlFor="centerType" className="form-label">Center Type:</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.centerType}
+                                <label htmlFor="centerType" className="form-label">Center
+                                    Type:</label>
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.centerType}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -230,7 +209,8 @@ const AdminPage = () => {
                             <div className="mb-3">
                                 <p>Operating Hours:</p>
                                 <label htmlFor="centerType" className="form-label">Monday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.monday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.monday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -243,7 +223,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Tuesday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.tuesday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.tuesday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -256,7 +237,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Wednesday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.wednesday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.wednesday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -269,7 +251,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Thursday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.thursday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.thursday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -282,7 +265,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Friday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.friday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.friday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -295,7 +279,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Saturday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.saturday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.saturday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -308,7 +293,8 @@ const AdminPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="centerType" className="form-label">Sunday</label>
-                                <input type="text" className="form-control" id="centerType" name="centerType" value={formData.operatingHours.sunday}
+                                <input type="text" className="form-control" id="centerType"
+                                       name="centerType" value={formData.operatingHours.sunday}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -323,7 +309,8 @@ const AdminPage = () => {
                             {/* Website */}
                             <div className="mb-3">
                                 <label htmlFor="website" className="form-label">Website:</label>
-                                <input type="text" className="form-control" id="website" name="website" value={formData.website}
+                                <input type="text" className="form-control" id="website"
+                                       name="website" value={formData.website}
                                        onChange={(e) =>
                                            setFormData({
                                                            ...formData,
@@ -334,8 +321,11 @@ const AdminPage = () => {
 
                             {/* Center Description */}
                             <div className="mb-3">
-                                <label htmlFor="centerDescription" className="form-label">Center Description:</label>
-                                <textarea className="form-control" id="centerDescription" name="centerDescription" value={formData.centerDescription}
+                                <label htmlFor="centerDescription" className="form-label">Center
+                                    Description:</label>
+                                <textarea className="form-control" id="centerDescription"
+                                          name="centerDescription"
+                                          value={formData.centerDescription}
                                           onChange={(e) =>
                                               setFormData({
                                                               ...formData,
@@ -346,7 +336,8 @@ const AdminPage = () => {
                         </form>
                         <button type="submit"
                                 className="btn btn-primary mb-4"
-                            onClick={handleSubmit}> Add Center</button>
+                                onClick={handleSubmit}> Add Center
+                        </button>
                     </div>
                 )}
                 <div className="centers-list">

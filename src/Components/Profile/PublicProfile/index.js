@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
 import {useParams} from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -8,10 +8,9 @@ import * as profileClient from "../client";
 import LikesComponent from "../../LikesComponent";
 import {deleteComment} from "../../PetProfile/client";
 import AdoptedComponent from "../../AdoptedComponent";
-import {findUserById} from "../client";
 
 const PublicProfile = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [user, setUser] = useState(null);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
@@ -28,20 +27,19 @@ const PublicProfile = () => {
         };
 
         fetchData();
-    }, []);
+    });
 
     useEffect(() => {
         const comments = async () => {
             try {
-                if(id === 'Home') {
+                if (id === 'Home') {
                     const userAdoptedPets = await profileClient.findAdoptedPetsByUserId(user._id);
                     setAdoptedPets(userAdoptedPets || []);
                     const comments = await profileClient.findCommentsByUserId(user._id);
                     setComments(comments);
                     const likes = await profileClient.findLikesByUserId(user._id);
                     setLikes(likes);
-                }
-                else {
+                } else {
                     const userAdoptedPets = await profileClient.findAdoptedPetsByUserId(id);
                     setAdoptedPets(userAdoptedPets || []);
                     const comments = await profileClient.findCommentsByUserId(id);

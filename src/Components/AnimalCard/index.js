@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from "react";
-import { Modal, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import * as client from "./client";
 import * as profileClient from "../Profile/client";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import Button from "../common/Button";
 import EditAnimal from "../EditAnimal";
 
-function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
+function AnimalCard({animal, add, removeAnimal, onUnlike}) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -30,7 +29,6 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
     }, []);
 
     const [isLiked, setIsLiked] = useState(false);
-    const [likedLikeId, setLikedLikeId] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
@@ -53,7 +51,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
 
     const toggleLike = async () => {
         if (user) {
-            const userLikes =  await client.getUserLikes(user._id);
+            const userLikes = await client.getUserLikes(user._id);
 
             if (isLiked) {
                 if (onUnlike) {
@@ -61,7 +59,6 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                 }
                 const likedAnimal = userLikes.find(pet => pet.petId === animal._id);
                 await client.deleteLike(likedAnimal._id);
-                setLikedLikeId(null);
             } else {
                 const like = {
                     userId: user._id,
@@ -113,17 +110,12 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
         setShowEditModal(true);
     };
 
-    const closeEditModal = () => {
-        // Implement logic to close the edit modal/pop-up
-        setShowEditModal(false);
-    };
-
     return (
         <div className={"card my-3 mx-3"}>
             <div className="card-img-top">
                 <img
                     src={animal.primary_photo_cropped ? animal.primary_photo_cropped.full : ""}
-                    alt="Animal Image"
+                    alt={`${animal.breeds.primary}`}
                     className="fill-image"
                 />
             </div>
@@ -138,7 +130,7 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                          icon={faPlus}
                          onClick={addPet}
                      />
-                : <FontAwesomeIcon
+                     : <FontAwesomeIcon
                      className={`${isLiked ? 'text-danger' : 'text-white'}`}
                      icon={faHeart}
                      onClick={toggleLike}
@@ -166,9 +158,9 @@ function AnimalCard({ animal, add, removeAnimal, onUnlike }) {
                              overflowY: "auto",
                          }}
                      >
-                         <EditAnimal animal={animal} />
+                         <EditAnimal animal={animal}/>
                      </Popup>
-                 </div>: <></>
+                 </div> : <></>
                 }
             </div> : <></>}
             <Link

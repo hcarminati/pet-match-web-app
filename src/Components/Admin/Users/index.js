@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as client from "../client";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit} from "@fortawesome/free-solid-svg-icons";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -25,7 +25,8 @@ const Users = () => {
 
     // Filter users based on search term
     const filteredUsers = users.filter(user =>
-                                           (user.username.toLowerCase().includes(searchTerm.toLowerCase())
+                                           (user.username.toLowerCase()
+                                                .includes(searchTerm.toLowerCase())
                                             || searchTerm === "") &&
                                            (roleFilter === "all" || user.role === roleFilter)
     );
@@ -74,7 +75,7 @@ const Users = () => {
                             {user.role}
                         </span>
                         <Link to={`edit/${user._id}`}>
-                            <FontAwesomeIcon icon={faEdit} className="text-muted" />
+                            <FontAwesomeIcon icon={faEdit} className="text-muted"/>
                         </Link>
                     </div>
                 ))}

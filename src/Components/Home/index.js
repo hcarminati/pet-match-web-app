@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import SearchCourse from "../searchCourses/SearchCourse";
 import AnimalCard from "../AnimalCard";
 import "./index.css";
-import { getAvailablePets } from "../Admin/client";
+import {getAvailablePets} from "../Admin/client";
 import * as profileClient from "../Profile/client";
 import * as petProfileClient from "../PetProfile/client";
 import * as animalCardClient from "../AnimalCard/client";
@@ -56,7 +56,8 @@ function HomePage() {
             try {
                 const data = await petProfileClient.getAllAdoptedPets();
                 setAllAdoptedPetsMinData(data)
-                const animalDataPromises = data.map(animal => animalCardClient.findPetById(animal.petId));
+                const animalDataPromises = data.map(
+                    animal => animalCardClient.findPetById(animal.petId));
 
                 Promise.all(animalDataPromises)
                     .then(animalData => {
@@ -96,8 +97,10 @@ function HomePage() {
     useEffect(() => {
         const fetchAdoptedByUser = async () => {
             try {
-                const adoptedByUser= allAdoptedPetsMinData.filter(animal => animal.userId === user._id);
-                const animalDataPromises = adoptedByUser.map(animal => animalCardClient.findPetById(animal.petId));
+                const adoptedByUser = allAdoptedPetsMinData.filter(
+                    animal => animal.userId === user._id);
+                const animalDataPromises = adoptedByUser.map(
+                    animal => animalCardClient.findPetById(animal.petId));
                 Promise.all(animalDataPromises)
                     .then(animalData => {
                         setAdoptedByUser(animalData);
@@ -138,9 +141,10 @@ function HomePage() {
                          {uploadedByUserLoading ? (
                              <p>Loading...</p>
                          ) : (
-                             uploadedByUser.slice(uploadedByUser.length-4, uploadedByUser.length).map((animal) => (
-                                  <AnimalCard key={animal._id} animal={animal} add={false} />
-                              ))
+                              uploadedByUser.slice(uploadedByUser.length - 4, uploadedByUser.length)
+                                  .map((animal) => (
+                                      <AnimalCard key={animal._id} animal={animal} add={false}/>
+                                  ))
                           )}
                      </div>
                  </div>
@@ -152,8 +156,8 @@ function HomePage() {
                          {loading ? (
                              <p>Loading...</p>
                          ) : (
-                              animals.slice(animals.length-4, animals.length).map((animal) => (
-                                  <AnimalCard key={animal._id} animal={animal} add={false} />
+                              animals.slice(animals.length - 4, animals.length).map((animal) => (
+                                  <AnimalCard key={animal._id} animal={animal} add={false}/>
                               ))
                           )}
                      </div>
@@ -166,9 +170,10 @@ function HomePage() {
                          {adoptedByUserLoading ? (
                              <p>Loading...</p>
                          ) : (
-                             adoptedByUser.slice(adoptedByUser.length-4, adoptedByUser.length).map((animal) => (
-                                  <AnimalCard key={animal._id} animal={animal} add={false} />
-                              ))
+                              adoptedByUser.slice(adoptedByUser.length - 4, adoptedByUser.length)
+                                  .map((animal) => (
+                                      <AnimalCard key={animal._id} animal={animal} add={false}/>
+                                  ))
                           )}
                      </div>
                  </div>
@@ -181,8 +186,8 @@ function HomePage() {
                             {loading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 animals.slice(animals.length-4, animals.length).map((animal) => (
-                                     <AnimalCard key={animal._id} animal={animal} add={false} />
+                                 animals.slice(animals.length - 4, animals.length).map((animal) => (
+                                     <AnimalCard key={animal._id} animal={animal} add={false}/>
                                  ))
                              )}
                         </div>
@@ -198,8 +203,9 @@ function HomePage() {
                             {allAdoptedPetsLoading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 allAdoptedPets.slice(allAdoptedPets.length-4, allAdoptedPets.length).map((animal) => (
-                                     <AnimalCard key={animal._id} animal={animal} add={false} />
+                                 allAdoptedPets.slice(allAdoptedPets.length - 4,
+                                                      allAdoptedPets.length).map((animal) => (
+                                     <AnimalCard key={animal._id} animal={animal} add={false}/>
                                  ))
                              )}
                         </div>

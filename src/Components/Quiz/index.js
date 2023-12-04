@@ -84,9 +84,9 @@
 //    </button>
 //</form>
 
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import "./index.css";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import * as animalCardClient from "../AnimalCard/client";
 import AnimalCard from "../AnimalCard";
 
@@ -129,11 +129,16 @@ function Quiz() {
                 const filteredResults = allPets.filter((animal) => {
                     /* Example filtering logic based on quiz parameters */
                     return (
-                        (!searchParameters.name || animal.name.toLowerCase().includes(searchParameters.name.toLowerCase())) &&
-                        (!searchParameters.type || animal.type.toLowerCase() === searchParameters.type.toLowerCase()) &&
-                        (!searchParameters.size || animal.size.toLowerCase() === searchParameters.size.toLowerCase()) &&
-                        (!searchParameters.gender || animal.gender.toLowerCase() === searchParameters.gender.toLowerCase()) &&
-                        (!searchParameters.age || animal.age.toLowerCase() === searchParameters.age.toLowerCase())
+                        (!searchParameters.name || animal.name.toLowerCase()
+                            .includes(searchParameters.name.toLowerCase())) &&
+                        (!searchParameters.type || animal.type.toLowerCase()
+                         === searchParameters.type.toLowerCase()) &&
+                        (!searchParameters.size || animal.size.toLowerCase()
+                         === searchParameters.size.toLowerCase()) &&
+                        (!searchParameters.gender || animal.gender.toLowerCase()
+                         === searchParameters.gender.toLowerCase()) &&
+                        (!searchParameters.age || animal.age.toLowerCase()
+                         === searchParameters.age.toLowerCase())
                     );
                 });
 
@@ -172,8 +177,8 @@ function Quiz() {
                                     id="size"
                                     className="publish-all-select form-select float-end mb-2 ms-1"
                                     onChange={e => setSearchParameters({
-                                            ...searchParameters,
-                                            size: e.target.value,
+                                                                           ...searchParameters,
+                                                                           size: e.target.value,
                                                                        })}
                                 >
                                     <option value="">Select an option</option>
@@ -268,14 +273,14 @@ function Quiz() {
                                     <Link to={`/Home`} className="btn btn-secondary mt-2">
                                         Cancel
                                     </Link>
-                                    <button type="submit" className="btn btn-danger ms-2 mt-2" onClick={handleSubmit}>
+                                    <button type="submit" className="btn btn-danger ms-2 mt-2"
+                                            onClick={handleSubmit}>
                                         Enter
                                     </button>
                                 </div>
                             )}
                         </form>
                     </div>
-
 
                 ) : (
                      <>
@@ -285,12 +290,13 @@ function Quiz() {
                              <p>Error: {error}</p>
                          ) : (
                                  <div className="quiz-results">
-                                     <p className="header-logo-quiz content-center mb-3">Quiz Results</p>
+                                     <p className="header-logo-quiz content-center mb-3">Quiz
+                                         Results</p>
                                      {console.log(quizResults)}
                                      <ul>
                                          <div className="list-group d-flex flex-row flex-wrap">
                                              {quizResults.map((petData) => (
-                                                 <AnimalCard key={petData._id} animal={petData} />
+                                                 <AnimalCard key={petData._id} animal={petData}/>
                                              ))}
                                          </div>
                                      </ul>

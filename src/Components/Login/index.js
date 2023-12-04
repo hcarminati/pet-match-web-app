@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./index.css";
 import {Link} from "react-router-dom";
 import {login} from "../Profile/userReducer";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import * as client from "./client";
 import {getByUsername} from "./client";
 
 function Login() {
     const dispatch = useDispatch();
-    const [credentials, setCredentials] = useState({ username: "", password: "" });
+    const [credentials, setCredentials] = useState({username: "", password: ""});
 
     const [error, setError] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
@@ -30,7 +30,6 @@ function Login() {
             .catch((err) => {
                 setError("Invalid username or password. Please try again.");
             });
-
 
     }
 
@@ -55,7 +54,8 @@ function Login() {
                                  id="username"
                                  placeholder="Enter your username"
                                  value={credentials.username}
-                                 onChange={(e) => setCredentials({...credentials, username: e.target.value})}
+                                 onChange={(e) => setCredentials(
+                                     {...credentials, username: e.target.value})}
                              />
                          </div>
                          <div className="form-group">
@@ -68,13 +68,15 @@ function Login() {
                                  id="password"
                                  placeholder="Enter your password"
                                  value={credentials.password}
-                                 onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                                 onChange={(e) => setCredentials(
+                                     {...credentials, password: e.target.value})}
                              />
                          </div>
                          {error && <p className="text-danger">{error}</p>}
                          <div className="form-group">
                              <div className="float-end mb-2">
-                                 <Link to={`/Home`} onClick={(e) => handleLogin(e)} className="btn btn-secondary mt-2">
+                                 <Link to={`/Home`} onClick={(e) => handleLogin(e)}
+                                       className="btn btn-secondary mt-2">
                                      Login
                                  </Link>
                              </div>

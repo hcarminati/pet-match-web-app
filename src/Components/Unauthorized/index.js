@@ -1,11 +1,8 @@
 import React from 'react';
-import SearchCourse from "../searchCourses/SearchCourse";
-import AnimalCard from "../AnimalCard";
-import Button from "../common/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCircleExclamation, faSearch} from "@fortawesome/free-solid-svg-icons";
+import {faCircleExclamation} from "@fortawesome/free-solid-svg-icons";
 
-const Unauthorized = ()  => {
+const Unauthorized = () => {
     return (
         <div className="home-container">
             <div className="home-search-content">

@@ -31,7 +31,8 @@ export const getUserById = async (userId) => {
 
 export const updateUserById = async (updatedUserData) => {
     try {
-        const response = await request.put(`${USERS_URL}/id/${updatedUserData._id}`, updatedUserData);
+        const response = await request.put(`${USERS_URL}/id/${updatedUserData._id}`,
+                                           updatedUserData);
         return response.data;
     } catch (error) {
         throw new Error(`Error updating user by ID: ${error.message}`);
@@ -45,6 +46,7 @@ export const getAvailablePets = async () => {
 
 export const deleteUser = async (id) => {
     const response = await request.delete(`${USERS_URL}/id/${id}`);
+    return response.data;
 }
 
 // Adoption Centers Routes

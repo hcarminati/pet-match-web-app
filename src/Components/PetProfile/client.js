@@ -54,7 +54,6 @@ export const getAllAdoptedPets = async () => {
     return response.data;
 };
 
-
 // Medical Records
 
 export const findAllMedicalRecords = async () => {

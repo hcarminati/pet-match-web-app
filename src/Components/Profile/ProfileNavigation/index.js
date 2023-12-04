@@ -1,10 +1,10 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import './index.css';
 
 const ProfileNavigation = () => {
     const links = ["Home", "Adopted", "Favorites", "Settings"];
-    const { pathname } = useLocation();
+    const {pathname} = useLocation();
     console.log(pathname);
 
     return (
@@ -13,7 +13,10 @@ const ProfileNavigation = () => {
                 <div className="courses-nav-item" key={index}>
                     <Link
                         to={link === "Home" ? "/Profile" : `/Profile/${link}`}
-                        className={`courses-nav-link ${link === "Home" && pathname === "/Profile" ? "active" : ""} ${pathname.includes(link) && link !== "Home" ? "active" : ""}`}
+                        className={`courses-nav-link ${link === "Home" && pathname === "/Profile"
+                                                       ? "active" : ""} ${pathname.includes(link)
+                                                                          && link !== "Home"
+                                                                          ? "active" : ""}`}
                     >
                         {link}
                     </Link>

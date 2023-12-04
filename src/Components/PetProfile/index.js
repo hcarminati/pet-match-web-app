@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronDown, faChevronLeft, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import * as client from "./client";
+import {deleteComment, findCommentsByPetId} from "./client";
 import * as animalClient from "../AnimalCard/client";
 import * as adminClient from "../Admin/client";
-import {deleteComment, findCommentsByPetId, findMedicalRecordById} from "./client";
 import CommentComponent from "../Comments";
 import {useSelector} from "react-redux";
 
 const PetProfile = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.userReducer);
@@ -40,7 +40,7 @@ const PetProfile = () => {
             setAdoptionCenter(center);
         }
         const getMedicalRecord = async (data, id) => {
-            if(data.medicalRecord) {
+            if (data.medicalRecord) {
                 const record = await client.findMedicalRecordById(id);
                 setMedicalRecord(record);
             }
@@ -60,17 +60,17 @@ const PetProfile = () => {
     const addComment = async () => {
         if (newComment.comment.trim() !== '') {
             const comment = {
-                              userId: user._id,
-                              username: user.username,
-                              petId: newComment.petId,
-                              date: Date(),
-                              comment: newComment.comment,
-                          };
+                userId: user._id,
+                username: user.username,
+                petId: newComment.petId,
+                date: Date(),
+                comment: newComment.comment,
+            };
             client.addComment(id, comment).then(() => {
                 setComments([
                                 ...comments,
                                 comment
-                ]);
+                            ]);
                 setNewComment({
                                   userId: "",
                                   username: "",
@@ -114,7 +114,6 @@ const PetProfile = () => {
         setIsAdopted(true);
     }
 
-
     const handleExpand = () => {
         setExpandedCenter(!expandedCenter);
     };
@@ -128,7 +127,8 @@ const PetProfile = () => {
                         <h2>{petData.name}</h2>
                         <div className="pet-profile-image mt-3 float-end">
                             <img
-                                src={petData.primary_photo_cropped ? petData.primary_photo_cropped.full : ""}
+                                src={petData.primary_photo_cropped
+                                     ? petData.primary_photo_cropped.full : ""}
                                 alt={petData.name}
                                 className="fill-profile-image"
                             />
@@ -143,7 +143,8 @@ const PetProfile = () => {
 
                         <div className="d-flex flex-wrap">
                             {petData.tags.map((tag, index) => (
-                                <span key={index} className="badge bg-secondary me-2 mb-2">{tag}</span>
+                                <span key={index}
+                                      className="badge bg-secondary me-2 mb-2">{tag}</span>
                             ))}
                         </div>
 
@@ -196,63 +197,85 @@ const PetProfile = () => {
                         </ul>
                     </div>
                 </div>
-                    <div>
-                        <div className="row mt-3">
-                            {adoptionCenter && (
-                                <div className="row mt-3">
-                                    {adoptionCenter.name && (
-                                        <div className="d-flex justify-content-between w-100">
-                                            <h5>{adoptionCenter.name}</h5>
-                                            <Link
-                                                className="text-black float-end"
-                                                onClick={() => handleExpand()}
-                                            >
-                                                <FontAwesomeIcon icon={faChevronDown} />
-                                            </Link>
-                                        </div>
-                                    )}
-                                    <p>{adoptionCenter.address && adoptionCenter.address.street ? adoptionCenter.address.street : ''},
-                                        {adoptionCenter.address && adoptionCenter.address.city ? adoptionCenter.address.city : ''},
-                                        {adoptionCenter.address && adoptionCenter.address.zipcode ? adoptionCenter.address.zipcode : ''}</p>
-                                    <p>Contact Info: {adoptionCenter.contactInfo ? adoptionCenter.contactInfo : ''}</p>
-                                    {expandedCenter && <div className="expanded-details">
-                                        <p>Website: {adoptionCenter.website ? adoptionCenter.website : ''}</p>
-                                        <p>Operating Hours:</p>
-                                        <ul>
-                                            <li>Monday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.monday : ''}</li>
-                                            <li>Tuesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.tuesday : ''}</li>
-                                            <li>Wednesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.wednesday : ''}</li>
-                                            <li>Thursday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.thursday : ''}</li>
-                                            <li>Friday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.friday : ''}</li>
-                                            <li>Saturday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.saturday : ''}</li>
-                                            <li>Sunday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.sunday : ''}</li>
-                                            {/* Similarly check other days */}
-                                        </ul>
-                                    </div> }
-                                </div>
-                            )}
-                        </div>
+                <div>
+                    <div className="row mt-3">
+                        {adoptionCenter && (
+                            <div className="row mt-3">
+                                {adoptionCenter.name && (
+                                    <div className="d-flex justify-content-between w-100">
+                                        <h5>{adoptionCenter.name}</h5>
+                                        <Link
+                                            className="text-black float-end"
+                                            onClick={() => handleExpand()}
+                                        >
+                                            <FontAwesomeIcon icon={faChevronDown}/>
+                                        </Link>
+                                    </div>
+                                )}
+                                <p>{adoptionCenter.address && adoptionCenter.address.street
+                                    ? adoptionCenter.address.street : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.city
+                                     ? adoptionCenter.address.city : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.zipcode
+                                     ? adoptionCenter.address.zipcode : ''}</p>
+                                <p>Contact Info: {adoptionCenter.contactInfo
+                                                  ? adoptionCenter.contactInfo : ''}</p>
+                                {expandedCenter && <div className="expanded-details">
+                                    <p>Website: {adoptionCenter.website ? adoptionCenter.website
+                                                                        : ''}</p>
+                                    <p>Operating Hours:</p>
+                                    <ul>
+                                        <li>Monday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.monday
+                                                     : ''}</li>
+                                        <li>Tuesday: {adoptionCenter.operatingHours
+                                                      ? adoptionCenter.operatingHours.tuesday
+                                                      : ''}</li>
+                                        <li>Wednesday: {adoptionCenter.operatingHours
+                                                        ? adoptionCenter.operatingHours.wednesday
+                                                        : ''}</li>
+                                        <li>Thursday: {adoptionCenter.operatingHours
+                                                       ? adoptionCenter.operatingHours.thursday
+                                                       : ''}</li>
+                                        <li>Friday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.friday
+                                                     : ''}</li>
+                                        <li>Saturday: {adoptionCenter.operatingHours
+                                                       ? adoptionCenter.operatingHours.saturday
+                                                       : ''}</li>
+                                        <li>Sunday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.sunday
+                                                     : ''}</li>
+                                        {/* Similarly check other days */}
+                                    </ul>
+                                </div>}
+                            </div>
+                        )}
                     </div>
+                </div>
 
-                 {/*Comment section*/}
+                {/*Comment section*/}
                 <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>
-                        {user.role != "GUEST" ?
-                        <div>
-                            <textarea
-                                rows="4"
-                                className="form-control mb-2"
-                                placeholder="Add a comment"
-                                value={newComment.comment}
-                                onChange={(e) => setNewComment({
-                                                                   ...newComment,
-                                                                   comment: e.target.value})}
-                            />
-                            <button className="btn btn-primary" onClick={addComment}>Add Comment</button>
-                        </div>
-                                                     : <></>}
-                        <CommentComponent user={user} comments={comments} handleDeleteComment={handleDeleteComment}/>
+                        {user.role !== "GUEST" ?
+                         <div>
+                             <textarea
+                                 rows="4"
+                                 className="form-control mb-2"
+                                 placeholder="Add a comment"
+                                 value={newComment.comment}
+                                 onChange={(e) => setNewComment({
+                                                                    ...newComment,
+                                                                    comment: e.target.value
+                                                                })}
+                             />
+                             <button className="btn btn-primary" onClick={addComment}>Add Comment
+                             </button>
+                         </div>
+                                              : <></>}
+                        <CommentComponent user={user} comments={comments}
+                                          handleDeleteComment={handleDeleteComment}/>
                     </div>
                 </div>
             </div>

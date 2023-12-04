@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as animalClient from '../AnimalCard/client';
 import AnimalCard from '../AnimalCard';
 
-const AdoptedComponent = ({ adoptedPets }) => {
+const AdoptedComponent = ({adoptedPets}) => {
     const [fetchedPetData, setFetchedPetData] = useState([]);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const AdoptedComponent = ({ adoptedPets }) => {
         <div>
             <div className="list-group d-flex flex-row flex-wrap">
                 {fetchedPetData.map((petData) => (
-                    <AnimalCard key={petData._id} animal={petData} />
+                    <AnimalCard key={petData._id} animal={petData}/>
                 ))}
             </div>
         </div>

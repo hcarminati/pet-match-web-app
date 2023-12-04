@@ -1,10 +1,6 @@
-// Replace with your actual Petfinder API credentials
-import * as client from "../Components/AnimalCard/client";
-
 const clientId = 'kbEjL4iJRDrshuPiCJR1zsRuwZ5YKnpxsXCzGIo9MSTREPvx1s';
 const clientSecret = 'd57cKyVgUhB7QUXFPiGi3J3284PYz24Y229PLzMp';
 
-// Function to get an access token from Petfinder
 async function getAccessToken() {
     const tokenUrl = 'https://api.petfinder.com/v2/oauth2/token';
 
@@ -64,8 +60,6 @@ export async function getAnimalById(animalId) {
     }
 
     const animalData = await response.json();
-
-    const animal = await client.findPetByOriginalId(animalId);
 
     return {
         ...animalData.animal,

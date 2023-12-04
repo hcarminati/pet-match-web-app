@@ -25,7 +25,6 @@ export const findUserById = async (id) => {
     return response.data;
 };
 
-
 export const signup = async (credentials) => {
     const response = await request.post(
         `${USER_API}/register`, credentials);

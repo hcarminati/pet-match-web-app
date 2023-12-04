@@ -34,7 +34,6 @@ export const addLike = async (likeObj) => {
     return response.data;
 };
 
-
 export const getLikedPets = async () => {
     const response = await request.get(`${LIKES_URL}`);
     return response.data;
@@ -44,7 +43,6 @@ export const findAllPets = async () => {
     const response = await request.get(`${PETS_URL}`);
     return response.data;
 }
-
 
 export const deleteLike = async (likeId) => {
     const response = await request.delete(`${LIKES_URL}/${likeId}`);

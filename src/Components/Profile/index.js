@@ -19,7 +19,7 @@ const Profile = () => {
                                 <Route path="Home" element={<Navigate to="/Profile"/>}/>
                                 <Route path="Adopted" element={<h1>Adopted</h1>}/>
                                 <Route path="Favorites" element={<h1>Favorites</h1>}/>
-                                <Route path="/Settings/*" element={<Settings />} />
+                                <Route path="/Settings/*" element={<Settings/>}/>
                             </Routes>
                         </div>
                     </div>

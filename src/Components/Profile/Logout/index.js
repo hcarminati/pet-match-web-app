@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import React from "react";
 import {logout} from "../userReducer";
 import {useDispatch} from "react-redux";
@@ -16,7 +16,6 @@ function Logout() {
             // Handle any logout failure (e.g., display an error message)
         }
     };
-
 
     return (
         <div className="logout-container d-flex justify-content-center align-items-center">

@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import * as client from "../client";
 import {setUser} from "../../Profile/userReducer";
 import {useParams} from "react-router";
-import {deleteUser, updateUserById} from "../../Admin/client";
 import {getByUsername} from "../../Login/client";
 
 function AdminEdit() {
     const dispatch = useDispatch();
     const userReducer = useSelector((state) => state.userReducer);
-    const { id } = useParams();
+    const {id} = useParams();
     const [editedUsername, setEditedUsername] = useState(userReducer.username);
     const [editedDescription, setEditedDescription] = useState(userReducer.description);
     const [editedEmail, setEditedEmail] = useState(userReducer.email);
@@ -29,7 +28,7 @@ function AdminEdit() {
                 setEditedDescription(fetchedUser.description);
                 setEditedEmail(fetchedUser.email);
                 setEditedPassword(fetchedUser.password);
-                setEditedPassword(fetchedUser.role);
+                setEditedRole(fetchedUser.role);
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
@@ -47,12 +46,7 @@ function AdminEdit() {
     const handleEmailChange = (e) => {
         setEditedEmail(e.target.value);
     };
-    const handleRoleChange = (e) => {
-        setEditedRole(e.target.value);
-    };
     const saveChanges = async () => {
-        const user = await getByUsername(userReducer.username);
-
         const newUser = {
             ...userToEdit,
             username: editedUsername,
@@ -65,7 +59,6 @@ function AdminEdit() {
         await client.updateUserById(newUser);
         dispatch(setUser(newUser));
         setSuccess("Profile successfully updated.");
-
     };
     const handleDeleteUser = async () => {
         try {
@@ -83,7 +76,8 @@ function AdminEdit() {
             {/* Main Content */}
             <div className="col-md-9">
                 <div className="col-11 col-sm-12">
-                    <p className="header-logo-quiz content-center mb-3">Edit {userToEdit.username}'s Profile</p>
+                    <p className="header-logo-quiz content-center mb-3">Edit {userToEdit.username}'s
+                        Profile</p>
                     <form className="pet-match-quiz mx-auto">
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
@@ -95,7 +89,8 @@ function AdminEdit() {
                                 id="username"
                                 placeholder="Enter profile name"
                                 value={editedUsername} // Bind the input value to the local state
-                                onChange={(e) => handleUsernameChange(e)} // Handle changes to the username
+                                onChange={(e) => handleUsernameChange(
+                                    e)} // Handle changes to the username
                             />
                         </div>
 
@@ -178,7 +173,8 @@ function AdminEdit() {
 
                         <div className="form-group">
                             <div className="float-end">
-                                <Link onClick={() => handleDeleteUser()} className="btn btn-warning mt-2">
+                                <Link onClick={() => handleDeleteUser()}
+                                      className="btn btn-warning mt-2">
                                     Delete Profile
                                 </Link>
                                 <Link to="/Admin/users" className="btn btn-secondary ms-2 mt-2">

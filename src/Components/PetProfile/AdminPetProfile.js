@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronDown, faChevronLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown, faChevronLeft, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {getAnimalById} from "../../api/petfinder-api";
 import * as client from "../AnimalCard/client";
+import * as animalClient from "../AnimalCard/client";
 import * as petProfileClient from "../PetProfile/client";
 import {useSelector} from "react-redux";
-import {findCommentsByPetId} from "./client";
 import * as adminClient from "../Admin/client";
-import * as animalClient from "../AnimalCard/client";
 
 const AdminPetProfile = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.userReducer);
@@ -28,7 +26,7 @@ const AdminPetProfile = () => {
             setAdoptionCenter(center);
         }
         const getMedicalRecord = async (data, id) => {
-            if(data.medicalRecord) {
+            if (data.medicalRecord) {
                 const record = await petProfileClient.findMedicalRecordById(id);
                 setMedicalRecord(record);
             }
@@ -88,7 +86,8 @@ const AdminPetProfile = () => {
                         <h2>{petData.name}</h2>
                         <div className="pet-profile-image mt-3 float-end">
                             <img
-                                src={petData.primary_photo_cropped ? petData.primary_photo_cropped.full : ""}
+                                src={petData.primary_photo_cropped
+                                     ? petData.primary_photo_cropped.full : ""}
                                 alt={petData.name}
                                 className="fill-profile-image"
                             />
@@ -103,12 +102,13 @@ const AdminPetProfile = () => {
 
                         <div className="d-flex flex-wrap">
                             {petData.tags.map((tag, index) => (
-                                <span key={index} className="badge bg-secondary me-2 mb-2">{tag}</span>
+                                <span key={index}
+                                      className="badge bg-secondary me-2 mb-2">{tag}</span>
                             ))}
                         </div>
 
                         <Link className="btn btn-danger mt-3" onClick={addPet}>
-                            <FontAwesomeIcon icon={faPlus} className="me-2" />
+                            <FontAwesomeIcon icon={faPlus} className="me-2"/>
                             Add this pet
                         </Link>
                     </div>
@@ -159,28 +159,47 @@ const AdminPetProfile = () => {
                                             className="text-black float-end"
                                             onClick={() => handleExpand()}
                                         >
-                                            <FontAwesomeIcon icon={faChevronDown} />
+                                            <FontAwesomeIcon icon={faChevronDown}/>
                                         </Link>
                                     </div>
                                 )}
-                                <p>{adoptionCenter.address && adoptionCenter.address.street ? adoptionCenter.address.street : ''},
-                                    {adoptionCenter.address && adoptionCenter.address.city ? adoptionCenter.address.city : ''},
-                                    {adoptionCenter.address && adoptionCenter.address.zipcode ? adoptionCenter.address.zipcode : ''}</p>
-                                <p>Contact Info: {adoptionCenter.contactInfo ? adoptionCenter.contactInfo : ''}</p>
+                                <p>{adoptionCenter.address && adoptionCenter.address.street
+                                    ? adoptionCenter.address.street : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.city
+                                     ? adoptionCenter.address.city : ''},
+                                    {adoptionCenter.address && adoptionCenter.address.zipcode
+                                     ? adoptionCenter.address.zipcode : ''}</p>
+                                <p>Contact Info: {adoptionCenter.contactInfo
+                                                  ? adoptionCenter.contactInfo : ''}</p>
                                 {expandedCenter && <div className="expanded-details">
-                                    <p>Website: {adoptionCenter.website ? adoptionCenter.website : ''}</p>
+                                    <p>Website: {adoptionCenter.website ? adoptionCenter.website
+                                                                        : ''}</p>
                                     <p>Operating Hours:</p>
                                     <ul>
-                                        <li>Monday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.monday : ''}</li>
-                                        <li>Tuesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.tuesday : ''}</li>
-                                        <li>Wednesday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.wednesday : ''}</li>
-                                        <li>Thursday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.thursday : ''}</li>
-                                        <li>Friday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.friday : ''}</li>
-                                        <li>Saturday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.saturday : ''}</li>
-                                        <li>Sunday: {adoptionCenter.operatingHours ? adoptionCenter.operatingHours.sunday : ''}</li>
+                                        <li>Monday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.monday
+                                                     : ''}</li>
+                                        <li>Tuesday: {adoptionCenter.operatingHours
+                                                      ? adoptionCenter.operatingHours.tuesday
+                                                      : ''}</li>
+                                        <li>Wednesday: {adoptionCenter.operatingHours
+                                                        ? adoptionCenter.operatingHours.wednesday
+                                                        : ''}</li>
+                                        <li>Thursday: {adoptionCenter.operatingHours
+                                                       ? adoptionCenter.operatingHours.thursday
+                                                       : ''}</li>
+                                        <li>Friday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.friday
+                                                     : ''}</li>
+                                        <li>Saturday: {adoptionCenter.operatingHours
+                                                       ? adoptionCenter.operatingHours.saturday
+                                                       : ''}</li>
+                                        <li>Sunday: {adoptionCenter.operatingHours
+                                                     ? adoptionCenter.operatingHours.sunday
+                                                     : ''}</li>
                                         {/* Similarly check other days */}
                                     </ul>
-                                </div> }
+                                </div>}
                             </div>
                         )}
                     </div>

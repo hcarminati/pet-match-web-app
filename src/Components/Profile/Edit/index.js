@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import * as client from "./client";
 import {useDispatch, useSelector} from "react-redux";
@@ -34,10 +34,11 @@ function EditProfile() {
                                 className="search-bar form-control me-2"
                                 id="username"
                                 placeholder="Enter profile name"
-                                value={editedUser.username} // Bind the input value to the local state
+                                value={editedUser.username} // Bind the input value to the local
+                                                            // state
                                 onChange={(e) => setEditedUser({
-                                    ...editedUser,
-                                    username: e.target.value
+                                                                   ...editedUser,
+                                                                   username: e.target.value
                                                                })}
                             />
                         </div>

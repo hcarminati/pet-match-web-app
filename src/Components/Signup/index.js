@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login, setUser } from "../Profile/userReducer";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import {login, setUser} from "../Profile/userReducer";
 import "./index.css";
 import * as client from "./client";
-import {signin} from "./client";
 
 function Signup() {
     const [email, setEmail] = useState("");
@@ -33,12 +32,14 @@ function Signup() {
             return;
         }
 
-        const user = { email, username, password, role,
-            firstName: "", lastName: "", dob: ""};
+        const user = {
+            email, username, password, role,
+            firstName: "", lastName: "", dob: ""
+        };
 
         client.signup(user)
             .then((userData) => {
-                dispatch({ type: "LOGIN_SUCCESS", payload: userData });
+                dispatch({type: "LOGIN_SUCCESS", payload: userData});
                 dispatch(setUser(user));
                 dispatch(login(user));
                 setError("");
@@ -48,7 +49,6 @@ function Signup() {
                 console.log("ERRR----", err);
                 setError("Email or username already exists. Please try again.");
             });
-
 
     }
 

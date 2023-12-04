@@ -4,9 +4,8 @@ import 'reactjs-popup/dist/index.css';
 
 import * as petClient from "../PetProfile/client";
 import {Link} from "react-router-dom";
-import {addMedicalRecord, findAllMedicalRecords, findMedicalRecordById} from "../PetProfile/client";
 
-function EditAnimal({ animal }) {
+function EditAnimal({animal}) {
     const [formData, setFormData] = useState(animal);
     const [success, setSuccess] = useState(null);
     const [newRecord, setNewRecord] = useState(false);
@@ -31,7 +30,7 @@ function EditAnimal({ animal }) {
 
         newMedicalRecord();
 
-    }, []);
+    });
 
     const handleUpdateAnimal = async () => {
         if (newRecord) {
@@ -52,7 +51,7 @@ function EditAnimal({ animal }) {
     };
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const {name, value} = e.target;
         if (name.includes('.')) {
             const [parent, child] = name.split('.');
             setFormData({
