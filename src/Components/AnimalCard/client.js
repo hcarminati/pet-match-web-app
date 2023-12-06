@@ -10,7 +10,6 @@ const LIKES_URL = `${API_BASE}/likes`;
 
 export const addPet = async (pet) => {
     const response = await request.post(`${PETS_URL}`, pet);
-    console.log(response)
     return response.data;
 };
 
@@ -21,7 +20,6 @@ export const deletePet = async (pet) => {
 
 export const findPetById = async (id) => {
     const response = await request.get(`${PETS_URL}/id/${id}`);
-    console.log(response.data)
     return response.data;
 };
 

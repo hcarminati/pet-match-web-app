@@ -256,11 +256,11 @@ const PetProfile = () => {
                 </div>
 
                 {/*Comment section*/}
-                {user.role ?
                  <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>
 
+                        {user.role ?
                          <div>
                              <textarea
                                  rows="4"
@@ -275,12 +275,12 @@ const PetProfile = () => {
                              <button className="btn btn-primary" onClick={addComment}>Add Comment
                              </button>
                          </div>
+                        : <></>}
 
                         <CommentComponent user={user} comments={comments}
                                           handleDeleteComment={handleDeleteComment}/>
                     </div>
                 </div>
-                           : <></>}
             </div>
         </div>
     );

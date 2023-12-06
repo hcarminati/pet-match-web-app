@@ -57,8 +57,6 @@ function AdminEdit() {
         };
         delete newUser.isLoggedIn;
 
-        console.log(newUser)
-
         await client.updateUserById(newUser);
         setSuccess("Profile successfully updated.");
     };

@@ -70,7 +70,7 @@ const PublicProfile = () => {
         if (user && user._id && animals.length > 0) {
             fetchAllAdoptedPets();
         }
-    }, [user, animals]);
+    }, []);
 
     useEffect(() => {
         const fetchUploadedByUser = async () => {
@@ -113,7 +113,7 @@ const PublicProfile = () => {
         if (user && user._id && animals.length > 0) {
             fetchAdoptedByUser();
         }
-    }, [user, allAdoptedPetsMinData]);
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {

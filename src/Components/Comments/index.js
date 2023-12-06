@@ -14,7 +14,7 @@ const CommentComponent = ({user, comments, handleDeleteComment, publicProfile}) 
             return formattedDate;
         } catch (error) {
             console.error('Error occurred while formatting the date:', error);
-            return ''; // Return an empty string or handle the error accordingly
+            return '';
         }
     };
     return (
@@ -33,7 +33,7 @@ const CommentComponent = ({user, comments, handleDeleteComment, publicProfile}) 
                                                 {formatDate(comment.date)}
                                             </span>
                         </Link>
-                        {(comment.username === user.username
+                        {!publicProfile && (comment.username === user.username
                           | user.role === "ADMIN") ?
                          <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteComment(
                              comment._id)}></FontAwesomeIcon>
