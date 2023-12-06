@@ -36,8 +36,10 @@ const PetProfile = () => {
             setComments(comments);
         }
         const getAdoptionCenter = async (data) => {
-            const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
-            setAdoptionCenter(center);
+            if (data.adoptionCenter) {
+                const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
+                setAdoptionCenter(center);
+            }
         }
         const getMedicalRecord = async (data, id) => {
             if (data.medicalRecord) {
@@ -213,39 +215,39 @@ const PetProfile = () => {
                                     </div>
                                 )}
                                 <p>{adoptionCenter.address && adoptionCenter.address.street
-                                    ? adoptionCenter.address.street : ''},
+                                    ? `${adoptionCenter.address.street},` : <></>}
                                     {adoptionCenter.address && adoptionCenter.address.city
-                                     ? adoptionCenter.address.city : ''},
+                                     ? `${adoptionCenter.address.city},` : <></>}
                                     {adoptionCenter.address && adoptionCenter.address.zipcode
-                                     ? adoptionCenter.address.zipcode : ''}</p>
-                                <p>Contact Info: {adoptionCenter.contactInfo
-                                                  ? adoptionCenter.contactInfo : ''}</p>
+                                     ? adoptionCenter.address.zipcode : <></>}</p>
+                                <p>{adoptionCenter.contactInfo
+                                                  ? `Contact Info: ${adoptionCenter.contactInfo}` : <></>}</p>
                                 {expandedCenter && <div className="expanded-details">
                                     <p>Website: {adoptionCenter.website ? adoptionCenter.website
-                                                                        : ''}</p>
+                                                                        : 'N/A'}</p>
                                     <p>Operating Hours:</p>
                                     <ul>
                                         <li>Monday: {adoptionCenter.operatingHours
                                                      ? adoptionCenter.operatingHours.monday
-                                                     : ''}</li>
+                                                     : 'N/A'}</li>
                                         <li>Tuesday: {adoptionCenter.operatingHours
                                                       ? adoptionCenter.operatingHours.tuesday
-                                                      : ''}</li>
+                                                      : 'N/A'}</li>
                                         <li>Wednesday: {adoptionCenter.operatingHours
                                                         ? adoptionCenter.operatingHours.wednesday
-                                                        : ''}</li>
+                                                        : 'N/A'}</li>
                                         <li>Thursday: {adoptionCenter.operatingHours
                                                        ? adoptionCenter.operatingHours.thursday
-                                                       : ''}</li>
+                                                       : 'N/A'}</li>
                                         <li>Friday: {adoptionCenter.operatingHours
                                                      ? adoptionCenter.operatingHours.friday
-                                                     : ''}</li>
+                                                     : 'N/A'}</li>
                                         <li>Saturday: {adoptionCenter.operatingHours
                                                        ? adoptionCenter.operatingHours.saturday
-                                                       : ''}</li>
+                                                       : 'N/A'}</li>
                                         <li>Sunday: {adoptionCenter.operatingHours
                                                      ? adoptionCenter.operatingHours.sunday
-                                                     : ''}</li>
+                                                     : 'N/A'}</li>
                                         {/* Similarly check other days */}
                                     </ul>
                                 </div>}
