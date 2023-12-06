@@ -3,8 +3,20 @@ import './index.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
+import {format, parseISO} from 'date-fns';
 
 const CommentComponent = ({user, comments, handleDeleteComment, publicProfile}) => {
+
+    const formatDate = (date) => {
+        try {
+            const parsedDate = parseISO(date);
+            const formattedDate = format(parsedDate, 'MMMM dd, yyyy HH:mm:ss');
+            return formattedDate;
+        } catch (error) {
+            console.error('Error occurred while formatting the date:', error);
+            return ''; // Return an empty string or handle the error accordingly
+        }
+    };
     return (
         <ul>
             {comments.map((comment) => (
@@ -18,7 +30,7 @@ const CommentComponent = ({user, comments, handleDeleteComment, publicProfile}) 
                         >
                             {comment.username}
                             <span className="ms-3 text-muted">
-                                                {comment.date}
+                                                {formatDate(comment.date)}
                                             </span>
                         </Link>
                         {(comment.username === user.username

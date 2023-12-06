@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import * as client from "./client";
 import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../userReducer";
+import {format, parse} from "date-fns";
 
 function EditProfile() {
     const dispatch = useDispatch();
@@ -11,10 +12,26 @@ function EditProfile() {
     const [success, setSuccess] = useState(null);
 
     const saveChanges = async () => {
+        const dobDate = parse(editedUser.dob, 'yyyy-MM-dd', new Date());
+        const formattedDateOfBirth = format(dobDate, 'yyyy-MM-dd');
+
+        setEditedUser({
+                          ...editedUser,
+                          dob: formattedDateOfBirth
+                      });
+
         await client.updateProfile(editedUser);
         dispatch(setUser(editedUser));
-        setSuccess("Profile successfully updated.");
+        setSuccess('Profile successfully updated.');
+    };
 
+    const handleDateChange = (e) => {
+        const selectedDate = e.target.value;
+        const formattedDate = selectedDate.split('T')[0];
+        setEditedUser({
+                          ...editedUser,
+                          dob: formattedDate
+                      });
     };
 
     return (
@@ -34,8 +51,7 @@ function EditProfile() {
                                 className="search-bar form-control me-2"
                                 id="username"
                                 placeholder="Enter profile name"
-                                value={editedUser.username} // Bind the input value to the local
-                                                            // state
+                                value={editedUser.username}
                                 onChange={(e) => setEditedUser({
                                                                    ...editedUser,
                                                                    username: e.target.value
@@ -77,6 +93,21 @@ function EditProfile() {
                                                                    description: e.target.value
                                                                })}
                             />
+
+                            {/* Date of Birth */}
+                            <div className="form-group mt-2">
+                                <label htmlFor="dateOfBirth" className="form-label">
+                                    Date of Birth
+                                </label>
+                                <input
+                                    type="date"
+                                    className="search-bar form-control me-2"
+                                    id="dateOfBirth"
+                                    placeholder="Enter date of birth"
+                                    value={editedUser.dateOfBirth}
+                                    onChange={handleDateChange}
+                                />
+                            </div>
                             {success && <p className="text-success">{success}</p>}
                         </div>
 

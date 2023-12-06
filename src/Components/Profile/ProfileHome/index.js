@@ -8,6 +8,7 @@ import LikesComponent from "../../LikesComponent";
 import * as profileClient from "../client";
 import AdoptedComponent from "../../AdoptedComponent";
 import CommentComponent from "../../Comments";
+import {format} from "date-fns";
 
 const ProfileHome = () => {
     const user = useSelector(state => state.userReducer);
@@ -15,6 +16,7 @@ const ProfileHome = () => {
     const [likes, setLikes] = useState([]);
     const [adoptedPets, setAdoptedPets] = useState([]);
 
+    console.log(user)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -55,6 +57,9 @@ const ProfileHome = () => {
                                                  icon={faPenToSquare}></FontAwesomeIcon>
                             </Link>
                         </h4>
+                        <p>
+                            {format(new Date(user.dob), 'MMMM dd, yyyy')}
+                        </p>
                         <p>
                             {user.email}
                         </p>
