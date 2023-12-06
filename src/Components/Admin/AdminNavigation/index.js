@@ -25,7 +25,7 @@ const AdminNavigation = () => {
     const {pathname} = useLocation();
 
     return (
-        <div className="list-group admin-navigation-container d-none d-sm-block">
+        <div className="list-group admin-navigation-container">
             {links.map((link, index) => (
                 <div className="admin-nav-item" key={index}>
                     <Link

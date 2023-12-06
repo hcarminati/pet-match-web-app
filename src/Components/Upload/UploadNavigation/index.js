@@ -13,7 +13,7 @@ const UploadNavigation = () => {
     const {pathname} = useLocation();
 
     return (
-        <div className="list-group admin-nav-container d-none d-sm-block">
+        <div className="list-group upload-nav-container">
             {links.map((link, index) => (
                 <div className="admin-nav-item" key={index}>
                     <Link

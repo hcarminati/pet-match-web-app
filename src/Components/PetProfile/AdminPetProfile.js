@@ -96,7 +96,7 @@ const AdminPetProfile = () => {
                             />
                         </div>
                     </div>
-                    <div className="pet-profile-top-info col-12 col-sm-6 col-md-6">
+                    <div className="pet-profile-top-info col-12 col-sm-6 col-md-7 col-lg-6">
                         <span className="badge bg-danger me-2 mb-2">
                             {petData.status === "adoptable" ? "Adoptable" : "Adopted"}</span>
                         <p><strong>Age:</strong> {petData.age}</p>

@@ -8,7 +8,7 @@ const ProfileNavigation = () => {
     console.log(pathname);
 
     return (
-        <div className="list-group profile-nav-container d-none d-sm-block">
+        <div className="list-group profile-nav-container">
             {links.map((link, index) => (
                 <div className="courses-nav-item" key={index}>
                     <Link

@@ -1,8 +1,9 @@
 .uploader-container {
+    padding: 60px 0 0 0;
+    margin: 40px;
 }
 
 .uploader-content {
     display: flex;
     flex-direction: column;
-    padding: 60px 0 0 0;
 }

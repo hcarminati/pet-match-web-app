@@ -1,14 +1,14 @@
-.admin-nav-container {
+.upload-nav-container {
     width: 125px;
     min-width: 125px;
     margin-right: 20px;
     background-color: #eee;
     padding: 10px;
-    height: 165px;
+    height: 90px;
     /*position: fixed;*/
 }
 
-.admin-nav-container .admin-nav-link {
+.upload-nav-container .admin-nav-link {
     color: #aaa;
     font-size: 14px;
     text-decoration: none;
