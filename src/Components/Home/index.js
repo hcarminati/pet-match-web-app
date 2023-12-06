@@ -55,17 +55,12 @@ function HomePage() {
         const fetchAllAdoptedPets = async () => {
             try {
                 const data = await petProfileClient.getAllAdoptedPets();
-                setAllAdoptedPetsMinData(data)
-                const animalDataPromises = data.map(
-                    animal => animalCardClient.findPetById(animal.petId));
+                setAllAdoptedPetsMinData(data);
 
-                Promise.all(animalDataPromises)
-                    .then(animalData => {
-                        setAllAdoptedPets(animalData);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                const animalDataPromises = data.map(animal => animalCardClient.findPetById(animal.petId));
+                const resolvedAnimalData = await Promise.all(animalDataPromises);
+                const filteredData = resolvedAnimalData.filter(data => data !== null);
+                setAllAdoptedPets(filteredData);
                 setAllAdoptedPetsLoading(false);
             } catch (error) {
                 console.error('Error fetching adopted pets:', error);
@@ -103,7 +98,8 @@ function HomePage() {
                     animal => animalCardClient.findPetById(animal.petId));
                 Promise.all(animalDataPromises)
                     .then(animalData => {
-                        setAdoptedByUser(animalData);
+                        const filteredData = animalData.filter(data => data !== null);
+                        setAdoptedByUser(filteredData);
                     })
                     .catch(error => {
                         console.error(error);
@@ -156,7 +152,7 @@ function HomePage() {
                          {loading ? (
                              <p>Loading...</p>
                          ) : (
-                              animals.slice(animals.length - 4, animals.length).map((animal) => (
+                             uploadedByUser.slice(animals.length - 4, animals.length).map((animal) => (
                                   <AnimalCard key={animal._id} animal={animal} add={false}/>
                               ))
                           )}
@@ -203,10 +199,10 @@ function HomePage() {
                             {allAdoptedPetsLoading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 allAdoptedPets.slice(allAdoptedPets.length - 4,
+                                allAdoptedPets ? allAdoptedPets.slice(allAdoptedPets.length - 4,
                                                       allAdoptedPets.length).map((animal) => (
                                      <AnimalCard key={animal._id} animal={animal} add={false}/>
-                                 ))
+                                 )) : <></>
                              )}
                         </div>
                     ) : (

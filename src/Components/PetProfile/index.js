@@ -15,7 +15,6 @@ const PetProfile = () => {
     const navigate = useNavigate();
 
     const user = useSelector(state => state.userReducer);
-
     const [petData, setPetData] = useState(null);
     const [adoptionCenter, setAdoptionCenter] = useState({});
     const [comments, setComments] = useState([]);
@@ -257,10 +256,11 @@ const PetProfile = () => {
                 </div>
 
                 {/*Comment section*/}
-                <div className="row mt-4">
+                {user.role ?
+                 <div className="row mt-4">
                     <div className="col-12">
                         <h5>Comments</h5>
-                        {user.role !== "GUEST" ?
+
                          <div>
                              <textarea
                                  rows="4"
@@ -275,11 +275,12 @@ const PetProfile = () => {
                              <button className="btn btn-primary" onClick={addComment}>Add Comment
                              </button>
                          </div>
-                                              : <></>}
+
                         <CommentComponent user={user} comments={comments}
                                           handleDeleteComment={handleDeleteComment}/>
                     </div>
                 </div>
+                           : <></>}
             </div>
         </div>
     );
