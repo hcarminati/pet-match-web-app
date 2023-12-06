@@ -8,6 +8,7 @@ import * as animalClient from "../AnimalCard/client";
 import * as petProfileClient from "../PetProfile/client";
 import {useSelector} from "react-redux";
 import * as adminClient from "../Admin/client";
+import {getAnimalById} from "../../api/petfinder-api";
 
 const AdminPetProfile = () => {
     const {id} = useParams();
@@ -22,8 +23,10 @@ const AdminPetProfile = () => {
 
     useEffect(() => {
         const getAdoptionCenter = async (data) => {
-            const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
-            setAdoptionCenter(center);
+            if(data.adoptionCenter) {
+                const center = await adminClient.findAdoptionCenterById(data.adoptionCenter);
+                setAdoptionCenter(center);
+            }
         }
         const getMedicalRecord = async (data, id) => {
             if (data.medicalRecord) {
@@ -32,7 +35,7 @@ const AdminPetProfile = () => {
             }
         }
 
-        animalClient.findPetById(id).then(data => {
+        getAnimalById(id).then(data => {
             setPetData(data);
             getAdoptionCenter(data);
             getMedicalRecord(data, data.medicalRecord)
@@ -164,13 +167,13 @@ const AdminPetProfile = () => {
                                     </div>
                                 )}
                                 <p>{adoptionCenter.address && adoptionCenter.address.street
-                                    ? adoptionCenter.address.street : ''},
+                                    ? `${adoptionCenter.address.street },`: "Adoption Center information not provided."}
                                     {adoptionCenter.address && adoptionCenter.address.city
-                                     ? adoptionCenter.address.city : ''},
+                                     ? `${adoptionCenter.address.city},` : ''}
                                     {adoptionCenter.address && adoptionCenter.address.zipcode
                                      ? adoptionCenter.address.zipcode : ''}</p>
-                                <p>Contact Info: {adoptionCenter.contactInfo
-                                                  ? adoptionCenter.contactInfo : ''}</p>
+                                <p>{adoptionCenter.contactInfo
+                                                  ? `Contact Info: ${adoptionCenter.contactInfo}` : ''}</p>
                                 {expandedCenter && <div className="expanded-details">
                                     <p>Website: {adoptionCenter.website ? adoptionCenter.website
                                                                         : ''}</p>
