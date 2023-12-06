@@ -1,29 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import * as client from "../client";
-import {setUser} from "../../Profile/userReducer";
 import {useParams} from "react-router";
-import {getByUsername} from "../../Login/client";
 
 function AdminEdit() {
-    const dispatch = useDispatch();
-    const userReducer = useSelector((state) => state.userReducer);
     const {id} = useParams();
-    const [editedUsername, setEditedUsername] = useState(userReducer.username);
-    const [editedDescription, setEditedDescription] = useState(userReducer.description);
-    const [editedEmail, setEditedEmail] = useState(userReducer.email);
-    const [editedPassword, setEditedPassword] = useState(userReducer.password);
-    const [success, setSuccess] = useState(null);
     const [userToEdit, setUserToEdit] = useState({});
-    const [editedRole, setEditedRole] = useState(userReducer.role); // Define state for the role
+
+    const [editedUsername, setEditedUsername] = useState("");
+    const [editedDescription, setEditedDescription] = useState("");
+    const [editedEmail, setEditedEmail] = useState("");
+    const [editedPassword, setEditedPassword] = useState("");
+    const [editedRole, setEditedRole] = useState("");
+
+    const [success, setSuccess] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const fetchedUser = await client.getUserById(id);
                 setUserToEdit(fetchedUser);
-                // Set the fetched user data to the state
+
                 setEditedUsername(fetchedUser.username);
                 setEditedDescription(fetchedUser.description);
                 setEditedEmail(fetchedUser.email);
@@ -37,6 +34,9 @@ function AdminEdit() {
         fetchUser();
     }, [id]);
 
+    const handlePasswordChange = (e) => {
+        setEditedPassword(e.target.value);
+    };
     const handleUsernameChange = (e) => {
         setEditedUsername(e.target.value);
     };
@@ -50,14 +50,16 @@ function AdminEdit() {
         const newUser = {
             ...userToEdit,
             username: editedUsername,
+            password: editedPassword,
             description: editedDescription,
             email: editedEmail,
-            role: editedRole,
+            role: editedRole
         };
         delete newUser.isLoggedIn;
 
+        console.log(newUser)
+
         await client.updateUserById(newUser);
-        dispatch(setUser(newUser));
         setSuccess("Profile successfully updated.");
     };
     const handleDeleteUser = async () => {
@@ -81,7 +83,7 @@ function AdminEdit() {
                     <form className="pet-match-quiz mx-auto">
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
-                                Display Name
+                                Username
                             </label>
                             <input
                                 type="text"
@@ -91,6 +93,21 @@ function AdminEdit() {
                                 value={editedUsername} // Bind the input value to the local state
                                 onChange={(e) => handleUsernameChange(
                                     e)} // Handle changes to the username
+                            />
+                        </div>
+
+                        <div className="form-group mt-2">
+                            <label htmlFor="password" className="form-label">
+                                Password
+                            </label>
+                            <input
+                                type="text"
+                                className="search-bar form-control me-2"
+                                id="password"
+                                placeholder="Enter profile name"
+                                value={editedPassword}
+                                onChange={(e) => handlePasswordChange(
+                                    e)}
                             />
                         </div>
 
@@ -132,8 +149,8 @@ function AdminEdit() {
                                     id="adopter"
                                     name="role"
                                     value="adopter"
-                                    checked={editedRole === "adopter"}
-                                    onChange={() => setEditedRole("adopter")}
+                                    checked={editedRole === "ADOPTER"}
+                                    onChange={() => setEditedRole("ADOPTER")}
                                     className="form-check-input"
                                 />
                                 <label htmlFor="adopter" className="form-check-label">
@@ -146,8 +163,8 @@ function AdminEdit() {
                                     id="uploader"
                                     name="role"
                                     value="uploader"
-                                    checked={editedRole === "uploader"}
-                                    onChange={() => setEditedRole("uploader")}
+                                    checked={editedRole === "UPLOADER"}
+                                    onChange={() => setEditedRole("UPLOADER")}
                                     className="form-check-input"
                                 />
                                 <label htmlFor="uploader" className="form-check-label">
