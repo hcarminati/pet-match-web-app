@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
 import * as client from "./client";
-import * as profileClient from "../Profile/client";
 import * as adminClient from "../Admin/client";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';

@@ -60,6 +60,7 @@ function HomePage() {
                 const animalDataPromises = data.map(animal => animalCardClient.findPetById(animal.petId));
                 const resolvedAnimalData = await Promise.all(animalDataPromises);
                 const filteredData = resolvedAnimalData.filter(data => data !== null);
+
                 setAllAdoptedPets(filteredData);
                 setAllAdoptedPetsLoading(false);
             } catch (error) {
@@ -67,9 +68,8 @@ function HomePage() {
                 setAllAdoptedPetsLoading(false);
             }
         };
-        if (user && user._id && animals.length > 0) {
-            fetchAllAdoptedPets();
-        }
+
+        fetchAllAdoptedPets();
     }, [user, animals]);
 
     useEffect(() => {
