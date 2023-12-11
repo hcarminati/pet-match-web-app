@@ -143,11 +143,16 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
                          icon={faPlus}
                          onClick={addPet}
                      />
-                     : <FontAwesomeIcon
-                     className={`${isLiked ? 'text-danger' : 'text-white'}`}
-                     icon={faHeart}
-                     onClick={toggleLike}
-                 />}
+                     : <></>
+                }
+                {console.log("userrolw---", user.role)}
+                {
+                    !user.role ? <></> : <FontAwesomeIcon
+                        className={`${isLiked ? 'text-danger' : 'text-white'}`}
+                        icon={faHeart}
+                        onClick={toggleLike}
+                    />
+                    }
                 {!add && user.role === "ADMIN" ?
                  <div className="d-flex">
                      <FontAwesomeIcon
