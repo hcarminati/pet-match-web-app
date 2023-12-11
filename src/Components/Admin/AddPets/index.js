@@ -4,6 +4,7 @@ import {getAnimals} from '../../../api/petfinder-api';
 import AnimalCard from '../../AnimalCard';
 import {getAvailablePets} from "../client";
 import {useLocation} from "react-router-dom";
+import * as animalCardClient from "../../AnimalCard/client";
 
 const AddPets = () => {
     const location = useLocation();
@@ -24,6 +25,39 @@ const AddPets = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const allEmpty = Object.values(searchParameters).every(param => param === '');
+
+        if (allEmpty) {
+            Promise.all([getAnimals(), getAvailablePets()])
+                .then(([petfinderAnimals, databaseAnimals]) => {
+                    setAnimals(petfinderAnimals.animals);
+                    setSearchResults(petfinderAnimals.animals);
+                    setDbAnimals(databaseAnimals);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setLoading(false);
+                });
+        }
+        else {
+            const savedSearchParams = JSON.parse(localStorage.getItem('searchParams'));
+            if (savedSearchParams) {
+                setSearchParameters(savedSearchParams);
+            }
+
+            const savedSearchResults = JSON.parse(localStorage.getItem('searchResults'));
+            if (savedSearchResults && savedSearchResults.length > 0) {
+                setSearchResults(savedSearchResults);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('searchParams', JSON.stringify(searchParameters));
+    }, [searchParameters]);
+
     const handleSearch = async () => {
         try {
             setLoading(true);
@@ -36,8 +70,14 @@ const AddPets = () => {
             }
 
             let result;
-            if (searchParameters.name || searchParameters.type || searchParameters.size
-                || searchParameters.gender || searchParameters.age) {
+
+            const allEmpty = Object.values(searchParameters).every(param => param === '');
+            if (allEmpty) {
+                result = { animals: animals };
+                setSearchResults(animals);
+                window.history.replaceState(null, "", `#/Admin/add`);
+            } else {
+                // Filter the pets based on search parameters from the database
                 const filteredPets = animals.filter(animal => {
                     return (
                         (!searchParameters.name || animal.name.toLowerCase()
@@ -53,14 +93,13 @@ const AddPets = () => {
                     );
                 });
 
-                window.history.replaceState(null, "", `#/Admin/Add/Search?${query.toString()}`);
+                window.history.replaceState(null, "", `#/Admin/add?${query.toString()}`);
 
-                result = {animals: filteredPets};
-            } else {
-                result = {animals: searchResults};
+                result = { animals: filteredPets };
+                setSearchResults(filteredPets);
             }
-
-            setSearchResults(result.animals);
+            localStorage.setItem('searchParams', JSON.stringify(searchParameters));
+            localStorage.setItem('searchResults', JSON.stringify(result.animals));
         } catch (err) {
             setError(err.message);
         } finally {
@@ -74,20 +113,6 @@ const AddPets = () => {
             [parameter]: value,
         }));
     };
-
-    useEffect(() => {
-        Promise.all([getAnimals(), getAvailablePets()])
-            .then(([petfinderAnimals, databaseAnimals]) => {
-                setAnimals(petfinderAnimals.animals);
-                setSearchResults(petfinderAnimals.animals);
-                setDbAnimals(databaseAnimals);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                setLoading(false);
-            });
-    }, []);
 
     const isInDatabase = (animal) => {
         return dbAnimals.some((dbAnimal) => dbAnimal.originalId === animal.id);

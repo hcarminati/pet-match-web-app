@@ -5,6 +5,7 @@ import {faEdit, faHeart, faPlus, faTrash} from "@fortawesome/free-solid-svg-icon
 import "./index.css";
 import * as client from "./client";
 import * as profileClient from "../Profile/client";
+import * as adminClient from "../Admin/client";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import EditAnimal from "../EditAnimal";
@@ -94,7 +95,12 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
             uploader: user._id,
         }
 
+        const newUser = {
+            ...user,
+            numAdded: user.numAdded + 1,
+        }
         await client.addPet(newAnimal);
+        await adminClient.updateUserById(newUser);
         setIsLiked(!isLiked);
     }
 

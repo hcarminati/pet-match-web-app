@@ -23,14 +23,40 @@ function Search() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const allPets = async () => {
-            const pets = await animalCardClient.findAllPets();
-            setSearchResults(pets);
-            setAllPets(pets);
-        };
+        const allEmpty = Object.values(searchParameters).every(param => param === '');
 
-        allPets();
+        if (allEmpty) {
+            const fetchPets = async () => {
+                try {
+                    setLoading(true);
+                    const pets = await animalCardClient.findAllPets();
+                    setAllPets(pets);
+                    setSearchResults(pets);
+                } catch (error) {
+                    setError(error.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchPets();
+            handleSearch();
+        }
+        else {
+            const savedSearchParams = JSON.parse(localStorage.getItem('searchParams'));
+            if (savedSearchParams) {
+                setSearchParameters(savedSearchParams);
+            }
+
+            const savedSearchResults = JSON.parse(localStorage.getItem('searchResults'));
+            if (savedSearchResults && savedSearchResults.length > 0) {
+                setSearchResults(savedSearchResults);
+            }
+        }
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('searchParams', JSON.stringify(searchParameters));
+    }, [searchParameters]);
 
     const handleSearch = async () => {
         try {
@@ -44,8 +70,13 @@ function Search() {
             }
 
             let result;
-            if (searchParameters.name || searchParameters.type || searchParameters.size
-                || searchParameters.gender || searchParameters.age) {
+
+            const allEmpty = Object.values(searchParameters).every(param => param === '');
+            if (allEmpty) {
+                result = { animals: allPets };
+                setSearchResults(allPets);
+                window.history.replaceState(null, "", `#/Search`);
+            } else {
                 // Filter the pets based on search parameters from the database
                 const filteredPets = allPets.filter(animal => {
                     return (
@@ -64,12 +95,11 @@ function Search() {
 
                 window.history.replaceState(null, "", `#/Search?${query.toString()}`);
 
-                result = {animals: filteredPets};
-            } else {
-                result = {animals: searchResults};
+                result = { animals: filteredPets };
+                setSearchResults(filteredPets);
             }
-
-            setSearchResults(result.animals);
+            localStorage.setItem('searchParams', JSON.stringify(searchParameters));
+            localStorage.setItem('searchResults', JSON.stringify(result.animals));
         } catch (err) {
             setError(err.message);
         } finally {

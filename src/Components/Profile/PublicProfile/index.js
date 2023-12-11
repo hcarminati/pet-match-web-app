@@ -183,6 +183,15 @@ const PublicProfile = () => {
                     <p className="text-muted">
                         {user.description}
                     </p>
+                    {user && user.role === 'ADMIN' &&
+                     <p>Number of pets added: {user.numAdded}</p>
+                    }
+                    {user && user.role === 'UPLOADER' &&
+                     <p>Number of pets uploaded: {user.numUploaded}</p>
+                    }
+                    {user && user.role === 'ADOPTER' &&
+                     <p>Number of pets adopted: {user.numAdopted}</p>
+                    }
                 </div>
                 <div className="col-12 col-sm-8">
                     {user && user.role === 'ADMIN' &&

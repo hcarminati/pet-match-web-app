@@ -5,7 +5,6 @@ import SettingsNavigation from "./SettingsNavigation";
 import EditProfile from "../Edit";
 import ChangePassword from "./ChangePassword";
 import Delete from "../DeleteAccount";
-import UploadNavigation from "../../Upload/UploadNavigation";
 
 const Settings = () => {
     return (

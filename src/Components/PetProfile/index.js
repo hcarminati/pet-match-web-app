@@ -110,8 +110,13 @@ const PetProfile = () => {
                        status: 'Adopted',
                    });
 
+        const updatedUser = {
+            ...user,
+            numAdopted: user.numAdopted + 1,
+        }
         await client.updatePetById(updatedPet);
         await client.addAdoptedPet(id, adoptedPet);
+        await adminClient.updateUserById(updatedUser);
         setIsAdopted(true);
     }
 

@@ -10,6 +10,9 @@ const initialState = {
     dob: '',
     role: 'GUEST',
     description: '',
+    numUploaded: 0,
+    numAdded: 0,
+    numAdopted: 0,
 };
 
 const userSlice = createSlice({
@@ -26,6 +29,9 @@ const userSlice = createSlice({
                                           state.dob = action.payload.dob;
                                           state.role = action.payload.role;
                                           state.description = action.payload.description;
+                                          state.numUploaded = action.payload.numUploaded;
+                                          state.numAdded = action.payload.numAdded;
+                                          state.numAdopted = action.payload.numAdopted;
                                       },
                                       login: (state, action) => {
                                           state._id = action.payload._id;
@@ -37,6 +43,9 @@ const userSlice = createSlice({
                                           state.dob = action.payload.dob;
                                           state.role = action.payload.role;
                                           state.description = action.payload.description;
+                                          state.numUploaded = action.payload.numUploaded;
+                                          state.numAdded = action.payload.numAdded;
+                                          state.numAdopted = action.payload.numAdopted;
                                       },
                                       logout: (state) => {
                                           state.isLoggedIn = false;

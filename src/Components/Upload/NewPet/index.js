@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as animalCardClient from "../../AnimalCard/client";
-import * as profileClient from "../../Profile/client";
+import * as adminClient from "../../Admin/client";
+import {useSelector} from "react-redux";
 
 const NewPet = () => {
+    const user = useSelector(state => state.userReducer);
     const [formData, setFormData] = useState({
                                                  age: '',
                                                  name: '',
@@ -43,19 +45,6 @@ const NewPet = () => {
                                                  uploader: '',
                                              });
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const userData = await profileClient.getAccount();
-            const newFormData = {
-                ...formData,
-                uploader: userData._id,
-            };
-            setFormData(newFormData)
-        };
-
-        fetchUser();
-    });
-
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         // Handle checkbox inputs
@@ -86,9 +75,15 @@ const NewPet = () => {
     };
 
     const handleSubmit = async (e) => {
+        const newUser = {
+            ...user,
+            numUploaded: user.numUploaded + 1,
+        }
+
         e.preventDefault();
         try {
             await animalCardClient.addPet(formData);
+            await adminClient.updateUserById(newUser);
         } catch (error) {
             console.error('Error adding new pet:', error);
         }
