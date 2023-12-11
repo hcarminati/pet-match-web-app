@@ -166,8 +166,7 @@ function HomePage() {
                          {adoptedByUserLoading ? (
                              <p>Loading...</p>
                          ) : (
-                              adoptedByUser.slice(adoptedByUser.length - 4, adoptedByUser.length)
-                                  .map((animal) => (
+                              adoptedByUser.slice(-4).map((animal) => (
                                       <AnimalCard key={animal._id} animal={animal} add={false}/>
                                   ))
                           )}
@@ -182,7 +181,7 @@ function HomePage() {
                             {loading ? (
                                 <p>Loading...</p>
                             ) : (
-                                 animals.slice(animals.length - 4, animals.length).map((animal) => (
+                                 animals.slice(-4).map((animal) => (
                                      <AnimalCard key={animal._id} animal={animal} add={false}/>
                                  ))
                              )}
@@ -199,8 +198,7 @@ function HomePage() {
                             {allAdoptedPetsLoading ? (
                                 <p>Loading...</p>
                             ) : (
-                                allAdoptedPets ? allAdoptedPets.slice(allAdoptedPets.length - 4,
-                                                      allAdoptedPets.length).map((animal) => (
+                                allAdoptedPets ? allAdoptedPets.slice(-4).map((animal) => (
                                      <AnimalCard key={animal._id} animal={animal} add={false}/>
                                  )) : <></>
                              )}

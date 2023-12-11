@@ -9,18 +9,20 @@ import * as adminClient from "../Admin/client";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import EditAnimal from "../EditAnimal";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser} from "../Profile/userReducer";
 
 function AnimalCard({animal, add, removeAnimal, onUnlike}) {
-    const [user, setUser] = useState(null);
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.userReducer);
     const [loading, setLoading] = useState(true);
+    const [numAdded, setNumAdded] = useState(0);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const userData = await profileClient.getAccount();
-                setUser(userData);
+                setNumAdded(user.numAdded)
             } catch (error) {
-                setUser(null);
             } finally {
                 setLoading(false);
             }
@@ -95,13 +97,19 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
             uploader: user._id,
         }
 
+        setNumAdded(prevNumAdded => prevNumAdded + 1);
+
         const newUser = {
             ...user,
-            numAdded: user.numAdded + 1,
-        }
+            numAdded: numAdded + 1,
+        };
+
+        console.log(newUser)
+
         await client.addPet(newAnimal);
         await adminClient.updateUserById(newUser);
         setIsLiked(!isLiked);
+        dispatch(setUser(newUser));
     }
 
     const deletePet = async () => {

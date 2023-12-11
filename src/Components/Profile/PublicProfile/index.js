@@ -70,7 +70,7 @@ const PublicProfile = () => {
         if (user && user._id && animals.length > 0) {
             fetchAllAdoptedPets();
         }
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         const fetchUploadedByUser = async () => {
@@ -87,6 +87,7 @@ const PublicProfile = () => {
         if (user && user._id && animals.length > 0) {
             fetchUploadedByUser();
         }
+
     }, [user, animals]);
 
     useEffect(() => {
@@ -113,7 +114,7 @@ const PublicProfile = () => {
         if (user && user._id && animals.length > 0) {
             fetchAdoptedByUser();
         }
-    }, []);
+    }, [user, animals]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -201,8 +202,7 @@ const PublicProfile = () => {
                              {uploadedByUserLoading ? (
                                  <p>Loading...</p>
                              ) : (
-                                  uploadedByUser.slice(uploadedByUser.length - 4, uploadedByUser.length)
-                                      .map((animal) => (
+                                  uploadedByUser.slice(-4).map((animal) => (
                                           <AnimalCard key={animal._id} animal={animal} add={false}/>
                                       ))
                               )}
@@ -216,7 +216,7 @@ const PublicProfile = () => {
                              {loading ? (
                                  <p>Loading...</p>
                              ) : (
-                                  uploadedByUser.slice(animals.length - 4, animals.length).map((animal) => (
+                                  uploadedByUser.slice(-4).map((animal) => (
                                       <AnimalCard key={animal._id} animal={animal} add={false}/>
                                   ))
                               )}
@@ -230,8 +230,7 @@ const PublicProfile = () => {
                              {adoptedByUserLoading ? (
                                  <p>Loading...</p>
                              ) : (
-                                  adoptedByUser.slice(adoptedByUser.length - 4, adoptedByUser.length)
-                                      .map((animal) => (
+                                  adoptedByUser.slice(-4).map((animal) => (
                                           <AnimalCard key={animal._id} animal={animal} add={false}/>
                                       ))
                               )}

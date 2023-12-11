@@ -10,9 +10,9 @@ const initialState = {
     dob: '',
     role: 'GUEST',
     description: '',
-    numUploaded: 0,
-    numAdded: 0,
-    numAdopted: 0,
+    numUploaded: null,
+    numAdded: null,
+    numAdopted: null,
 };
 
 const userSlice = createSlice({
@@ -24,6 +24,7 @@ const userSlice = createSlice({
                                           state.email = action.payload.email;
                                           state.username = action.payload.username;
                                           state.password = action.payload.password;
+                                          console.log(action.payload.numUploaded);
                                           state.firstName = action.payload.firstName;
                                           state.lastName = action.payload.lastName;
                                           state.dob = action.payload.dob;

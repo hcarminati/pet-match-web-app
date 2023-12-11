@@ -8,10 +8,12 @@ import {deleteComment, findCommentsByPetId} from "./client";
 import * as animalClient from "../AnimalCard/client";
 import * as adminClient from "../Admin/client";
 import CommentComponent from "../Comments";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser} from "../Profile/userReducer";
 
 const PetProfile = () => {
     const {id} = useParams();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.userReducer);
@@ -98,6 +100,7 @@ const PetProfile = () => {
             username: user.username,
             petId: pet._id,
             date: Date(),
+            numAdopted: user.numAdopted + 1,
         };
 
         const updatedPet = {
@@ -118,6 +121,7 @@ const PetProfile = () => {
         await client.addAdoptedPet(id, adoptedPet);
         await adminClient.updateUserById(updatedUser);
         setIsAdopted(true);
+        dispatch(setUser(updatedUser))
     }
 
     const handleExpand = () => {

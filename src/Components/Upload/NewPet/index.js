@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import './index.css';
 import * as animalCardClient from "../../AnimalCard/client";
 import * as adminClient from "../../Admin/client";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setUser} from "../../Profile/userReducer";
 
 const NewPet = () => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer);
     const [formData, setFormData] = useState({
                                                  age: '',
@@ -47,7 +49,6 @@ const NewPet = () => {
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        // Handle checkbox inputs
         if (name.includes('.')) {
             const [parent, child] = name.split('.');
             setFormData({
@@ -58,7 +59,6 @@ const NewPet = () => {
                             }
                         });
         } else {
-            // Convert the comma-separated tags into an array
             if (name === 'tags') {
                 const tagsArray = value.split(',').map(tag => tag.trim());
                 setFormData({
@@ -82,8 +82,13 @@ const NewPet = () => {
 
         e.preventDefault();
         try {
-            await animalCardClient.addPet(formData);
+            const newFormData = {
+                ...formData,
+                uploader: user._id,
+            };
+            await animalCardClient.addPet(newFormData);
             await adminClient.updateUserById(newUser);
+            dispatch(setUser(newUser));
         } catch (error) {
             console.error('Error adding new pet:', error);
         }

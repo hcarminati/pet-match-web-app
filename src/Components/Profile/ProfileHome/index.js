@@ -11,14 +11,13 @@ import AnimalCard from "../../AnimalCard";
 import {getAvailablePets} from "../../Admin/client";
 import * as petProfileClient from "../../PetProfile/client";
 import * as animalCardClient from "../../AnimalCard/client";
+import * as profileClient from "../client";
 
 const ProfileHome = () => {
     const user = useSelector(state => state.userReducer);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [adoptedPets, setAdoptedPets] = useState([]);
-
-
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userLoading, setUserLoading] = useState(true);
@@ -85,6 +84,7 @@ const ProfileHome = () => {
         if (user && user._id && animals.length > 0) {
             fetchUploadedByUser();
         }
+
     }, [user, animals]);
 
     useEffect(() => {
@@ -112,6 +112,23 @@ const ProfileHome = () => {
             fetchAdoptedByUser();
         }
     }, [user, allAdoptedPetsMinData]);
+
+    useEffect(() => {
+        const comments = async () => {
+            try {
+                const userAdoptedPets = await profileClient.findAdoptedPetsByUserId(user._id);
+                setAdoptedPets(userAdoptedPets || []);
+                const comments = await profileClient.findCommentsByUserId(user._id);
+                setComments(comments);
+                const likes = await profileClient.findLikesByUserId(user._id);
+                setLikes(likes);
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
+        comments();
+    }, [user]);
 
     return (
         <div className="profile-home-container">
@@ -161,8 +178,7 @@ const ProfileHome = () => {
                                  {uploadedByUserLoading ? (
                                      <p>Loading...</p>
                                  ) : (
-                                      uploadedByUser.slice(uploadedByUser.length - 4, uploadedByUser.length)
-                                          .map((animal) => (
+                                      uploadedByUser.slice(-4).map((animal) => (
                                               <AnimalCard key={animal._id} animal={animal} add={false}/>
                                           ))
                                   )}
@@ -176,7 +192,7 @@ const ProfileHome = () => {
                                  {loading ? (
                                      <p>Loading...</p>
                                  ) : (
-                                     uploadedByUser.slice(animals.length - 4, animals.length).map((animal) => (
+                                     uploadedByUser.slice(-4).map((animal) => (
                                           <AnimalCard key={animal._id} animal={animal} add={false}/>
                                       ))
                                   )}
@@ -190,8 +206,7 @@ const ProfileHome = () => {
                                  {adoptedByUserLoading ? (
                                      <p>Loading...</p>
                                  ) : (
-                                      adoptedByUser.slice(adoptedByUser.length - 4, adoptedByUser.length)
-                                          .map((animal) => (
+                                      adoptedByUser.slice(-4).map((animal) => (
                                               <AnimalCard key={animal._id} animal={animal} add={false}/>
                                           ))
                                   )}

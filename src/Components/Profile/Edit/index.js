@@ -8,18 +8,24 @@ import {format, parse} from "date-fns";
 function EditProfile() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.userReducer);
-    const [editedUser, setEditedUser] = useState(user);
+    const initialDate = user.dob ? user.dob.split('T')[0] : '';
+    const [editedUser, setEditedUser] = useState({
+                                                     ...user,
+                                                     dob: initialDate,
+                                                 });
     const [success, setSuccess] = useState(null);
 
     const saveChanges = async () => {
-        const dobDate = parse(editedUser.dob, 'yyyy-MM-dd', new Date());
-        const formattedDateOfBirth = format(dobDate, 'yyyy-MM-dd');
+        console.log(editedUser.dob)
+        if(editedUser.dob) {
+            const dobDate = parse(editedUser.dob, 'yyyy-MM-dd', new Date());
+            const formattedDateOfBirth = format(dobDate, 'yyyy-MM-dd');
+            setEditedUser({
+                              ...editedUser,
+                              dob: formattedDateOfBirth
+                          });
 
-        setEditedUser({
-                          ...editedUser,
-                          dob: formattedDateOfBirth
-                      });
-
+        }
         await client.updateProfile(editedUser);
         dispatch(setUser(editedUser));
         setSuccess('Profile successfully updated.');
@@ -104,7 +110,7 @@ function EditProfile() {
                                     className="search-bar form-control me-2"
                                     id="dateOfBirth"
                                     placeholder="Enter date of birth"
-                                    value={editedUser.dateOfBirth}
+                                    value={editedUser.dob}
                                     onChange={handleDateChange}
                                 />
                             </div>
