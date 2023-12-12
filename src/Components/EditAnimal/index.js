@@ -9,13 +9,7 @@ function EditAnimal({animal}) {
     const [formData, setFormData] = useState(animal);
     const [success, setSuccess] = useState(null);
     const [newRecord, setNewRecord] = useState(false);
-    const [medicalRecord, setMedicalRecord] = useState({
-                                                           petId: animal._id,
-                                                           vaccinationHistory: '',
-                                                           medicalConditions: '',
-                                                           prescription: '',
-                                                           treatmentHistory: '',
-                                                       });
+    const [medicalRecord, setMedicalRecord] = useState();
 
     useEffect(() => {
         const newMedicalRecord = async () => {
@@ -23,16 +17,16 @@ function EditAnimal({animal}) {
             const petRecord = await records.filter(r => r.petId === animal._id)
             if (petRecord[0]) {
                 setMedicalRecord(petRecord[0]);
+                console.log("MEDICAL RECORD---", petRecord[0])
             } else {
                 setNewRecord(true);
             }
         }
 
         newMedicalRecord();
-
-    });
-
+    }, []);
     const handleUpdateAnimal = async () => {
+
         if (newRecord) {
             await petClient.addMedicalRecord(medicalRecord);
             const records = await petClient.findAllMedicalRecords();
@@ -42,11 +36,13 @@ function EditAnimal({animal}) {
                 medicalRecord: petRecord[0]._id,
             };
             setFormData(newFormData);
+            console.log(newFormData)
+
+            await petClient.updatePetById(newFormData);
         } else {
             await petClient.updateMedicalRecordById(medicalRecord);
         }
 
-        await petClient.updatePetById(formData);
         setSuccess("Pet successfully updated.");
     };
 

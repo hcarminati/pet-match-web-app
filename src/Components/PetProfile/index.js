@@ -42,9 +42,11 @@ const PetProfile = () => {
                 setAdoptionCenter(center);
             }
         }
-        const getMedicalRecord = async (data, id) => {
+        const getMedicalRecord = async (data) => {
+
             if (data.medicalRecord) {
-                const record = await client.findMedicalRecordById(id);
+                const record = await client.findMedicalRecordById(data.medicalRecord);
+
                 setMedicalRecord(record);
             }
         }
@@ -52,7 +54,7 @@ const PetProfile = () => {
         animalClient.findPetById(id).then(data => {
             setPetData(data);
             getAdoptionCenter(data);
-            getMedicalRecord(data, data.medicalRecord)
+            getMedicalRecord(data)
         }).catch(error => {
             console.error(error);
         });

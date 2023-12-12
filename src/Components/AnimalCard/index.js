@@ -31,6 +31,7 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
     }, []);
 
     const [isLiked, setIsLiked] = useState(false);
+    const [isAdded, setIsAdded] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
@@ -94,6 +95,7 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
             tags: animal.tags,
             type: animal.type,
             uploader: user._id,
+            medicalRecord: animal.medicalRecord || "",
         }
 
         setNumAdded(prevNumAdded => prevNumAdded + 1);
@@ -103,11 +105,10 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
             numAdded: numAdded + 1,
         };
 
-        console.log(newUser)
-
         await client.addPet(newAnimal);
         await adminClient.updateUserById(newUser);
-        setIsLiked(!isLiked);
+        setIsAdded(true);
+        setIsLiked(false);
         dispatch(setUser(newUser));
     }
 
@@ -139,16 +140,15 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
             )}
             {user ? <div className="vertical-dots d-flex">
                 {add ? <FontAwesomeIcon
-                         className={`${isLiked ? 'text-danger' : 'text-white'}`}
+                         className={`${isAdded ? 'text-danger' : 'text-white'}`}
                          icon={faPlus}
                          onClick={addPet}
                      />
                      : <></>
                 }
-                {console.log("userrolw---", user.role)}
                 {
                     !user.role ? <></> : <FontAwesomeIcon
-                        className={`${isLiked ? 'text-danger' : 'text-white'}`}
+                        className={`${isLiked ? 'text-danger' : 'text-white'} ms-2`}
                         icon={faHeart}
                         onClick={toggleLike}
                     />
