@@ -5,6 +5,7 @@ import {Route} from "react-router-dom";
 import UploadNavigation from "./UploadNavigation";
 import NewPet from "./NewPet";
 import AdminNavigation from "../Admin/AdminNavigation";
+import UploadedPets from "./UploadedPets";
 
 const Admin = () => {
     return (
@@ -20,7 +21,7 @@ const Admin = () => {
                                 <Routes>
                                     <Route path="/" element={<Navigate to="/Upload/add"/>}/>
                                     <Route path="add" element={<NewPet/>}/>
-                                    <Route path="uploads" element={<h5>Upload</h5>}/>
+                                    <Route path="uploads" element={<UploadedPets/>}/>
                                 </Routes>
                             </div>
                         </div>
