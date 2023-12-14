@@ -152,7 +152,7 @@ function HomePage() {
                          {loading ? (
                              <p>Loading...</p>
                          ) : (
-                             uploadedByUser.slice(animals.length - 4, animals.length).map((animal) => (
+                             uploadedByUser.slice(-4).map((animal) => (
                                   <AnimalCard key={animal._id} animal={animal} add={false}/>
                               ))
                           )}
