@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 
 import * as petClient from "../PetProfile/client";
 import {Link} from "react-router-dom";
+import {updatePetById} from "../PetProfile/client";
 
 function EditAnimal({animal}) {
     const [formData, setFormData] = useState(animal);
@@ -17,7 +18,6 @@ function EditAnimal({animal}) {
             const petRecord = await records.filter(r => r.petId === animal._id)
             if (petRecord[0]) {
                 setMedicalRecord(petRecord[0]);
-                console.log("MEDICAL RECORD---", petRecord[0])
             } else {
                 setNewRecord(true);
             }
@@ -25,6 +25,7 @@ function EditAnimal({animal}) {
 
         newMedicalRecord();
     }, []);
+
     const handleUpdateAnimal = async () => {
 
         if (newRecord) {
@@ -33,13 +34,14 @@ function EditAnimal({animal}) {
             const petRecord = records.filter(r => r.petId === animal._id)
             const newFormData = {
                 ...formData,
-                medicalRecord: petRecord[0]._id,
+                medicalRecord: petRecord._id,
             };
             setFormData(newFormData);
             console.log(newFormData)
 
             await petClient.updatePetById(newFormData);
         } else {
+            await petClient.updatePetById(formData);
             await petClient.updateMedicalRecordById(medicalRecord);
         }
 

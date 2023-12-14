@@ -153,7 +153,7 @@ function AnimalCard({animal, add, removeAnimal, onUnlike}) {
                         onClick={toggleLike}
                     />
                     }
-                {!add && user.role === "ADMIN" ?
+                {!add && (user.role === "ADMIN" || (user.role === "UPLOADER" && animal.uploader === user._id) ) ?
                  <div className="d-flex">
                      <FontAwesomeIcon
                          className='text-white ms-1'
